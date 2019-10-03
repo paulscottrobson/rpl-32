@@ -1,0 +1,92 @@
+RPL/32 Design Specification
+===========================
+
+1)		Single instance usage but with variable end, so copy-switching.
+2)		32 bit values.
+3) 		same code idea.
+4) 		Stack space in 3 address memory (impractical otherwise) occupying 1k
+		(no testing required)
+
+Encoding
+========
+00			End of line
+01 xx 		ASCIIZ string (xx is the total length in bytes)
+02 xx 		ASCIIZ comment
+03-0F 		Reserved
+10-7F 		Tokens
+80-BF 		6 bits of number data, shifted in, representing positive numbers.
+C0-DF 		Identifier labels (A-Z .) (27 off)
+E0-FF 		Identifier labels (A-Z .) (27 off), end of identifier marker.
+
+<offset> <line low> <line high>	<first token>
+
+Operators 
+=========
+Binary Arithmetic:
+		+ 		-		*		/		mod		
+
+Binary Logic:
+		and		or 		xor
+
+Binary Comparison:
+		< 		<= 		> 		>= 		=		<>
+
+Unary:		
+		negate	not 	abs		++		--		<<		>> 		bswap	alloc
+
+		<encoded ->. This is a token that decodes as '-' which comes after the constant.
+		tokenising should put the unencoded version first. Listed as [-] and fudged.
+		Detokenising should use this when extracting a negative value.
+
+Memory:		
+		@ 		! 		c@ 		c! 		w@ 		w!
+
+Stack:
+		dup		drop 	over 	nip 	swap	empty
+
+Loops:	
+		for 	index 	next
+		repeat 	until
+
+Conditions:	(same line, not nestable)
+		if 		[else] 	then		
+
+Words:
+		def 	; 		&
+
+Commands/Other:
+		sys 	list	new 	old		run		stop	end 	(space)
+
+Variables/Arrays:
+		^		[]
+
+
+Internal Storage
+================
+
+Hash (probably 16 ?) -> 
+
++00..+01 	Offset to next element
+
++02..+05 	Data : 
+				Variable : holds the 32 bit data.
+				Machine Code : holds the address to call (low, high, bank,$00)
+				Procedure : holds the procedure location (low, high, bank,$00)
+
++06..+08 	Pointer to variable name in program. (Variables cannot be created from such)
+			The third byte is a bank byte if its stored in there.
+
++09 		Type byte
+				'V' 'M'	'P' 	supported.
+
+0000-007F 	Zero Page storage
+0C00-0FFF 	
+1000-10FF 	Variables (A-Z) (104 bytes)
+			Link Addresses etc.
+			Hash Tables (2 per byte)
+1100-	 	Program space.
+			Variable space
+			Free space
+			Allocated Space
+	- xxxx	High Memory
+
