@@ -60,19 +60,19 @@ Mem_DPeek:	;; [@]
 		sta 	zTemp0
 		lda 	stack1,x
 		sta 	zTemp0+1
-		lda 	(zTemp0)					; read byte
 
+		lda 	(zTemp0)					; read byte
 		sta 	stack0,x 					; write to stack
 		phy 								; read msb
 		ldy 	#1
 		lda 	(zTemp0),y
-		sta 	stack1,x 				; write to stack
+		sta 	stack1,x 					; write to stack
 		iny
 		lda 	(zTemp0),y
-		stz 	stack2,x 				
+		sta 	stack2,x 				
 		iny
 		lda 	(zTemp0),y
-		stz 	stack3,x 				
+		sta 	stack3,x 				
 		ply
 		rts
 
@@ -134,7 +134,6 @@ Mem_DPoke:	;; [!]
 		phy 
 		ldy 	#1
 		lda 	stack1-1,x 						
-		iny
 		sta 	(zTemp0),y
 		lda 	stack2-1,x 						
 		iny

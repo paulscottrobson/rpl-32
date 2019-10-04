@@ -63,12 +63,12 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $10  
 	.word Mem_DPoke                        ; $11 !
 	.word SyntaxError                      ; $12 &
-	.word SyntaxError                      ; $13 *
+	.word MulInteger32                     ; $13 *
 	.word Stack_Add                        ; $14 +
 	.word Unary_Increment                  ; $15 ++
 	.word Stack_Sub                        ; $16 -
 	.word Unary_Decrement                  ; $17 --
-	.word SyntaxError                      ; $18 /
+	.word DivInteger32                     ; $18 /
 	.word SyntaxError                      ; $19 ;
 	.word Comp_Less                        ; $1a <
 	.word Unary_Shl                        ; $1b <<
@@ -94,7 +94,7 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $2f IF
 	.word SyntaxError                      ; $30 INDEX
 	.word SyntaxError                      ; $31 LIST
-	.word SyntaxError                      ; $32 MOD
+	.word ModInteger32                     ; $32 MOD
 	.word Unary_Negate                     ; $33 NEGATE
 	.word System_New                       ; $34 NEW
 	.word SyntaxError                      ; $35 NEXT

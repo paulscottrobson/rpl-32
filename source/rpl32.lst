@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Fri Oct  4 17:47:59 2019
+; Fri Oct  4 19:17:10 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -21,8 +21,10 @@
 >0004					zTemp0:			.word ?						; temporary words
 >0006					zTemp1: 		.word ?
 >0008					zTemp2: 		.word ?
->000a					breakCount:		.byte ? 					; used to stop break firing every execution.
->000b					idDataAddr:		.word ? 					; data address.
+>000a					zLTemp1:		.dword ?					; temporary longs
+>000e					breakCount:		.byte ? 					; used to stop break firing every execution.
+>000f					idDataAddr:		.word ? 					; data address.
+>0011					SignCount:		.byte ?						; sign count for divide
 >1000					AZVariables:	.fill	26*4 				; 26 x 4 byte variables, which are A-Z
 >1068					HashTable: 		.fill 	HashTableSize * 2 	; n x 2 links for the hash tables.
 >1088	00 00				VarMemory:		.word 	0 					; next free byte available for VARIABLES (going up)
@@ -57,7 +59,7 @@
 .a005	8d 8c 10	sta $108c			sta 	CurrentBase
 .a008	20 ff a2	jsr $a2ff			jsr 	ResetForRun
 .a00b	20 f4 a2	jsr $a2f4			jsr 	ResetCodePointer
-.a00e	4c b4 a6	jmp $a6b4			jmp 	System_RUN
+.a00e	4c 0f a8	jmp $a80f			jmp 	System_RUN
 
 ;******  Processing file: generated/tables.inc
 
@@ -120,62 +122,62 @@
 >a0db	01 2d					.byte $01,$2d                          ; $47 {-}
 >a0dd	00					.byte $00
 .a0de					KeywordVectorTable:
->a0de	86 a7					.word SyntaxError                      ; $10
->a0e0	3c a5					.word Mem_DPoke                        ; $11 !
->a0e2	86 a7					.word SyntaxError                      ; $12 &
->a0e4	86 a7					.word SyntaxError                      ; $13 *
->a0e6	64 a5					.word Stack_Add                        ; $14 +
->a0e8	63 a4					.word Unary_Increment                  ; $15 ++
->a0ea	8b a5					.word Stack_Sub                        ; $16 -
->a0ec	76 a4					.word Unary_Decrement                  ; $17 --
->a0ee	86 a7					.word SyntaxError                      ; $18 /
->a0f0	86 a7					.word SyntaxError                      ; $19 ;
->a0f2	5e a6					.word Comp_Less                        ; $1a <
->a0f4	98 a4					.word Unary_Shl                        ; $1b <<
->a0f6	89 a6					.word Comp_LessEqual                   ; $1c <=
->a0f8	27 a6					.word Comp_NotEqual                    ; $1d <>
->a0fa	24 a6					.word Comp_Equal                       ; $1e =
->a0fc	8c a6					.word Comp_Greater                     ; $1f >
->a0fe	61 a6					.word Comp_GreaterEqual                ; $20 >=
->a100	a5 a4					.word Unary_Shr                        ; $21 >>
->a102	ea a4					.word Mem_DPeek                        ; $22 @
->a104	1a a4					.word Unary_Absolute                   ; $23 ABS
->a106	86 a7					.word SyntaxError                      ; $24 ALLOC
->a108	b2 a5					.word Stack_And                        ; $25 AND
->a10a	0f a5					.word Mem_Poke                         ; $26 C!
->a10c	b2 a4					.word Mem_Peek                         ; $27 C@
->a10e	86 a7					.word SyntaxError                      ; $28 DEF
->a110	8f a3					.word Stack_Drop                       ; $29 DROP
->a112	91 a3					.word Stack_Dup                        ; $2a DUP
->a114	86 a7					.word SyntaxError                      ; $2b ELSE
->a116	8c a3					.word Stack_Empty                      ; $2c EMPTY
->a118	bd a6					.word System_END                       ; $2d END
->a11a	86 a7					.word SyntaxError                      ; $2e FOR
->a11c	86 a7					.word SyntaxError                      ; $2f IF
->a11e	86 a7					.word SyntaxError                      ; $30 INDEX
->a120	86 a7					.word SyntaxError                      ; $31 LIST
->a122	86 a7					.word SyntaxError                      ; $32 MOD
->a124	20 a4					.word Unary_Negate                     ; $33 NEGATE
->a126	cc a6					.word System_New                       ; $34 NEW
->a128	86 a7					.word SyntaxError                      ; $35 NEXT
->a12a	ab a3					.word Stack_Nip                        ; $36 NIP
->a12c	42 a4					.word Unary_Not                        ; $37 NOT
->a12e	86 a7					.word SyntaxError                      ; $38 OLD
->a130	fe a5					.word Stack_Or                         ; $39 OR
->a132	c5 a3					.word Stack_Over                       ; $3a OVER
->a134	86 a7					.word SyntaxError                      ; $3b REPEAT
->a136	b4 a6					.word System_RUN                       ; $3c RUN
->a138	c1 a6					.word System_STOP                      ; $3d STOP
->a13a	df a3					.word Stack_Swap                       ; $3e SWAP
->a13c	86 a7					.word SyntaxError                      ; $3f SYS
->a13e	86 a7					.word SyntaxError                      ; $40 THEN
->a140	86 a7					.word SyntaxError                      ; $41 UNTIL
->a142	21 a5					.word Mem_WPoke                        ; $42 W!
->a144	cb a4					.word Mem_WPeek                        ; $43 W@
->a146	d8 a5					.word Stack_Xor                        ; $44 XOR
->a148	86 a7					.word SyntaxError                      ; $45 []
->a14a	2a a7					.word WriteVariable                    ; $46 ^
->a14c	20 a4					.word Unary_Const_Minus                ; $47 {-}
+>a0de	e7 a8					.word SyntaxError                      ; $10
+>a0e0	a5 a5					.word Mem_DPoke                        ; $11 !
+>a0e2	e7 a8					.word SyntaxError                      ; $12 &
+>a0e4	8c a6					.word MulInteger32                     ; $13 *
+>a0e6	cc a5					.word Stack_Add                        ; $14 +
+>a0e8	cc a4					.word Unary_Increment                  ; $15 ++
+>a0ea	f3 a5					.word Stack_Sub                        ; $16 -
+>a0ec	df a4					.word Unary_Decrement                  ; $17 --
+>a0ee	d5 a6					.word DivInteger32                     ; $18 /
+>a0f0	e7 a8					.word SyntaxError                      ; $19 ;
+>a0f2	b9 a7					.word Comp_Less                        ; $1a <
+>a0f4	01 a5					.word Unary_Shl                        ; $1b <<
+>a0f6	e4 a7					.word Comp_LessEqual                   ; $1c <=
+>a0f8	82 a7					.word Comp_NotEqual                    ; $1d <>
+>a0fa	7f a7					.word Comp_Equal                       ; $1e =
+>a0fc	e7 a7					.word Comp_Greater                     ; $1f >
+>a0fe	bc a7					.word Comp_GreaterEqual                ; $20 >=
+>a100	0e a5					.word Unary_Shr                        ; $21 >>
+>a102	53 a5					.word Mem_DPeek                        ; $22 @
+>a104	83 a4					.word Unary_Absolute                   ; $23 ABS
+>a106	e7 a8					.word SyntaxError                      ; $24 ALLOC
+>a108	1a a6					.word Stack_And                        ; $25 AND
+>a10a	78 a5					.word Mem_Poke                         ; $26 C!
+>a10c	1b a5					.word Mem_Peek                         ; $27 C@
+>a10e	e7 a8					.word SyntaxError                      ; $28 DEF
+>a110	f8 a3					.word Stack_Drop                       ; $29 DROP
+>a112	fa a3					.word Stack_Dup                        ; $2a DUP
+>a114	e7 a8					.word SyntaxError                      ; $2b ELSE
+>a116	f5 a3					.word Stack_Empty                      ; $2c EMPTY
+>a118	18 a8					.word System_END                       ; $2d END
+>a11a	e7 a8					.word SyntaxError                      ; $2e FOR
+>a11c	e7 a8					.word SyntaxError                      ; $2f IF
+>a11e	e7 a8					.word SyntaxError                      ; $30 INDEX
+>a120	e7 a8					.word SyntaxError                      ; $31 LIST
+>a122	67 a7					.word ModInteger32                     ; $32 MOD
+>a124	89 a4					.word Unary_Negate                     ; $33 NEGATE
+>a126	27 a8					.word System_New                       ; $34 NEW
+>a128	e7 a8					.word SyntaxError                      ; $35 NEXT
+>a12a	14 a4					.word Stack_Nip                        ; $36 NIP
+>a12c	ab a4					.word Unary_Not                        ; $37 NOT
+>a12e	e7 a8					.word SyntaxError                      ; $38 OLD
+>a130	66 a6					.word Stack_Or                         ; $39 OR
+>a132	2e a4					.word Stack_Over                       ; $3a OVER
+>a134	e7 a8					.word SyntaxError                      ; $3b REPEAT
+>a136	0f a8					.word System_RUN                       ; $3c RUN
+>a138	1c a8					.word System_STOP                      ; $3d STOP
+>a13a	48 a4					.word Stack_Swap                       ; $3e SWAP
+>a13c	e7 a8					.word SyntaxError                      ; $3f SYS
+>a13e	e7 a8					.word SyntaxError                      ; $40 THEN
+>a140	e7 a8					.word SyntaxError                      ; $41 UNTIL
+>a142	8a a5					.word Mem_WPoke                        ; $42 W!
+>a144	34 a5					.word Mem_WPeek                        ; $43 W@
+>a146	40 a6					.word Stack_Xor                        ; $44 XOR
+>a148	e7 a8					.word SyntaxError                      ; $45 []
+>a14a	88 a8					.word WriteVariable                    ; $46 ^
+>a14c	89 a4					.word Unary_Const_Minus                ; $47 {-}
 =$10					KWD_SPACE = $10                  ; $10
 =$11					KWD_PLING = $11                  ; $11 !
 =$12					KWD_AMPERSAND = $12              ; $12 &
@@ -247,7 +249,7 @@
 .a156	fa		plx				plx
 .a157	60		rts				rts
 .a158					_ECBExit:
-.a158	4c 89 a7	jmp $a789			jmp 	WarmStart
+.a158	4c ea a8	jmp $a8ea			jmp 	WarmStart
 
 ;******  Return to file: main.asm
 
@@ -267,9 +269,9 @@
 .a16a	b2 00		lda ($00)			lda 	(codePtr) 					; read offset
 .a16c	d0 03		bne $a171			bne 	Execute 					; not end of program
 .a16e					_EXNLWarmStart:
-.a16e	4c bd a6	jmp $a6bd			jmp 	System_END
+.a16e	4c 18 a8	jmp $a818			jmp 	System_END
 .a171					Execute:
-.a171	e6 0a		inc $0a				inc 	BreakCount 					; break occasionally. too slow otherwise.
+.a171	e6 0e		inc $0e				inc 	BreakCount 					; break occasionally. too slow otherwise.
 .a173	d0 03		bne $a178			bne 	_EXNoBreak
 .a175	20 4e a1	jsr $a14e			jsr 	ExternCheckBreak
 .a178					_EXNoBreak:
@@ -285,7 +287,7 @@
 .a187	90 4b		bcc $a1d4			bcc 	EXTokenExecute
 .a189	c9 c0		cmp #$c0			cmp 	#$C0 						; is it a numeric constant 80-BF
 .a18b	90 03		bcc $a190			bcc 	EXPushConstant
-.a18d	4c d3 a6	jmp $a6d3			jmp 	Identifier 					; it's an identifier C0-FF
+.a18d	4c 2e a8	jmp $a82e			jmp 	Identifier 					; it's an identifier C0-FF
 .a190					EXPushConstant:
 .a190	e8		inx				inx 								; make stack space
 .a191	29 3f		and #$3f			and 	#$3F 						; to start with, it's just that value
@@ -371,9 +373,9 @@
 .a224	29 1f		and #$1f			and 	#$1F 						; index, then x 4
 .a226	0a		asl a				asl 	a
 .a227	0a		asl a				asl		a
-.a228	85 0b		sta $0b				sta 	idDataAddr					; set up addres
+.a228	85 0f		sta $0f				sta 	idDataAddr					; set up addres
 .a22a	a9 10		lda #$10			lda 	#AZVariables >> 8
-.a22c	85 0c		sta $0c				sta 	idDataAddr+1
+.a22c	85 10		sta $10				sta 	idDataAddr+1
 .a22e	a9 56		lda #$56			lda 	#IDT_VARIABLE 				; type
 .a230	38		sec				sec 								; return with CS.
 .a231	60		rts				rts
@@ -413,10 +415,10 @@
 .a26a	18		clc				clc 								; set up the data pointer
 .a26b	a5 04		lda $04				lda 	zTemp0
 .a26d	69 02		adc #$02			adc 	#2
-.a26f	85 0b		sta $0b				sta 	idDataAddr
+.a26f	85 0f		sta $0f				sta 	idDataAddr
 .a271	a5 05		lda $05				lda 	zTemp0+1
 .a273	69 00		adc #$00			adc		#0
-.a275	85 0c		sta $0c				sta 	idDataAddr+1
+.a275	85 10		sta $10				sta 	idDataAddr+1
 .a277	a0 09		ldy #$09			ldy 	#9 							; get the type
 .a279	b1 04		lda ($04),y			lda 	(zTemp0),y
 .a27b	7a		ply				ply
@@ -478,10 +480,10 @@
 .a2d7	a5 06		lda $06				lda 	zTemp1 						; set up idDataAddr
 .a2d9	18		clc				clc
 .a2da	69 02		adc #$02			adc 	#2
-.a2dc	85 0b		sta $0b				sta 	idDataAddr
+.a2dc	85 0f		sta $0f				sta 	idDataAddr
 .a2de	a5 07		lda $07				lda 	zTemp1+1
 .a2e0	69 00		adc #$00			adc 	#0
-.a2e2	85 0c		sta $0c				sta 	idDataAddr+1
+.a2e2	85 10		sta $10				sta 	idDataAddr+1
 .a2e4	7a		ply				ply 								; restore Y and exit
 .a2e5	60		rts				rts
 .a2e6					IdentifierSetUpHashPtr:
@@ -582,11 +584,11 @@
 .a370	98		tya				tya  								; save the address in the data slot.
 .a371	18		clc				clc 								; changing Y doesn't matter.
 .a372	65 00		adc $00				adc 	codePtr
-.a374	92 0b		sta ($0b)			sta 	(idDataAddr)
+.a374	92 0f		sta ($0f)			sta 	(idDataAddr)
 .a376	a5 01		lda $01				lda 	codePtr+1
 .a378	69 00		adc #$00			adc 	#0
 .a37a	a0 01		ldy #$01			ldy 	#1
-.a37c	91 0b		sta ($0b),y			sta 	(idDataAddr),y
+.a37c	91 0f		sta ($0f),y			sta 	(idDataAddr),y
 .a37e					_PSNext:
 .a37e	18		clc				clc 								; go to next
 .a37f	b2 00		lda ($00)			lda 	(codePtr)
@@ -601,553 +603,753 @@
 ;******  Return to file: main.asm
 
 
+;******  Processing file: system/indexing.asm
+
+.a38c					IndexCheck:
+.a38c	b1 00		lda ($00),y			lda 	(codePtr),y 				; check next character
+.a38e	c9 45		cmp #$45			cmp 	#KWD_LSQPARENRSQPAREN 		; left/right square bracket ?
+.a390	f0 12		beq $a3a4			beq 	_ICArrayAccess
+.a392	29 c0		and #$c0			and 	#$C0 						; constant (e.g. 10xx xxxx)
+.a394	c9 80		cmp #$80			cmp 	#$80
+.a396	b0 01		bcs $a399			bcs 	_ICSubscript
+.a398					_ICExit:
+.a398	60		rts				rts
+.a399					_ICSubscript:
+.a399	b1 00		lda ($00),y			lda 	(codePtr),y
+.a39b	c8		iny				iny 								; skip over subscript
+.a39c	29 3f		and #$3f			and 	#$3F 						; lower 6 bits only.
+.a39e	85 06		sta $06				sta 	zTemp1 						; save in zTemp1
+.a3a0	64 07		stz $07				stz 	zTemp1+1
+.a3a2	80 0c		bra $a3b0			bra 	_ICAddSubscript 			; double and add to value.
+.a3a4					_ICArrayAccess:
+.a3a4	c8		iny				iny 								; point to next
+.a3a5	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy TOS to zTemp1
+.a3a8	85 07		sta $07				sta 	zTemp1+1 					; no point in the rest !
+.a3aa	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a3ad	85 06		sta $06				sta 	zTemp1
+.a3af	ca		dex				dex
+.a3b0					_ICAddSubscript:
+.a3b0	06 06		asl $06				asl 	zTemp1 						; subscript x 4
+.a3b2	26 07		rol $07				rol 	zTemp1+1
+.a3b4	06 06		asl $06				asl 	zTemp1
+.a3b6	26 07		rol $07				rol 	zTemp1+1
+.a3b8	5a		phy				phy
+.a3b9	b2 0f		lda ($0f)			lda 	(idDataAddr)				; check indirecting through 0
+.a3bb	a0 01		ldy #$01			ldy 	#1
+.a3bd	11 0f		ora ($0f),y			ora 	(idDataAddr),y 				; probably means uninitialised
+.a3bf	c8		iny				iny
+.a3c0	11 0f		ora ($0f),y			ora 	(idDataAddr),y
+.a3c2	c8		iny				iny
+.a3c3	11 0f		ora ($0f),y			ora 	(idDataAddr),y
+.a3c5	f0 17		beq $a3de			beq 	_ICZero
+.a3c7	18		clc				clc									; add zTemp1 to value at (idDataAddr)
+.a3c8	b2 0f		lda ($0f)			lda 	(idDataAddr)
+.a3ca	65 06		adc $06				adc 	zTemp1
+.a3cc	48		pha				pha
+.a3cd	a0 01		ldy #$01			ldy 	#1
+.a3cf	b1 0f		lda ($0f),y			lda 	(idDataAddr),y
+.a3d1	65 07		adc $07				adc 	zTemp1+1
+.a3d3	85 10		sta $10				sta 	idDataAddr+1 				; write it out
+.a3d5	68		pla				pla
+.a3d6	85 0f		sta $0f				sta 	idDataAddr
+.a3d8	64 11		stz $11				stz 	idDataAddr+2 				; extend to 32 bits
+.a3da	64 12		stz $12				stz 	idDataAddr+3
+.a3dc	7a		ply				ply
+.a3dd	60		rts				rts
+.a3de					_ICZero:
+.a3de	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a3e1	55 6e 69 6e 69 74 69 61				.text 	"Uninitialised array",0
+>a3e9	6c 69 73 65 64 20 61 72 72 61 79 00
+
+;******  Return to file: main.asm
+
+
 ;******  Processing file: functions/stack.asm
 
-.a38c					Stack_Empty:
-.a38c	a2 00		ldx #$00			ldx 	#0
-.a38e	60		rts				rts
-.a38f					Stack_Drop:
-.a38f	ca		dex				dex
-.a390	60		rts				rts
-.a391					Stack_Dup:
-.a391	bd 00 0c	lda $0c00,x			lda 	stack0,x					; copy to next up
-.a394	9d 01 0c	sta $0c01,x			sta 	stack0+1,x
-.a397	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a39a	9d 01 0d	sta $0d01,x			sta 	stack1+1,x
-.a39d	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a3a0	9d 01 0e	sta $0e01,x			sta 	stack2+1,x
-.a3a3	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a3a6	9d 01 0f	sta $0f01,x			sta 	stack3+1,x
-.a3a9	e8		inx				inx 								; bump stack pointer
-.a3aa	60		rts				rts
-.a3ab					Stack_Nip:
-.a3ab	bd 00 0c	lda $0c00,x			lda 	stack0,x	 				; copy top to 2nd
-.a3ae	9d ff 0b	sta $0bff,x			sta 	stack0-1,x
-.a3b1	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a3b4	9d ff 0c	sta $0cff,x			sta 	stack1-1,x
-.a3b7	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a3ba	9d ff 0d	sta $0dff,x			sta 	stack2-1,x
-.a3bd	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a3c0	9d ff 0e	sta $0eff,x			sta 	stack3-1,x
-.a3c3	ca		dex				dex 								; drop tos
-.a3c4	60		rts				rts
-.a3c5					Stack_Over:
-.a3c5	bd ff 0b	lda $0bff,x			lda 	stack0-1,x				; copy to next up
-.a3c8	9d 01 0c	sta $0c01,x			sta 	stack0+1,x
-.a3cb	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
-.a3ce	9d 01 0d	sta $0d01,x			sta 	stack1+1,x
-.a3d1	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
-.a3d4	9d 01 0e	sta $0e01,x			sta 	stack2+1,x
-.a3d7	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
-.a3da	9d 01 0f	sta $0f01,x			sta 	stack3+1,x
-.a3dd	e8		inx				inx 							; bump stack pointer
-.a3de	60		rts				rts
-.a3df					Stack_Swap:
-.a3df	5a		phy				phy
-.a3e0	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.a3e3	a8		tay				tay
-.a3e4	bd ff 0b	lda $0bff,x			lda 	stack0-1,x
-.a3e7	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a3ea	98		tya				tya
-.a3eb	9d ff 0b	sta $0bff,x			sta 	stack0-1,x
-.a3ee	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a3f1	a8		tay				tay
-.a3f2	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
-.a3f5	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a3f8	98		tya				tya
-.a3f9	9d ff 0c	sta $0cff,x			sta 	stack1-1,x
-.a3fc	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a3ff	a8		tay				tay
-.a400	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
-.a403	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a406	98		tya				tya
-.a407	9d ff 0d	sta $0dff,x			sta 	stack2-1,x
-.a40a	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a40d	a8		tay				tay
-.a40e	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
-.a411	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a414	98		tya				tya
-.a415	9d ff 0e	sta $0eff,x			sta 	stack3-1,x
-.a418	7a		ply				ply
-.a419	60		rts				rts
+.a3f5					Stack_Empty:
+.a3f5	a2 00		ldx #$00			ldx 	#0
+.a3f7	60		rts				rts
+.a3f8					Stack_Drop:
+.a3f8	ca		dex				dex
+.a3f9	60		rts				rts
+.a3fa					Stack_Dup:
+.a3fa	bd 00 0c	lda $0c00,x			lda 	stack0,x					; copy to next up
+.a3fd	9d 01 0c	sta $0c01,x			sta 	stack0+1,x
+.a400	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a403	9d 01 0d	sta $0d01,x			sta 	stack1+1,x
+.a406	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a409	9d 01 0e	sta $0e01,x			sta 	stack2+1,x
+.a40c	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a40f	9d 01 0f	sta $0f01,x			sta 	stack3+1,x
+.a412	e8		inx				inx 								; bump stack pointer
+.a413	60		rts				rts
+.a414					Stack_Nip:
+.a414	bd 00 0c	lda $0c00,x			lda 	stack0,x	 				; copy top to 2nd
+.a417	9d ff 0b	sta $0bff,x			sta 	stack0-1,x
+.a41a	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a41d	9d ff 0c	sta $0cff,x			sta 	stack1-1,x
+.a420	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a423	9d ff 0d	sta $0dff,x			sta 	stack2-1,x
+.a426	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a429	9d ff 0e	sta $0eff,x			sta 	stack3-1,x
+.a42c	ca		dex				dex 								; drop tos
+.a42d	60		rts				rts
+.a42e					Stack_Over:
+.a42e	bd ff 0b	lda $0bff,x			lda 	stack0-1,x				; copy to next up
+.a431	9d 01 0c	sta $0c01,x			sta 	stack0+1,x
+.a434	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
+.a437	9d 01 0d	sta $0d01,x			sta 	stack1+1,x
+.a43a	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
+.a43d	9d 01 0e	sta $0e01,x			sta 	stack2+1,x
+.a440	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
+.a443	9d 01 0f	sta $0f01,x			sta 	stack3+1,x
+.a446	e8		inx				inx 							; bump stack pointer
+.a447	60		rts				rts
+.a448					Stack_Swap:
+.a448	5a		phy				phy
+.a449	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a44c	a8		tay				tay
+.a44d	bd ff 0b	lda $0bff,x			lda 	stack0-1,x
+.a450	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a453	98		tya				tya
+.a454	9d ff 0b	sta $0bff,x			sta 	stack0-1,x
+.a457	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a45a	a8		tay				tay
+.a45b	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
+.a45e	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a461	98		tya				tya
+.a462	9d ff 0c	sta $0cff,x			sta 	stack1-1,x
+.a465	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a468	a8		tay				tay
+.a469	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
+.a46c	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a46f	98		tya				tya
+.a470	9d ff 0d	sta $0dff,x			sta 	stack2-1,x
+.a473	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a476	a8		tay				tay
+.a477	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
+.a47a	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a47d	98		tya				tya
+.a47e	9d ff 0e	sta $0eff,x			sta 	stack3-1,x
+.a481	7a		ply				ply
+.a482	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: functions/unary.asm
 
-.a41a					Unary_Absolute:
-.a41a	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a41d	30 01		bmi $a420			bmi 	Unary_Negate
-.a41f	60		rts				rts
-.a420					Unary_Negate:
-.a420					Unary_Const_Minus:
-.a420	38		sec				sec
-.a421	a9 00		lda #$00			lda		#0
-.a423	fd 00 0c	sbc $0c00,x			sbc 	stack0,x
-.a426	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a429	a9 00		lda #$00			lda		#0
-.a42b	fd 00 0d	sbc $0d00,x			sbc 	stack1,x
-.a42e	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a431	a9 00		lda #$00			lda		#0
-.a433	fd 00 0e	sbc $0e00,x			sbc 	stack2,x
-.a436	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a439	a9 00		lda #$00			lda		#0
-.a43b	fd 00 0f	sbc $0f00,x			sbc 	stack3,x
-.a43e	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a441	60		rts				rts
-.a442					Unary_Not:
-.a442	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.a445	49 ff		eor #$ff			eor 	#$FF
-.a447	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a44a	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a44d	49 ff		eor #$ff			eor 	#$FF
-.a44f	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a452	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a455	49 ff		eor #$ff			eor 	#$FF
-.a457	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a45a	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a45d	49 ff		eor #$ff			eor 	#$FF
-.a45f	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a462	60		rts				rts
-.a463					Unary_Increment:
-.a463	fe 00 0c	inc $0c00,x			inc 	stack0,x
-.a466	d0 0d		bne $a475			bne 	_UIExit
-.a468	fe 00 0d	inc $0d00,x			inc 	stack1,x
-.a46b	d0 08		bne $a475			bne 	_UIExit
-.a46d	fe 00 0e	inc $0e00,x			inc 	stack2,x
-.a470	d0 03		bne $a475			bne 	_UIExit
-.a472	fe 00 0f	inc $0f00,x			inc 	stack3,x
-.a475					_UIExit:
-.a475	60		rts				rts
-.a476					Unary_Decrement:
-.a476	38		sec				sec
-.a477	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.a47a	e9 01		sbc #$01			sbc 	#1
-.a47c	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a47f	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a482	e9 00		sbc #$00			sbc 	#0
-.a484	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a487	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a48a	e9 00		sbc #$00			sbc 	#0
-.a48c	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a48f	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a492	e9 00		sbc #$00			sbc 	#0
-.a494	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a497	60		rts				rts
-.a498					Unary_Shl:
-.a498	1e 00 0c	asl $0c00,x			asl 	stack0,x
-.a49b	3e 00 0d	rol $0d00,x			rol 	stack1,x
-.a49e	3e 00 0e	rol $0e00,x			rol 	stack2,x
-.a4a1	3e 00 0f	rol $0f00,x			rol 	stack3,x
-.a4a4	60		rts				rts
-.a4a5					Unary_Shr:
-.a4a5	5e 00 0f	lsr $0f00,x			lsr 	stack3,x
-.a4a8	7e 00 0e	ror $0e00,x			ror 	stack2,x
-.a4ab	7e 00 0d	ror $0d00,x			ror 	stack1,x
-.a4ae	7e 00 0c	ror $0c00,x			ror 	stack0,x
-.a4b1	60		rts				rts
+.a483					Unary_Absolute:
+.a483	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a486	30 01		bmi $a489			bmi 	Unary_Negate
+.a488	60		rts				rts
+.a489					Unary_Negate:
+.a489					Unary_Const_Minus:
+.a489	38		sec				sec
+.a48a	a9 00		lda #$00			lda		#0
+.a48c	fd 00 0c	sbc $0c00,x			sbc 	stack0,x
+.a48f	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a492	a9 00		lda #$00			lda		#0
+.a494	fd 00 0d	sbc $0d00,x			sbc 	stack1,x
+.a497	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a49a	a9 00		lda #$00			lda		#0
+.a49c	fd 00 0e	sbc $0e00,x			sbc 	stack2,x
+.a49f	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a4a2	a9 00		lda #$00			lda		#0
+.a4a4	fd 00 0f	sbc $0f00,x			sbc 	stack3,x
+.a4a7	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a4aa	60		rts				rts
+.a4ab					Unary_Not:
+.a4ab	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a4ae	49 ff		eor #$ff			eor 	#$FF
+.a4b0	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a4b3	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a4b6	49 ff		eor #$ff			eor 	#$FF
+.a4b8	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a4bb	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a4be	49 ff		eor #$ff			eor 	#$FF
+.a4c0	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a4c3	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a4c6	49 ff		eor #$ff			eor 	#$FF
+.a4c8	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a4cb	60		rts				rts
+.a4cc					Unary_Increment:
+.a4cc	fe 00 0c	inc $0c00,x			inc 	stack0,x
+.a4cf	d0 0d		bne $a4de			bne 	_UIExit
+.a4d1	fe 00 0d	inc $0d00,x			inc 	stack1,x
+.a4d4	d0 08		bne $a4de			bne 	_UIExit
+.a4d6	fe 00 0e	inc $0e00,x			inc 	stack2,x
+.a4d9	d0 03		bne $a4de			bne 	_UIExit
+.a4db	fe 00 0f	inc $0f00,x			inc 	stack3,x
+.a4de					_UIExit:
+.a4de	60		rts				rts
+.a4df					Unary_Decrement:
+.a4df	38		sec				sec
+.a4e0	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a4e3	e9 01		sbc #$01			sbc 	#1
+.a4e5	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a4e8	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a4eb	e9 00		sbc #$00			sbc 	#0
+.a4ed	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a4f0	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a4f3	e9 00		sbc #$00			sbc 	#0
+.a4f5	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a4f8	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a4fb	e9 00		sbc #$00			sbc 	#0
+.a4fd	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a500	60		rts				rts
+.a501					Unary_Shl:
+.a501	1e 00 0c	asl $0c00,x			asl 	stack0,x
+.a504	3e 00 0d	rol $0d00,x			rol 	stack1,x
+.a507	3e 00 0e	rol $0e00,x			rol 	stack2,x
+.a50a	3e 00 0f	rol $0f00,x			rol 	stack3,x
+.a50d	60		rts				rts
+.a50e					Unary_Shr:
+.a50e	5e 00 0f	lsr $0f00,x			lsr 	stack3,x
+.a511	7e 00 0e	ror $0e00,x			ror 	stack2,x
+.a514	7e 00 0d	ror $0d00,x			ror 	stack1,x
+.a517	7e 00 0c	ror $0c00,x			ror 	stack0,x
+.a51a	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: functions/memory.asm
 
-.a4b2					Mem_Peek:
-.a4b2	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a4b5	85 04		sta $04				sta 	zTemp0
-.a4b7	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a4ba	85 05		sta $05				sta 	zTemp0+1
-.a4bc	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
-.a4be	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
-.a4c1	9e 00 0d	stz $0d00,x			stz 	stack1,x
-.a4c4	9e 00 0e	stz $0e00,x			stz 	stack2,x
-.a4c7	9e 00 0f	stz $0f00,x			stz 	stack3,x
-.a4ca	60		rts				rts
-.a4cb					Mem_WPeek:
-.a4cb	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a4ce	85 04		sta $04				sta 	zTemp0
-.a4d0	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a4d3	85 05		sta $05				sta 	zTemp0+1
-.a4d5	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
-.a4d7	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
-.a4da	5a		phy				phy 								; read msb
-.a4db	a0 01		ldy #$01			ldy 	#1
-.a4dd	b1 04		lda ($04),y			lda 	(zTemp0),y
-.a4df	7a		ply				ply
-.a4e0	9d 00 0d	sta $0d00,x			sta 	stack1,x 				; write to stack
-.a4e3	9e 00 0e	stz $0e00,x			stz 	stack2,x
-.a4e6	9e 00 0f	stz $0f00,x			stz 	stack3,x
-.a4e9	60		rts				rts
-.a4ea					Mem_DPeek:
-.a4ea	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a4ed	85 04		sta $04				sta 	zTemp0
-.a4ef	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a4f2	85 05		sta $05				sta 	zTemp0+1
-.a4f4	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
-.a4f6	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
-.a4f9	5a		phy				phy 								; read msb
-.a4fa	a0 01		ldy #$01			ldy 	#1
-.a4fc	b1 04		lda ($04),y			lda 	(zTemp0),y
-.a4fe	9d 00 0d	sta $0d00,x			sta 	stack1,x 				; write to stack
-.a501	c8		iny				iny
-.a502	b1 04		lda ($04),y			lda 	(zTemp0),y
-.a504	9e 00 0e	stz $0e00,x			stz 	stack2,x
-.a507	c8		iny				iny
-.a508	b1 04		lda ($04),y			lda 	(zTemp0),y
-.a50a	9e 00 0f	stz $0f00,x			stz 	stack3,x
-.a50d	7a		ply				ply
-.a50e	60		rts				rts
-.a50f					Mem_Poke:
-.a50f	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a512	85 04		sta $04				sta 	zTemp0
-.a514	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a517	85 05		sta $05				sta 	zTemp0+1
-.a519	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 				; byte to write
-.a51c	92 04		sta ($04)			sta 	(zTemp0)
-.a51e	ca		dex				dex
-.a51f	ca		dex				dex
-.a520	60		rts				rts
-.a521					Mem_WPoke:
-.a521	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a524	85 04		sta $04				sta 	zTemp0
-.a526	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a529	85 05		sta $05				sta 	zTemp0+1
-.a52b	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 				; byte to write
-.a52e	92 04		sta ($04)			sta 	(zTemp0)
-.a530	5a		phy				phy
-.a531	a0 01		ldy #$01			ldy 	#1
-.a533	bd ff 0e	lda $0eff,x			lda 	stack3-1,x 				; byte to write
-.a536	91 04		sta ($04),y			sta 	(zTemp0),y
-.a538	7a		ply				ply
-.a539	ca		dex				dex
-.a53a	ca		dex				dex
-.a53b	60		rts				rts
-.a53c					Mem_DPoke:
-.a53c	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
-.a53f	85 04		sta $04				sta 	zTemp0
-.a541	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a544	85 05		sta $05				sta 	zTemp0+1
-.a546	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 					; byte to write
-.a549	92 04		sta ($04)			sta 	(zTemp0)
-.a54b	5a		phy				phy
-.a54c	a0 01		ldy #$01			ldy 	#1
-.a54e	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
-.a551	c8		iny				iny
-.a552	91 04		sta ($04),y			sta 	(zTemp0),y
-.a554	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
-.a557	c8		iny				iny
-.a558	91 04		sta ($04),y			sta 	(zTemp0),y
-.a55a	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
-.a55d	c8		iny				iny
-.a55e	91 04		sta ($04),y			sta 	(zTemp0),y
-.a560	7a		ply				ply
-.a561	ca		dex				dex
-.a562	ca		dex				dex
-.a563	60		rts				rts
+.a51b					Mem_Peek:
+.a51b	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a51e	85 04		sta $04				sta 	zTemp0
+.a520	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a523	85 05		sta $05				sta 	zTemp0+1
+.a525	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
+.a527	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
+.a52a	9e 00 0d	stz $0d00,x			stz 	stack1,x
+.a52d	9e 00 0e	stz $0e00,x			stz 	stack2,x
+.a530	9e 00 0f	stz $0f00,x			stz 	stack3,x
+.a533	60		rts				rts
+.a534					Mem_WPeek:
+.a534	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a537	85 04		sta $04				sta 	zTemp0
+.a539	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a53c	85 05		sta $05				sta 	zTemp0+1
+.a53e	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
+.a540	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
+.a543	5a		phy				phy 								; read msb
+.a544	a0 01		ldy #$01			ldy 	#1
+.a546	b1 04		lda ($04),y			lda 	(zTemp0),y
+.a548	7a		ply				ply
+.a549	9d 00 0d	sta $0d00,x			sta 	stack1,x 				; write to stack
+.a54c	9e 00 0e	stz $0e00,x			stz 	stack2,x
+.a54f	9e 00 0f	stz $0f00,x			stz 	stack3,x
+.a552	60		rts				rts
+.a553					Mem_DPeek:
+.a553	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a556	85 04		sta $04				sta 	zTemp0
+.a558	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a55b	85 05		sta $05				sta 	zTemp0+1
+.a55d	b2 04		lda ($04)			lda 	(zTemp0)					; read byte
+.a55f	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; write to stack
+.a562	5a		phy				phy 								; read msb
+.a563	a0 01		ldy #$01			ldy 	#1
+.a565	b1 04		lda ($04),y			lda 	(zTemp0),y
+.a567	9d 00 0d	sta $0d00,x			sta 	stack1,x 					; write to stack
+.a56a	c8		iny				iny
+.a56b	b1 04		lda ($04),y			lda 	(zTemp0),y
+.a56d	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a570	c8		iny				iny
+.a571	b1 04		lda ($04),y			lda 	(zTemp0),y
+.a573	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a576	7a		ply				ply
+.a577	60		rts				rts
+.a578					Mem_Poke:
+.a578	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a57b	85 04		sta $04				sta 	zTemp0
+.a57d	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a580	85 05		sta $05				sta 	zTemp0+1
+.a582	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 				; byte to write
+.a585	92 04		sta ($04)			sta 	(zTemp0)
+.a587	ca		dex				dex
+.a588	ca		dex				dex
+.a589	60		rts				rts
+.a58a					Mem_WPoke:
+.a58a	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a58d	85 04		sta $04				sta 	zTemp0
+.a58f	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a592	85 05		sta $05				sta 	zTemp0+1
+.a594	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 				; byte to write
+.a597	92 04		sta ($04)			sta 	(zTemp0)
+.a599	5a		phy				phy
+.a59a	a0 01		ldy #$01			ldy 	#1
+.a59c	bd ff 0e	lda $0eff,x			lda 	stack3-1,x 				; byte to write
+.a59f	91 04		sta ($04),y			sta 	(zTemp0),y
+.a5a1	7a		ply				ply
+.a5a2	ca		dex				dex
+.a5a3	ca		dex				dex
+.a5a4	60		rts				rts
+.a5a5					Mem_DPoke:
+.a5a5	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy address
+.a5a8	85 04		sta $04				sta 	zTemp0
+.a5aa	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a5ad	85 05		sta $05				sta 	zTemp0+1
+.a5af	bd ff 0b	lda $0bff,x			lda 	stack0-1,x 					; byte to write
+.a5b2	92 04		sta ($04)			sta 	(zTemp0)
+.a5b4	5a		phy				phy
+.a5b5	a0 01		ldy #$01			ldy 	#1
+.a5b7	bd ff 0c	lda $0cff,x			lda 	stack1-1,x
+.a5ba	91 04		sta ($04),y			sta 	(zTemp0),y
+.a5bc	bd ff 0d	lda $0dff,x			lda 	stack2-1,x
+.a5bf	c8		iny				iny
+.a5c0	91 04		sta ($04),y			sta 	(zTemp0),y
+.a5c2	bd ff 0e	lda $0eff,x			lda 	stack3-1,x
+.a5c5	c8		iny				iny
+.a5c6	91 04		sta ($04),y			sta 	(zTemp0),y
+.a5c8	7a		ply				ply
+.a5c9	ca		dex				dex
+.a5ca	ca		dex				dex
+.a5cb	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: functions/binary.asm
 
-.a564					Stack_Add:
-.a564	ca		dex				dex
-.a565	18		clc				clc
-.a566	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a569	7d 01 0c	adc $0c01,x			adc 	stack0+1,x
-.a56c	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a56f	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a572	7d 01 0d	adc $0d01,x			adc 	stack1+1,x
-.a575	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a578	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a57b	7d 01 0e	adc $0e01,x			adc 	stack2+1,x
-.a57e	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a581	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a584	7d 01 0f	adc $0f01,x			adc 	stack3+1,x
-.a587	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a58a	60		rts				rts
-.a58b					Stack_Sub:
-.a58b	ca		dex				dex
-.a58c	38		sec				sec
-.a58d	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a590	fd 01 0c	sbc $0c01,x			sbc 	stack0+1,x
-.a593	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a596	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a599	fd 01 0d	sbc $0d01,x			sbc 	stack1+1,x
-.a59c	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a59f	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a5a2	fd 01 0e	sbc $0e01,x			sbc 	stack2+1,x
-.a5a5	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a5a8	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a5ab	fd 01 0f	sbc $0f01,x			sbc 	stack3+1,x
-.a5ae	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a5b1	60		rts				rts
-.a5b2					Stack_And:
-.a5b2	ca		dex				dex
-.a5b3	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a5b6	3d 01 0c	and $0c01,x			and		stack0+1,x
-.a5b9	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a5bc	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a5bf	3d 01 0d	and $0d01,x			and 	stack1+1,x
-.a5c2	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a5c5	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a5c8	3d 01 0e	and $0e01,x			and 	stack2+1,x
-.a5cb	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a5ce	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a5d1	3d 01 0f	and $0f01,x			and 	stack3+1,x
-.a5d4	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a5d7	60		rts				rts
-.a5d8					Stack_Xor:
-.a5d8	ca		dex				dex
-.a5d9	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a5dc	5d 01 0c	eor $0c01,x			eor		stack0+1,x
-.a5df	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a5e2	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a5e5	5d 01 0d	eor $0d01,x			eor 	stack1+1,x
-.a5e8	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a5eb	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a5ee	5d 01 0e	eor $0e01,x			eor 	stack2+1,x
-.a5f1	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a5f4	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a5f7	5d 01 0f	eor $0f01,x			eor 	stack3+1,x
-.a5fa	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a5fd	60		rts				rts
-.a5fe					Stack_Or:
-.a5fe	ca		dex				dex
-.a5ff	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a602	1d 01 0c	ora $0c01,x			ora		stack0+1,x
-.a605	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a608	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a60b	1d 01 0d	ora $0d01,x			ora 	stack1+1,x
-.a60e	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a611	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a614	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
-.a617	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a61a	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a61d	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
-.a620	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a623	60		rts				rts
+.a5cc					Stack_Add:
+.a5cc	ca		dex				dex
+.a5cd					Stack_Add_No_Dex:
+.a5cd	18		clc				clc
+.a5ce	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a5d1	7d 01 0c	adc $0c01,x			adc 	stack0+1,x
+.a5d4	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a5d7	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a5da	7d 01 0d	adc $0d01,x			adc 	stack1+1,x
+.a5dd	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a5e0	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a5e3	7d 01 0e	adc $0e01,x			adc 	stack2+1,x
+.a5e6	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a5e9	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a5ec	7d 01 0f	adc $0f01,x			adc 	stack3+1,x
+.a5ef	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a5f2	60		rts				rts
+.a5f3					Stack_Sub:
+.a5f3	ca		dex				dex
+.a5f4	38		sec				sec
+.a5f5	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a5f8	fd 01 0c	sbc $0c01,x			sbc 	stack0+1,x
+.a5fb	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a5fe	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a601	fd 01 0d	sbc $0d01,x			sbc 	stack1+1,x
+.a604	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a607	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a60a	fd 01 0e	sbc $0e01,x			sbc 	stack2+1,x
+.a60d	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a610	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a613	fd 01 0f	sbc $0f01,x			sbc 	stack3+1,x
+.a616	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a619	60		rts				rts
+.a61a					Stack_And:
+.a61a	ca		dex				dex
+.a61b	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a61e	3d 01 0c	and $0c01,x			and		stack0+1,x
+.a621	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a624	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a627	3d 01 0d	and $0d01,x			and 	stack1+1,x
+.a62a	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a62d	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a630	3d 01 0e	and $0e01,x			and 	stack2+1,x
+.a633	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a636	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a639	3d 01 0f	and $0f01,x			and 	stack3+1,x
+.a63c	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a63f	60		rts				rts
+.a640					Stack_Xor:
+.a640	ca		dex				dex
+.a641	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a644	5d 01 0c	eor $0c01,x			eor		stack0+1,x
+.a647	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a64a	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a64d	5d 01 0d	eor $0d01,x			eor 	stack1+1,x
+.a650	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a653	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a656	5d 01 0e	eor $0e01,x			eor 	stack2+1,x
+.a659	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a65c	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a65f	5d 01 0f	eor $0f01,x			eor 	stack3+1,x
+.a662	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a665	60		rts				rts
+.a666					Stack_Or:
+.a666	ca		dex				dex
+.a667	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a66a	1d 01 0c	ora $0c01,x			ora		stack0+1,x
+.a66d	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a670	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a673	1d 01 0d	ora $0d01,x			ora 	stack1+1,x
+.a676	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a679	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a67c	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
+.a67f	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a682	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a685	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
+.a688	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a68b	60		rts				rts
+
+;******  Return to file: main.asm
+
+
+;******  Processing file: functions/multiply.asm
+
+.a68c					MulInteger32:
+.a68c	ca		dex				dex
+.a68d	bd 00 0c	lda $0c00,x			lda 	stack0,x					; copy +0 to workspace
+.a690	85 0a		sta $0a				sta 	zLTemp1
+.a692	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a695	85 0b		sta $0b				sta 	zLTemp1+1
+.a697	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a69a	85 0c		sta $0c				sta 	zLTemp1+2
+.a69c	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a69f	85 0d		sta $0d				sta 	zLTemp1+3
+.a6a1	9e 00 0c	stz $0c00,x			stz 	stack0,x 					; zero +0, where the result goes.
+.a6a4	9e 00 0d	stz $0d00,x			stz 	stack1,x
+.a6a7	9e 00 0e	stz $0e00,x			stz 	stack2,x
+.a6aa	9e 00 0f	stz $0f00,x			stz 	stack3,x
+.a6ad					_BFMMultiply:
+.a6ad	a5 0a		lda $0a				lda 	zLTemp1 					; get LSBit of 8-11
+.a6af	29 01		and #$01			and 	#1
+.a6b1	f0 03		beq $a6b6			beq 	_BFMNoAdd
+.a6b3	20 cd a5	jsr $a5cd			jsr 	Stack_Add_No_Dex 			; co-opt this code
+.a6b6					_BFMNoAdd:
+.a6b6	1e 01 0c	asl $0c01,x			asl 	stack0+1,x 					; shift +4 left
+.a6b9	3e 01 0d	rol $0d01,x			rol 	stack1+1,x
+.a6bc	3e 01 0e	rol $0e01,x			rol 	stack2+1,x
+.a6bf	3e 01 0f	rol $0f01,x			rol 	stack3+1,x
+.a6c2	46 0d		lsr $0d				lsr 	zLTemp1+3 					; shift +8 right
+.a6c4	66 0c		ror $0c				ror 	zLTemp1+2
+.a6c6	66 0b		ror $0b				ror 	zLTemp1+1
+.a6c8	66 0a		ror $0a				ror 	zLTemp1
+.a6ca	a5 0a		lda $0a				lda 	zLTemp1 					; continue if +8 is nonzero
+.a6cc	05 0b		ora $0b				ora 	zLTemp1+1
+.a6ce	05 0c		ora $0c				ora 	zLTemp1+2
+.a6d0	05 0d		ora $0d				ora 	zLTemp1+3
+.a6d2	d0 d9		bne $a6ad			bne 	_BFMMultiply
+.a6d4	60		rts				rts
+
+;******  Return to file: main.asm
+
+
+;******  Processing file: functions/divide.asm
+
+.a6d5					DivInteger32:
+.a6d5	ca		dex				dex
+.a6d6	bd 01 0c	lda $0c01,x			lda 	stack0+1,x 					; check for division by zero.
+.a6d9	1d 01 0d	ora $0d01,x			ora 	stack1+1,x
+.a6dc	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
+.a6df	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
+.a6e2	d0 14		bne $a6f8			bne 	_BFDOkay
+.a6e4	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a6e7	44 69 76 69 73 69 6f 6e				.text 	"Division by Zero",0
+>a6ef	20 62 79 20 5a 65 72 6f 00
+.a6f8					_BFDOkay:
+.a6f8	64 0a		stz $0a				stz 	zLTemp1 					; Q/Dividend/Left in +0
+.a6fa	64 0b		stz $0b				stz 	zLTemp1+1 					; M/Divisor/Right in +4
+.a6fc	64 0c		stz $0c				stz 	zLTemp1+2
+.a6fe	64 0d		stz $0d				stz 	zLTemp1+3
+.a700	64 11		stz $11				stz 	SignCount 					; Count of signs.
+.a702	20 5c a7	jsr $a75c			jsr 	CheckIntegerNegate 			; negate (and bump sign count)
+.a705	e8		inx				inx
+.a706	20 5c a7	jsr $a75c			jsr 	CheckIntegerNegate
+.a709	ca		dex				dex
+.a70a	5a		phy				phy 								; Y is the counter
+.a70b	a0 20		ldy #$20			ldy 	#32 						; 32 iterations of the loop.
+.a70d					_BFDLoop:
+.a70d	1e 00 0c	asl $0c00,x			asl 	stack0,x 					; shift AQ left.
+.a710	3e 00 0d	rol $0d00,x			rol 	stack1,x
+.a713	3e 00 0e	rol $0e00,x			rol 	stack2,x
+.a716	3e 00 0f	rol $0f00,x			rol 	stack3,x
+.a719	26 0a		rol $0a				rol 	zLTemp1
+.a71b	26 0b		rol $0b				rol 	zLTemp1+1
+.a71d	26 0c		rol $0c				rol 	zLTemp1+2
+.a71f	26 0d		rol $0d				rol 	zLTemp1+3
+.a721	38		sec				sec
+.a722	a5 0a		lda $0a				lda 	zLTemp1+0 					; Calculate A-M on stack.
+.a724	fd 01 0c	sbc $0c01,x			sbc 	stack0+1,x
+.a727	48		pha				pha
+.a728	a5 0b		lda $0b				lda 	zLTemp1+1
+.a72a	fd 01 0d	sbc $0d01,x			sbc 	stack1+1,x
+.a72d	48		pha				pha
+.a72e	a5 0c		lda $0c				lda 	zLTemp1+2
+.a730	fd 01 0e	sbc $0e01,x			sbc 	stack2+1,x
+.a733	48		pha				pha
+.a734	a5 0d		lda $0d				lda 	zLTemp1+3
+.a736	fd 01 0f	sbc $0f01,x			sbc 	stack3+1,x
+.a739	90 15		bcc $a750			bcc 	_BFDNoAdd
+.a73b	85 0d		sta $0d				sta 	zLTemp1+3 					; update A
+.a73d	68		pla				pla
+.a73e	85 0c		sta $0c				sta 	zLTemp1+2
+.a740	68		pla				pla
+.a741	85 0b		sta $0b				sta 	zLTemp1+1
+.a743	68		pla				pla
+.a744	85 0a		sta $0a				sta 	zLTemp1+0
+.a746	bd 00 0c	lda $0c00,x			lda 	stack0,x 			; set Q bit 1.
+.a749	09 01		ora #$01			ora 	#1
+.a74b	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a74e	80 03		bra $a753			bra 	_BFDNext
+.a750					_BFDNoAdd:
+.a750	68		pla				pla 								; Throw away the intermediate calculations
+.a751	68		pla				pla
+.a752	68		pla				pla
+.a753					_BFDNext:
+.a753	88		dey				dey
+.a754	d0 b7		bne $a70d			bne 	_BFDLoop
+.a756	7a		ply				ply 								; restore Y
+.a757	46 11		lsr $11				lsr 	SignCount 					; if sign count odd,
+.a759	b0 07		bcs $a762			bcs		IntegerNegateAlways 		; negate the result
+.a75b	60		rts				rts
+.a75c					CheckIntegerNegate:
+.a75c	bd 00 0f	lda $0f00,x			lda 	stack3,x 					; is it -ve = MSB set ?
+.a75f	30 01		bmi $a762			bmi 	IntegerNegateAlways 		; if so negate it
+.a761	60		rts				rts
+.a762					IntegerNegateAlways:
+.a762	e6 11		inc $11				inc 	SignCount 					; bump the count of signs
+.a764	4c 89 a4	jmp $a489			jmp 	Unary_Negate
+.a767					ModInteger32:
+.a767	20 d5 a6	jsr $a6d5			jsr 	DivInteger32
+.a76a	a5 0a		lda $0a				lda 	zLTemp1
+.a76c	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a76f	a5 0b		lda $0b				lda 	zLTemp1+1
+.a771	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a774	a5 0c		lda $0c				lda 	zLTemp1+2
+.a776	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a779	a5 0d		lda $0d				lda 	zLTemp1+3
+.a77b	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a77e	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: functions/compare.asm
 
-.a624					Comp_Equal:
-.a624	38		sec				sec
-.a625	80 01		bra $a628			bra 	Comp_CheckEqual
-.a627					Comp_NotEqual:
-.a627	18		clc				clc
-.a628					Comp_CheckEqual:
-.a628	08		php				php
-.a629	ca		dex				dex
-.a62a	bd 00 0c	lda $0c00,x			lda		stack0,x
-.a62d	5d 01 0c	eor $0c01,x			eor 	stack0+1,x
-.a630	d0 16		bne $a648			bne 	_CCENonZero
-.a632	bd 00 0d	lda $0d00,x			lda		stack1,x
-.a635	5d 01 0d	eor $0d01,x			eor 	stack1+1,x
-.a638	d0 0e		bne $a648			bne 	_CCENonZero
-.a63a	bd 00 0e	lda $0e00,x			lda		stack2,x
-.a63d	5d 01 0e	eor $0e01,x			eor 	stack2+1,x
-.a640	d0 06		bne $a648			bne 	_CCENonZero
-.a642	bd 00 0f	lda $0f00,x			lda		stack3,x
-.a645	5d 01 0f	eor $0f01,x			eor 	stack3+1,x
-.a648					_CCENonZero:
-.a648	f0 02		beq $a64c			beq 	_CCENotSet
-.a64a	a9 ff		lda #$ff			lda 	#$FF 						; $FF if not-equal
-.a64c					_CCENotSet:
-.a64c					CompCheckFlip:
-.a64c	28		plp				plp 								; if carry set, we want $FF if equal
-.a64d	90 02		bcc $a651			bcc 	CompReturn
-.a64f	49 ff		eor #$ff			eor 	#$FF
-.a651					CompReturn:
-.a651	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; save result on stack.
-.a654	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a657	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a65a	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a65d	60		rts				rts
-.a65e					Comp_Less:
-.a65e	18		clc				clc
-.a65f	80 01		bra $a662			bra 	Comp_LessCont
-.a661					Comp_GreaterEqual:
-.a661	38		sec				sec
-.a662					Comp_LessCont:
-.a662	08		php				php
-.a663	ca		dex				dex
-.a664	38		sec				sec
-.a665	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; do a subtraction w/o storing the result
-.a668	fd 01 0c	sbc $0c01,x			sbc 	stack0+1,x
-.a66b	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a66e	fd 01 0d	sbc $0d01,x			sbc 	stack1+1,x
-.a671	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a674	fd 01 0e	sbc $0e01,x			sbc 	stack2+1,x
-.a677	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a67a	fd 01 0f	sbc $0f01,x			sbc 	stack3+1,x
-.a67d	50 02		bvc $a681			bvc 	_CLNoFlip 					; unsigned -> signed
-.a67f	49 80		eor #$80			eor 	#$80
-.a681					_CLNoFlip:
-.a681	29 80		and #$80			and 	#$80 						; 0 if >= here, so flip if CS.
-.a683	f0 c7		beq $a64c			beq 	CompCheckFlip
-.a685	a9 ff		lda #$ff			lda 	#$FF 						; -1 if < here, so flip if CS.
-.a687	80 c3		bra $a64c			bra 	CompCheckFlip
-.a689					Comp_LessEqual:
-.a689	38		sec				sec
-.a68a	80 01		bra $a68d			bra 	Comp_LessEqualCont
-.a68c					Comp_Greater:
-.a68c	18		clc				clc
-.a68d					Comp_LessEqualCont:
-.a68d	08		php				php
-.a68e	ca		dex				dex
-.a68f	38		sec				sec
-.a690	bd 01 0c	lda $0c01,x			lda 	stack0+1,x 					; do a subtraction w/o storing the result, backwards
-.a693	fd 00 0c	sbc $0c00,x			sbc 	stack0,x
-.a696	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
-.a699	fd 00 0d	sbc $0d00,x			sbc 	stack1,x
-.a69c	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
-.a69f	fd 00 0e	sbc $0e00,x			sbc 	stack2,x
-.a6a2	bd 01 0f	lda $0f01,x			lda 	stack3+1,x
-.a6a5	fd 00 0f	sbc $0f00,x			sbc 	stack3,x
-.a6a8	50 02		bvc $a6ac			bvc 	_CLENoFlip 					; unsigned -> signed
-.a6aa	49 80		eor #$80			eor 	#$80
-.a6ac					_CLENoFlip:
-.a6ac	29 80		and #$80			and 	#$80 						; 0 if > here, so flip if CS
-.a6ae	f0 9c		beq $a64c			beq 	CompCheckFlip
-.a6b0	a9 ff		lda #$ff			lda 	#$FF 						; -1 if >= here, so flip if CS
-.a6b2	80 98		bra $a64c			bra 	CompCheckFlip
+.a77f					Comp_Equal:
+.a77f	38		sec				sec
+.a780	80 01		bra $a783			bra 	Comp_CheckEqual
+.a782					Comp_NotEqual:
+.a782	18		clc				clc
+.a783					Comp_CheckEqual:
+.a783	08		php				php
+.a784	ca		dex				dex
+.a785	bd 00 0c	lda $0c00,x			lda		stack0,x
+.a788	5d 01 0c	eor $0c01,x			eor 	stack0+1,x
+.a78b	d0 16		bne $a7a3			bne 	_CCENonZero
+.a78d	bd 00 0d	lda $0d00,x			lda		stack1,x
+.a790	5d 01 0d	eor $0d01,x			eor 	stack1+1,x
+.a793	d0 0e		bne $a7a3			bne 	_CCENonZero
+.a795	bd 00 0e	lda $0e00,x			lda		stack2,x
+.a798	5d 01 0e	eor $0e01,x			eor 	stack2+1,x
+.a79b	d0 06		bne $a7a3			bne 	_CCENonZero
+.a79d	bd 00 0f	lda $0f00,x			lda		stack3,x
+.a7a0	5d 01 0f	eor $0f01,x			eor 	stack3+1,x
+.a7a3					_CCENonZero:
+.a7a3	f0 02		beq $a7a7			beq 	_CCENotSet
+.a7a5	a9 ff		lda #$ff			lda 	#$FF 						; $FF if not-equal
+.a7a7					_CCENotSet:
+.a7a7					CompCheckFlip:
+.a7a7	28		plp				plp 								; if carry set, we want $FF if equal
+.a7a8	90 02		bcc $a7ac			bcc 	CompReturn
+.a7aa	49 ff		eor #$ff			eor 	#$FF
+.a7ac					CompReturn:
+.a7ac	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; save result on stack.
+.a7af	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a7b2	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a7b5	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a7b8	60		rts				rts
+.a7b9					Comp_Less:
+.a7b9	18		clc				clc
+.a7ba	80 01		bra $a7bd			bra 	Comp_LessCont
+.a7bc					Comp_GreaterEqual:
+.a7bc	38		sec				sec
+.a7bd					Comp_LessCont:
+.a7bd	08		php				php
+.a7be	ca		dex				dex
+.a7bf	38		sec				sec
+.a7c0	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; do a subtraction w/o storing the result
+.a7c3	fd 01 0c	sbc $0c01,x			sbc 	stack0+1,x
+.a7c6	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a7c9	fd 01 0d	sbc $0d01,x			sbc 	stack1+1,x
+.a7cc	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a7cf	fd 01 0e	sbc $0e01,x			sbc 	stack2+1,x
+.a7d2	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a7d5	fd 01 0f	sbc $0f01,x			sbc 	stack3+1,x
+.a7d8	50 02		bvc $a7dc			bvc 	_CLNoFlip 					; unsigned -> signed
+.a7da	49 80		eor #$80			eor 	#$80
+.a7dc					_CLNoFlip:
+.a7dc	29 80		and #$80			and 	#$80 						; 0 if >= here, so flip if CS.
+.a7de	f0 c7		beq $a7a7			beq 	CompCheckFlip
+.a7e0	a9 ff		lda #$ff			lda 	#$FF 						; -1 if < here, so flip if CS.
+.a7e2	80 c3		bra $a7a7			bra 	CompCheckFlip
+.a7e4					Comp_LessEqual:
+.a7e4	38		sec				sec
+.a7e5	80 01		bra $a7e8			bra 	Comp_LessEqualCont
+.a7e7					Comp_Greater:
+.a7e7	18		clc				clc
+.a7e8					Comp_LessEqualCont:
+.a7e8	08		php				php
+.a7e9	ca		dex				dex
+.a7ea	38		sec				sec
+.a7eb	bd 01 0c	lda $0c01,x			lda 	stack0+1,x 					; do a subtraction w/o storing the result, backwards
+.a7ee	fd 00 0c	sbc $0c00,x			sbc 	stack0,x
+.a7f1	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
+.a7f4	fd 00 0d	sbc $0d00,x			sbc 	stack1,x
+.a7f7	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
+.a7fa	fd 00 0e	sbc $0e00,x			sbc 	stack2,x
+.a7fd	bd 01 0f	lda $0f01,x			lda 	stack3+1,x
+.a800	fd 00 0f	sbc $0f00,x			sbc 	stack3,x
+.a803	50 02		bvc $a807			bvc 	_CLENoFlip 					; unsigned -> signed
+.a805	49 80		eor #$80			eor 	#$80
+.a807					_CLENoFlip:
+.a807	29 80		and #$80			and 	#$80 						; 0 if > here, so flip if CS
+.a809	f0 9c		beq $a7a7			beq 	CompCheckFlip
+.a80b	a9 ff		lda #$ff			lda 	#$FF 						; -1 if >= here, so flip if CS
+.a80d	80 98		bra $a7a7			bra 	CompCheckFlip
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: miscellany/system.asm
 
-.a6b4					System_RUN:
-.a6b4	20 ff a2	jsr $a2ff			jsr		ResetForRun 				; clear vars, stacks etc.
-.a6b7	20 f4 a2	jsr $a2f4			jsr 	ResetCodePointer 			; point to first thing to do.
-.a6ba	4c 71 a1	jmp $a171			jmp 	Execute						; and run
-.a6bd					System_END:
->a6bd	ff						.byte 	$FF
-.a6be	4c 89 a7	jmp $a789			jmp 	WarmStart
-.a6c1					System_STOP:
-.a6c1	4c ff ff	jmp $ffff			jmp 	$FFFF
-.a6c4	20 8c a7	jsr $a78c			jsr 	ErrorHandler
->a6c7	53 54 4f 50 00					.text 	"STOP",0
-.a6cc					System_New:
-.a6cc	9c 00 11	stz $1100			stz 	ProgramStart 				; zero the first offset, erases.
-.a6cf	20 ff a2	jsr $a2ff			jsr		ResetForRun 				; clear vars, stacks etc.
-.a6d2	60		rts				rts
+.a80f					System_RUN:
+.a80f	20 ff a2	jsr $a2ff			jsr		ResetForRun 				; clear vars, stacks etc.
+.a812	20 f4 a2	jsr $a2f4			jsr 	ResetCodePointer 			; point to first thing to do.
+.a815	4c 71 a1	jmp $a171			jmp 	Execute						; and run
+.a818					System_END:
+>a818	ff						.byte 	$FF
+.a819	4c ea a8	jmp $a8ea			jmp 	WarmStart
+.a81c					System_STOP:
+.a81c	4c ff ff	jmp $ffff			jmp 	$FFFF
+.a81f	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a822	53 54 4f 50 00					.text 	"STOP",0
+.a827					System_New:
+.a827	9c 00 11	stz $1100			stz 	ProgramStart 				; zero the first offset, erases.
+.a82a	20 ff a2	jsr $a2ff			jsr		ResetForRun 				; clear vars, stacks etc.
+.a82d	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: miscellany/variables.asm
 
-.a6d3					Identifier:
-.a6d3	88		dey				dey 								; wind back to identifier start
-.a6d4	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; try to find it.
-.a6d7	90 28		bcc $a701			bcc 	_IDUnknown 					; not known, give up.
-.a6d9	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
-.a6db	d0 38		bne $a715			bne 	IDTypeError
-.a6dd	5a		phy				phy
-.a6de	e8		inx				inx 								; make space on stack
-.a6df	a0 00		ldy #$00			ldy 	#0 							; copy it back
-.a6e1	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
-.a6e3	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.a6e6	c8		iny				iny
-.a6e7	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
-.a6e9	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.a6ec	c8		iny				iny
-.a6ed	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
-.a6ef	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.a6f2	c8		iny				iny
-.a6f3	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
-.a6f5	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.a6f8	7a		ply				ply
-.a6f9	c8		iny		_IDSkip:iny
-.a6fa	b1 00		lda ($00),y			lda 	(codePtr),y
-.a6fc	c9 c0		cmp #$c0			cmp 	#$C0
-.a6fe	b0 f9		bcs $a6f9			bcs 	_IDSkip
-.a700	60		rts				rts
-.a701					_IDUnknown:
-.a701	20 8c a7	jsr $a78c			jsr 	ErrorHandler
->a704	55 6e 6b 6e 6f 77 6e 20				.text 	"Unknown variable",0
->a70c	76 61 72 69 61 62 6c 65 00
-.a715					IDTypeError:
-.a715	20 8c a7	jsr $a78c			jsr 	ErrorHandler
->a718	56 61 72 69 61 62 6c 65				.text 	"Variable Required",0
->a720	20 52 65 71 75 69 72 65 64 00
-.a72a					WriteVariable:
-.a72a	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; does it exist
-.a72d	90 06		bcc $a735			bcc 	_WVNoIdentifier
-.a72f	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
-.a731	f0 12		beq $a745			beq 	_WVWriteTOS 				; if so write TOS to it.
-.a733	80 e0		bra $a715			bra 	IDTypeError 				; not, then can't do anything.
-.a735					_WVNoIdentifier:
-.a735	5a		phy				phy 								; get current line number
-.a736	a0 01		ldy #$01			ldy 	#1
-.a738	b1 00		lda ($00),y			lda 	(codePtr),y
-.a73a	c8		iny				iny
-.a73b	11 00		ora ($00),y			ora 	(codePtr),y
-.a73d	7a		ply				ply
-.a73e	f0 2c		beq $a76c			beq 	_WVCantCreate 				; if zero (command line) no new vars
-.a740	a9 56		lda #$56			lda 	#IDT_VARIABLE 				; create identifier
-.a742	20 81 a2	jsr $a281			jsr 	IdentifierCreate 			; try to find it
-.a745					_WVWriteTOS:
-.a745	5a		phy				phy									; copy TOS in
-.a746	a0 00		ldy #$00			ldy 	#0
-.a748	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.a74b	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a74d	c8		iny				iny
-.a74e	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a751	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a753	c8		iny				iny
-.a754	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a757	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a759	c8		iny				iny
-.a75a	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a75d	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a75f	7a		ply				ply
-.a760	ca		dex				dex 								; drop
-.a761	88		dey				dey
-.a762					_WVSkipIdentifier:
-.a762	c8		iny				iny
-.a763	b1 00		lda ($00),y			lda 	(codePtr),y
-.a765	c9 c0		cmp #$c0			cmp 	#$C0
-.a767	b0 f9		bcs $a762			bcs 	_WVSkipIdentifier
-.a769	4c 71 a1	jmp $a171			jmp 	Execute 					; go back and execute again.
-.a76c					_WVCantCreate:
-.a76c	20 8c a7	jsr $a78c			jsr 	ErrorHandler
->a76f	43 61 6e 6e 6f 74 20 63				.text 	"Cannot create variable",0
->a777	72 65 61 74 65 20 76 61 72 69 61 62 6c 65 00
+.a82e					Identifier:
+.a82e	88		dey				dey 								; wind back to identifier start
+.a82f	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; try to find it.
+.a832	90 2b		bcc $a85f			bcc 	_IDUnknown 					; not known, give up.
+.a834	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
+.a836	d0 3b		bne $a873			bne 	IDTypeError
+.a838	c8		iny		_IDSkip:iny
+.a839	b1 00		lda ($00),y			lda 	(codePtr),y
+.a83b	c9 c0		cmp #$c0			cmp 	#$C0
+.a83d	b0 f9		bcs $a838			bcs 	_IDSkip
+.a83f	20 8c a3	jsr $a38c			jsr 	IndexCheck 					; check index/subscript
+.a842	5a		phy				phy
+.a843	e8		inx				inx 								; make space on stack
+.a844	a0 00		ldy #$00			ldy 	#0 							; copy it back
+.a846	b1 0f		lda ($0f),y			lda 	(idDataAddr),y
+.a848	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a84b	c8		iny				iny
+.a84c	b1 0f		lda ($0f),y			lda 	(idDataAddr),y
+.a84e	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a851	c8		iny				iny
+.a852	b1 0f		lda ($0f),y			lda 	(idDataAddr),y
+.a854	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a857	c8		iny				iny
+.a858	b1 0f		lda ($0f),y			lda 	(idDataAddr),y
+.a85a	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a85d	7a		ply				ply
+.a85e	60		rts				rts
+.a85f					_IDUnknown:
+.a85f	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a862	55 6e 6b 6e 6f 77 6e 20				.text 	"Unknown variable",0
+>a86a	76 61 72 69 61 62 6c 65 00
+.a873					IDTypeError:
+.a873	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a876	56 61 72 69 61 62 6c 65				.text 	"Variable Required",0
+>a87e	20 52 65 71 75 69 72 65 64 00
+.a888					WriteVariable:
+.a888	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; does it exist
+.a88b	90 06		bcc $a893			bcc 	_WVNoIdentifier
+.a88d	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
+.a88f	f0 12		beq $a8a3			beq 	_WVWriteTOS 				; if so write TOS to it.
+.a891	80 e0		bra $a873			bra 	IDTypeError 				; not, then can't do anything.
+.a893					_WVNoIdentifier:
+.a893	5a		phy				phy 								; get current line number
+.a894	a0 01		ldy #$01			ldy 	#1
+.a896	b1 00		lda ($00),y			lda 	(codePtr),y
+.a898	c8		iny				iny
+.a899	11 00		ora ($00),y			ora 	(codePtr),y
+.a89b	7a		ply				ply
+.a89c	f0 2f		beq $a8cd			beq 	_WVCantCreate 				; if zero (command line) no new vars
+.a89e	a9 56		lda #$56			lda 	#IDT_VARIABLE 				; create identifier
+.a8a0	20 81 a2	jsr $a281			jsr 	IdentifierCreate 			; try to find it
+.a8a3					_WVWriteTOS:
+.a8a3	88		dey				dey 								; skip over identifier.
+.a8a4					_WVSkipIdentifier:
+.a8a4	c8		iny				iny
+.a8a5	b1 00		lda ($00),y			lda 	(codePtr),y
+.a8a7	c9 c0		cmp #$c0			cmp 	#$C0
+.a8a9	b0 f9		bcs $a8a4			bcs 	_WVSkipIdentifier
+.a8ab	20 8c a3	jsr $a38c			jsr 	IndexCheck 					; check index/subscript
+.a8ae	5a		phy				phy									; copy TOS in
+.a8af	a0 00		ldy #$00			ldy 	#0
+.a8b1	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a8b4	91 0f		sta ($0f),y			sta 	(idDataAddr),y
+.a8b6	c8		iny				iny
+.a8b7	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a8ba	91 0f		sta ($0f),y			sta 	(idDataAddr),y
+.a8bc	c8		iny				iny
+.a8bd	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a8c0	91 0f		sta ($0f),y			sta 	(idDataAddr),y
+.a8c2	c8		iny				iny
+.a8c3	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a8c6	91 0f		sta ($0f),y			sta 	(idDataAddr),y
+.a8c8	7a		ply				ply
+.a8c9	ca		dex				dex 								; drop
+.a8ca	4c 71 a1	jmp $a171			jmp 	Execute 					; go back and execute again.
+.a8cd					_WVCantCreate:
+.a8cd	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+>a8d0	43 61 6e 6e 6f 74 20 63				.text 	"Cannot create variable",0
+>a8d8	72 65 61 74 65 20 76 61 72 69 61 62 6c 65 00
 
 ;******  Return to file: main.asm
 
-.a786					SyntaxError:
->a786	ff						.byte 	$FF
-.a787	a2 02		ldx #$02			ldx 	#2
-.a789					WarmStart:
->a789	ff						.byte 	$FF
-.a78a	a2 03		ldx #$03			ldx 	#3
-.a78c					ErrorHandler:
->a78c	ff						.byte 	$FF
-.a78d	a2 04		ldx #$04			ldx 	#4
+
+;******  Processing file: miscellany/inttostr.asm
+
+
+;******  Return to file: main.asm
+
+
+;******  Processing file: miscellany/intfromstr.asm
+
+
+;******  Return to file: main.asm
+
+.a8e7					SyntaxError:
+>a8e7	ff						.byte 	$FF
+.a8e8	a2 02		ldx #$02			ldx 	#2
+.a8ea					WarmStart:
+>a8ea	ff						.byte 	$FF
+.a8eb	a2 03		ldx #$03			ldx 	#3
+.a8ed					ErrorHandler:
+>a8ed	ff						.byte 	$FF
+.a8ee	a2 04		ldx #$04			ldx 	#4
 
 ;******  Processing file: generated/testcode.inc
 
->1100	13 e8 03 83 80 b9 10 82			.byte $13,$e8,$03,$83,$80,$b9,$10,$82,$90,$10,$46,$f9,$10,$8f,$9f,$10,$46,$e0,$00,$1c,$f2,$03,$aa,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$82,$47,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$29,$fc,$03,$88,$82,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$88,$80,$47,$10,$2a,$10,$46,$d3,$c7,$e4,$10,$15,$10,$15,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$13,$06,$04,$e0,$10,$d3,$c7,$e4,$10,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$e2,$00,$09,$10,$04,$8d,$90,$b1,$10,$3d,$00,$0f,$1a,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$24,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$2e,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
->1108	90 10 46 f9 10 8f 9f 10 46 e0 00 1c f2 03 aa 10
->1118	46 c3 c4 cd cd c8 f2 10 82 47 10 46 d3 c7 c4 df
->1128	cc c4 cd c0 c2 e4 00 29 fc 03 88 82 10 46 c3 c4
->1138	cd cd c8 f2 10 88 80 47 10 2a 10 46 d3 c7 e4 10
->1148	15 10 15 10 46 d3 c7 c4 df cc c4 cd c0 c2 e4 00
->1158	13 06 04 e0 10 d3 c7 e4 10 d3 c7 c4 df cc c4 cd
->1168	c0 e2 00 09 10 04 8d 90 b1 10 3d 00 0f 1a 04 28
->1178	10 c1 c2 e3 10 81 10 82 10 83 00 12 24 04 28 10
->1188	c1 c0 d3 df c2 e2 10 84 10 85 10 86 00 11 2e 04
->1198	28 10 c7 c4 cb cb ce df d6 ce d1 cb e3 00
+>1100	07 e8 03 83 80 b9 00 0c			.byte $07,$e8,$03,$83,$80,$b9,$00,$0c,$f2,$03,$98,$8a,$b8,$10,$a1,$47,$10,$18,$00,$09,$fc,$03,$8d,$90,$b1,$10,$3d,$00,$0f,$06,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$10,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$1a,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
+>1108	f2 03 98 8a b8 10 a1 47 10 18 00 09 fc 03 8d 90
+>1118	b1 10 3d 00 0f 06 04 28 10 c1 c2 e3 10 81 10 82
+>1128	10 83 00 12 10 04 28 10 c1 c0 d3 df c2 e2 10 84
+>1138	10 85 10 86 00 11 1a 04 28 10 c7 c4 cb cb ce df
+>1148	d6 ce d1 cb e3 00
 
 ;******  Return to file: main.asm
 
->11a6	00						.byte 	0
+>114e	00						.byte 	0
 
 ;******  End of listing

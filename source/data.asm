@@ -33,9 +33,13 @@ zTemp0:			.word ?						; temporary words
 zTemp1: 		.word ?
 zTemp2: 		.word ?
 
+zLTemp1:		.dword ?					; temporary longs
+
 breakCount:		.byte ? 					; used to stop break firing every execution.
 
 idDataAddr:		.word ? 					; data address.
+
+SignCount:		.byte ?						; sign count for divide
 
 ; ******************************************************************************
 ;

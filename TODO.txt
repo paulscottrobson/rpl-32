@@ -1,7 +1,6 @@
+-	for/next implementation & see how quick it is.
 - 	assert and some sort of unit code system.
--	multiply and divide and modulus.
-- 	array access, subscript access
--	for/next implementation
+-	write integer conversion code.
 - 	m/l proc code.
 - 	lshift rshift operators.
 -	procedure calls

@@ -22,6 +22,13 @@ Identifier:
 		cmp 	#IDT_VARIABLE 				; must be a variable
 		bne 	IDTypeError
 		;
+_IDSkip:iny
+		lda 	(codePtr),y
+		cmp 	#$C0
+		bcs 	_IDSkip		
+		;
+		jsr 	IndexCheck 					; check index/subscript
+		;
 		phy
 		inx 								; make space on stack
 		ldy 	#0 							; copy it back
@@ -38,10 +45,6 @@ Identifier:
 		sta 	stack3,x
 		ply
 		;
-_IDSkip:iny
-		lda 	(codePtr),y
-		cmp 	#$C0
-		bcs 	_IDSkip		
 		rts
 
 _IDUnknown:
@@ -78,6 +81,15 @@ _WVNoIdentifier:
 		;		Write TOS to variable.
 		;
 _WVWriteTOS:		
+		dey 								; skip over identifier.
+_WVSkipIdentifier:
+		iny
+		lda 	(codePtr),y
+		cmp 	#$C0
+		bcs 	_WVSkipIdentifier
+		;
+		jsr 	IndexCheck 					; check index/subscript
+		;
 		phy									; copy TOS in
 		ldy 	#0
 		lda 	stack0,x
@@ -96,12 +108,6 @@ _WVWriteTOS:
 		;
 		;		skip over identifier.
 		;
-		dey
-_WVSkipIdentifier:
-		iny
-		lda 	(codePtr),y
-		cmp 	#$C0
-		bcs 	_WVSkipIdentifier
 		jmp 	Execute 					; go back and execute again.
 
 _WVCantCreate:

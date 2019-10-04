@@ -17,6 +17,7 @@
 
 Stack_Add: 	;; [+]
 		dex
+Stack_Add_No_Dex:		
 		clc
 		lda		stack0,x
 		adc 	stack0+1,x
