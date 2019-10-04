@@ -101,10 +101,10 @@ _CLNoFlip:
 ; ******************************************************************************
 				
 Comp_LessEqual:	;; [<=]
-		clc
+		sec
 		bra 	Comp_LessEqualCont
 Comp_Greater:	;; [>]
-		sec
+		clc
 
 Comp_LessEqualCont:
 		php

@@ -1,5 +1,6 @@
 - 	assert and some sort of unit code system.
 -	code to store to identifiers (no creation if line# = 0)
 -	code to find/access identifiers. no auto creation.
+- 	array access, subscript access
 - 	add procedure scanning to reset.asm
 - 	lshift rshift add ??

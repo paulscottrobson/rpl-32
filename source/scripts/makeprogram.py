@@ -40,10 +40,10 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
-	42 142 12345 'comment '
-	12345678 0 1- 
-	98765432-
-	"hello"
+	12345
+	4  not
+	4-  not
+	54321
 	stop
 
 """.split("\n")

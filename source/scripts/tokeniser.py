@@ -106,4 +106,5 @@ if __name__ == "__main__":
 	tok.test("zbc abc d0 fgha")
 	tok.test("24576 ^prg prg0")
 	tok.test("1 - 1-")
+	tok.test("> >=")
 	
