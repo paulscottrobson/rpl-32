@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Fri Oct  4 17:17:32 2019
+; Fri Oct  4 17:47:59 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -120,16 +120,16 @@
 >a0db	01 2d					.byte $01,$2d                          ; $47 {-}
 >a0dd	00					.byte $00
 .a0de					KeywordVectorTable:
->a0de	3c a7					.word SyntaxError                      ; $10
+>a0de	86 a7					.word SyntaxError                      ; $10
 >a0e0	3c a5					.word Mem_DPoke                        ; $11 !
->a0e2	3c a7					.word SyntaxError                      ; $12 &
->a0e4	3c a7					.word SyntaxError                      ; $13 *
+>a0e2	86 a7					.word SyntaxError                      ; $12 &
+>a0e4	86 a7					.word SyntaxError                      ; $13 *
 >a0e6	64 a5					.word Stack_Add                        ; $14 +
 >a0e8	63 a4					.word Unary_Increment                  ; $15 ++
 >a0ea	8b a5					.word Stack_Sub                        ; $16 -
 >a0ec	76 a4					.word Unary_Decrement                  ; $17 --
->a0ee	3c a7					.word SyntaxError                      ; $18 /
->a0f0	3c a7					.word SyntaxError                      ; $19 ;
+>a0ee	86 a7					.word SyntaxError                      ; $18 /
+>a0f0	86 a7					.word SyntaxError                      ; $19 ;
 >a0f2	5e a6					.word Comp_Less                        ; $1a <
 >a0f4	98 a4					.word Unary_Shl                        ; $1b <<
 >a0f6	89 a6					.word Comp_LessEqual                   ; $1c <=
@@ -140,41 +140,41 @@
 >a100	a5 a4					.word Unary_Shr                        ; $21 >>
 >a102	ea a4					.word Mem_DPeek                        ; $22 @
 >a104	1a a4					.word Unary_Absolute                   ; $23 ABS
->a106	3c a7					.word SyntaxError                      ; $24 ALLOC
+>a106	86 a7					.word SyntaxError                      ; $24 ALLOC
 >a108	b2 a5					.word Stack_And                        ; $25 AND
 >a10a	0f a5					.word Mem_Poke                         ; $26 C!
 >a10c	b2 a4					.word Mem_Peek                         ; $27 C@
->a10e	3c a7					.word SyntaxError                      ; $28 DEF
+>a10e	86 a7					.word SyntaxError                      ; $28 DEF
 >a110	8f a3					.word Stack_Drop                       ; $29 DROP
 >a112	91 a3					.word Stack_Dup                        ; $2a DUP
->a114	3c a7					.word SyntaxError                      ; $2b ELSE
+>a114	86 a7					.word SyntaxError                      ; $2b ELSE
 >a116	8c a3					.word Stack_Empty                      ; $2c EMPTY
 >a118	bd a6					.word System_END                       ; $2d END
->a11a	3c a7					.word SyntaxError                      ; $2e FOR
->a11c	3c a7					.word SyntaxError                      ; $2f IF
->a11e	3c a7					.word SyntaxError                      ; $30 INDEX
->a120	3c a7					.word SyntaxError                      ; $31 LIST
->a122	3c a7					.word SyntaxError                      ; $32 MOD
+>a11a	86 a7					.word SyntaxError                      ; $2e FOR
+>a11c	86 a7					.word SyntaxError                      ; $2f IF
+>a11e	86 a7					.word SyntaxError                      ; $30 INDEX
+>a120	86 a7					.word SyntaxError                      ; $31 LIST
+>a122	86 a7					.word SyntaxError                      ; $32 MOD
 >a124	20 a4					.word Unary_Negate                     ; $33 NEGATE
 >a126	cc a6					.word System_New                       ; $34 NEW
->a128	3c a7					.word SyntaxError                      ; $35 NEXT
+>a128	86 a7					.word SyntaxError                      ; $35 NEXT
 >a12a	ab a3					.word Stack_Nip                        ; $36 NIP
 >a12c	42 a4					.word Unary_Not                        ; $37 NOT
->a12e	3c a7					.word SyntaxError                      ; $38 OLD
+>a12e	86 a7					.word SyntaxError                      ; $38 OLD
 >a130	fe a5					.word Stack_Or                         ; $39 OR
 >a132	c5 a3					.word Stack_Over                       ; $3a OVER
->a134	3c a7					.word SyntaxError                      ; $3b REPEAT
+>a134	86 a7					.word SyntaxError                      ; $3b REPEAT
 >a136	b4 a6					.word System_RUN                       ; $3c RUN
 >a138	c1 a6					.word System_STOP                      ; $3d STOP
 >a13a	df a3					.word Stack_Swap                       ; $3e SWAP
->a13c	3c a7					.word SyntaxError                      ; $3f SYS
->a13e	3c a7					.word SyntaxError                      ; $40 THEN
->a140	3c a7					.word SyntaxError                      ; $41 UNTIL
+>a13c	86 a7					.word SyntaxError                      ; $3f SYS
+>a13e	86 a7					.word SyntaxError                      ; $40 THEN
+>a140	86 a7					.word SyntaxError                      ; $41 UNTIL
 >a142	21 a5					.word Mem_WPoke                        ; $42 W!
 >a144	cb a4					.word Mem_WPeek                        ; $43 W@
 >a146	d8 a5					.word Stack_Xor                        ; $44 XOR
->a148	3c a7					.word SyntaxError                      ; $45 []
->a14a	d3 a6					.word WriteVariable                    ; $46 ^
+>a148	86 a7					.word SyntaxError                      ; $45 []
+>a14a	2a a7					.word WriteVariable                    ; $46 ^
 >a14c	20 a4					.word Unary_Const_Minus                ; $47 {-}
 =$10					KWD_SPACE = $10                  ; $10
 =$11					KWD_PLING = $11                  ; $11 !
@@ -247,7 +247,7 @@
 .a156	fa		plx				plx
 .a157	60		rts				rts
 .a158					_ECBExit:
-.a158	4c 3f a7	jmp $a73f			jmp 	WarmStart
+.a158	4c 89 a7	jmp $a789			jmp 	WarmStart
 
 ;******  Return to file: main.asm
 
@@ -285,7 +285,7 @@
 .a187	90 4b		bcc $a1d4			bcc 	EXTokenExecute
 .a189	c9 c0		cmp #$c0			cmp 	#$C0 						; is it a numeric constant 80-BF
 .a18b	90 03		bcc $a190			bcc 	EXPushConstant
-.a18d	4c 45 a7	jmp $a745			jmp 	Identifier 					; it's an identifier C0-FF
+.a18d	4c d3 a6	jmp $a6d3			jmp 	Identifier 					; it's an identifier C0-FF
 .a190					EXPushConstant:
 .a190	e8		inx				inx 								; make stack space
 .a191	29 3f		and #$3f			and 	#$3F 						; to start with, it's just that value
@@ -1027,10 +1027,10 @@
 .a6ba	4c 71 a1	jmp $a171			jmp 	Execute						; and run
 .a6bd					System_END:
 >a6bd	ff						.byte 	$FF
-.a6be	4c 3f a7	jmp $a73f			jmp 	WarmStart
+.a6be	4c 89 a7	jmp $a789			jmp 	WarmStart
 .a6c1					System_STOP:
 .a6c1	4c ff ff	jmp $ffff			jmp 	$FFFF
-.a6c4	20 42 a7	jsr $a742			jsr 	ErrorHandler
+.a6c4	20 8c a7	jsr $a78c			jsr 	ErrorHandler
 >a6c7	53 54 4f 50 00					.text 	"STOP",0
 .a6cc					System_New:
 .a6cc	9c 00 11	stz $1100			stz 	ProgramStart 				; zero the first offset, erases.
@@ -1042,81 +1042,112 @@
 
 ;******  Processing file: miscellany/variables.asm
 
-.a6d3					WriteVariable:
-.a6d3	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; does it exist
-.a6d6	90 16		bcc $a6ee			bcc 	_WVNoIdentifier
-.a6d8	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
-.a6da	f0 22		beq $a6fe			beq 	_WVWriteTOS 				; if found write TOS to it.
-.a6dc	20 42 a7	jsr $a742			jsr 	ErrorHandler
->a6df	4e 6f 74 20 61 20 76 61				.text 	'Not a variable',0
->a6e7	72 69 61 62 6c 65 00
-.a6ee					_WVNoIdentifier:
-.a6ee	5a		phy				phy 								; get current line number
-.a6ef	a0 01		ldy #$01			ldy 	#1
-.a6f1	b1 00		lda ($00),y			lda 	(codePtr),y
-.a6f3	c8		iny				iny
-.a6f4	11 00		ora ($00),y			ora 	(codePtr),y
-.a6f6	7a		ply				ply
-.a6f7	f0 29		beq $a722			beq 	_WVCantCreate 				; if zero (command line) no new vars
-.a6f9	a9 56		lda #$56			lda 	#IDT_VARIABLE 				; create identifier
-.a6fb	20 81 a2	jsr $a281			jsr 	IdentifierCreate 			; try to find it
-.a6fe					_WVWriteTOS:
-.a6fe	5a		phy				phy									; copy TOS in
-.a6ff	a0 00		ldy #$00			ldy 	#0
-.a701	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.a704	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a706	c8		iny				iny
-.a707	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.a70a	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a70c	c8		iny				iny
-.a70d	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.a710	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a712	c8		iny				iny
-.a713	bd 00 0f	lda $0f00,x			lda 	stack3,x
-.a716	91 0b		sta ($0b),y			sta 	(idDataAddr),y
-.a718	7a		ply				ply
-.a719	ca		dex				dex 								; drop
-.a71a					_WVSkipIdentifier:
-.a71a	c8		iny				iny
-.a71b	b1 00		lda ($00),y			lda 	(codePtr),y
-.a71d	c9 c0		cmp #$c0			cmp 	#$C0
-.a71f	b0 f9		bcs $a71a			bcs 	_WVSkipIdentifier
-.a721	60		rts				rts
-.a722					_WVCantCreate:
-.a722	20 42 a7	jsr $a742			jsr 	ErrorHandler
->a725	43 61 6e 6e 6f 74 20 63				.text 	"Cannot create variable",0
->a72d	72 65 61 74 65 20 76 61 72 69 61 62 6c 65 00
+.a6d3					Identifier:
+.a6d3	88		dey				dey 								; wind back to identifier start
+.a6d4	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; try to find it.
+.a6d7	90 28		bcc $a701			bcc 	_IDUnknown 					; not known, give up.
+.a6d9	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
+.a6db	d0 38		bne $a715			bne 	IDTypeError
+.a6dd	5a		phy				phy
+.a6de	e8		inx				inx 								; make space on stack
+.a6df	a0 00		ldy #$00			ldy 	#0 							; copy it back
+.a6e1	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
+.a6e3	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.a6e6	c8		iny				iny
+.a6e7	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
+.a6e9	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.a6ec	c8		iny				iny
+.a6ed	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
+.a6ef	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.a6f2	c8		iny				iny
+.a6f3	b1 0b		lda ($0b),y			lda 	(idDataAddr),y
+.a6f5	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.a6f8	7a		ply				ply
+.a6f9	c8		iny		_IDSkip:iny
+.a6fa	b1 00		lda ($00),y			lda 	(codePtr),y
+.a6fc	c9 c0		cmp #$c0			cmp 	#$C0
+.a6fe	b0 f9		bcs $a6f9			bcs 	_IDSkip
+.a700	60		rts				rts
+.a701					_IDUnknown:
+.a701	20 8c a7	jsr $a78c			jsr 	ErrorHandler
+>a704	55 6e 6b 6e 6f 77 6e 20				.text 	"Unknown variable",0
+>a70c	76 61 72 69 61 62 6c 65 00
+.a715					IDTypeError:
+.a715	20 8c a7	jsr $a78c			jsr 	ErrorHandler
+>a718	56 61 72 69 61 62 6c 65				.text 	"Variable Required",0
+>a720	20 52 65 71 75 69 72 65 64 00
+.a72a					WriteVariable:
+.a72a	20 1a a2	jsr $a21a			jsr 	IdentifierSearch 			; does it exist
+.a72d	90 06		bcc $a735			bcc 	_WVNoIdentifier
+.a72f	c9 56		cmp #$56			cmp 	#IDT_VARIABLE 				; must be a variable
+.a731	f0 12		beq $a745			beq 	_WVWriteTOS 				; if so write TOS to it.
+.a733	80 e0		bra $a715			bra 	IDTypeError 				; not, then can't do anything.
+.a735					_WVNoIdentifier:
+.a735	5a		phy				phy 								; get current line number
+.a736	a0 01		ldy #$01			ldy 	#1
+.a738	b1 00		lda ($00),y			lda 	(codePtr),y
+.a73a	c8		iny				iny
+.a73b	11 00		ora ($00),y			ora 	(codePtr),y
+.a73d	7a		ply				ply
+.a73e	f0 2c		beq $a76c			beq 	_WVCantCreate 				; if zero (command line) no new vars
+.a740	a9 56		lda #$56			lda 	#IDT_VARIABLE 				; create identifier
+.a742	20 81 a2	jsr $a281			jsr 	IdentifierCreate 			; try to find it
+.a745					_WVWriteTOS:
+.a745	5a		phy				phy									; copy TOS in
+.a746	a0 00		ldy #$00			ldy 	#0
+.a748	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a74b	91 0b		sta ($0b),y			sta 	(idDataAddr),y
+.a74d	c8		iny				iny
+.a74e	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a751	91 0b		sta ($0b),y			sta 	(idDataAddr),y
+.a753	c8		iny				iny
+.a754	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a757	91 0b		sta ($0b),y			sta 	(idDataAddr),y
+.a759	c8		iny				iny
+.a75a	bd 00 0f	lda $0f00,x			lda 	stack3,x
+.a75d	91 0b		sta ($0b),y			sta 	(idDataAddr),y
+.a75f	7a		ply				ply
+.a760	ca		dex				dex 								; drop
+.a761	88		dey				dey
+.a762					_WVSkipIdentifier:
+.a762	c8		iny				iny
+.a763	b1 00		lda ($00),y			lda 	(codePtr),y
+.a765	c9 c0		cmp #$c0			cmp 	#$C0
+.a767	b0 f9		bcs $a762			bcs 	_WVSkipIdentifier
+.a769	4c 71 a1	jmp $a171			jmp 	Execute 					; go back and execute again.
+.a76c					_WVCantCreate:
+.a76c	20 8c a7	jsr $a78c			jsr 	ErrorHandler
+>a76f	43 61 6e 6e 6f 74 20 63				.text 	"Cannot create variable",0
+>a777	72 65 61 74 65 20 76 61 72 69 61 62 6c 65 00
 
 ;******  Return to file: main.asm
 
-.a73c					SyntaxError:
->a73c	ff						.byte 	$FF
-.a73d	a2 02		ldx #$02			ldx 	#2
-.a73f					WarmStart:
->a73f	ff						.byte 	$FF
-.a740	a2 03		ldx #$03			ldx 	#3
-.a742					ErrorHandler:
->a742	ff						.byte 	$FF
-.a743	a2 04		ldx #$04			ldx 	#4
-.a745					Identifier:
->a745	ff						.byte 	$FF
-.a746	a2 05		ldx #$05			ldx 	#5
+.a786					SyntaxError:
+>a786	ff						.byte 	$FF
+.a787	a2 02		ldx #$02			ldx 	#2
+.a789					WarmStart:
+>a789	ff						.byte 	$FF
+.a78a	a2 03		ldx #$03			ldx 	#3
+.a78c					ErrorHandler:
+>a78c	ff						.byte 	$FF
+.a78d	a2 04		ldx #$04			ldx 	#4
 
 ;******  Processing file: generated/testcode.inc
 
->1100	13 e8 03 83 80 b9 10 82			.byte $13,$e8,$03,$83,$80,$b9,$10,$82,$90,$10,$46,$f9,$10,$8f,$9f,$10,$46,$e0,$00,$1c,$f2,$03,$aa,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$82,$47,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$25,$fc,$03,$88,$82,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$88,$80,$47,$10,$2a,$10,$46,$d3,$c7,$e4,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$09,$06,$04,$8d,$90,$b1,$10,$3d,$00,$0f,$10,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$1a,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$24,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
+>1100	13 e8 03 83 80 b9 10 82			.byte $13,$e8,$03,$83,$80,$b9,$10,$82,$90,$10,$46,$f9,$10,$8f,$9f,$10,$46,$e0,$00,$1c,$f2,$03,$aa,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$82,$47,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$29,$fc,$03,$88,$82,$10,$46,$c3,$c4,$cd,$cd,$c8,$f2,$10,$88,$80,$47,$10,$2a,$10,$46,$d3,$c7,$e4,$10,$15,$10,$15,$10,$46,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$c2,$e4,$00,$13,$06,$04,$e0,$10,$d3,$c7,$e4,$10,$d3,$c7,$c4,$df,$cc,$c4,$cd,$c0,$e2,$00,$09,$10,$04,$8d,$90,$b1,$10,$3d,$00,$0f,$1a,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$24,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$2e,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
 >1108	90 10 46 f9 10 8f 9f 10 46 e0 00 1c f2 03 aa 10
 >1118	46 c3 c4 cd cd c8 f2 10 82 47 10 46 d3 c7 c4 df
->1128	cc c4 cd c0 c2 e4 00 25 fc 03 88 82 10 46 c3 c4
+>1128	cc c4 cd c0 c2 e4 00 29 fc 03 88 82 10 46 c3 c4
 >1138	cd cd c8 f2 10 88 80 47 10 2a 10 46 d3 c7 e4 10
->1148	46 d3 c7 c4 df cc c4 cd c0 c2 e4 00 09 06 04 8d
->1158	90 b1 10 3d 00 0f 10 04 28 10 c1 c2 e3 10 81 10
->1168	82 10 83 00 12 1a 04 28 10 c1 c0 d3 df c2 e2 10
->1178	84 10 85 10 86 00 11 24 04 28 10 c7 c4 cb cb ce
->1188	df d6 ce d1 cb e3 00
+>1148	15 10 15 10 46 d3 c7 c4 df cc c4 cd c0 c2 e4 00
+>1158	13 06 04 e0 10 d3 c7 e4 10 d3 c7 c4 df cc c4 cd
+>1168	c0 e2 00 09 10 04 8d 90 b1 10 3d 00 0f 1a 04 28
+>1178	10 c1 c2 e3 10 81 10 82 10 83 00 12 24 04 28 10
+>1188	c1 c0 d3 df c2 e2 10 84 10 85 10 86 00 11 2e 04
+>1198	28 10 c7 c4 cb cb ce df d6 ce d1 cb e3 00
 
 ;******  Return to file: main.asm
 
->118f	00						.byte 	0
+>11a6	00						.byte 	0
 
 ;******  End of listing

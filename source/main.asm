@@ -50,9 +50,6 @@ WarmStart:
 ErrorHandler:
 		.byte 	$FF		
 		ldx 	#4
-Identifier:
-		.byte 	$FF		
-		ldx 	#5
 
 		* = ProgramStart
 		.include "generated/testcode.inc"

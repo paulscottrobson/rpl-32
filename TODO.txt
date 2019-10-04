@@ -1,9 +1,13 @@
--	access variables.
 - 	assert and some sort of unit code system.
+-	multiply and divide and modulus.
 - 	array access, subscript access
 -	for/next implementation
 - 	m/l proc code.
 - 	lshift rshift operators.
+-	procedure calls
+-	repeat/until implementation
+-	if/then 
+- 	keyboard commands, tokenisation, editing etc.
 
 Fixes
 =====
