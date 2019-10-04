@@ -17,6 +17,54 @@
 ;
 ; ******************************************************************************
 
-ProcedureScan:
+ProcedureScan:		
+		jsr 	ResetCodePointer 			; reset the code pointer.
+		;
+		;		Scan loop
+		;
+_PSMain:lda 	(codePtr)					; check if end
+		beq 	_PSExit
+		ldy 	#3 							; start of line
+_PSSkipSpace:
+		lda 	(codePtr),y 				; skip over spaces
+		iny
+		cmp 	#KWD_SPACE
+		beq 	_PSSkipSpace
+		cmp 	#KWD_DEF 					; first thing is DEF ?
+		bne 	_PSNext
+_PSSkipSpace2:		
+		iny 								; skip over def first, any following spaces
+		lda 	(codePtr),y
+		cmp 	#KWD_SPACE
+		beq 	_PSSkipSpace2
+		;
+		lda 	#IDT_PROCEDURE 				; create a procedure 
+		jsr 	IdentifierCreate
+		;
+_PSSkipIdentifier: 							; go past the identifier.
+		lda 	(codePtr),y
+		iny
+		cmp 	#$C0
+		bcs 	_PSSkipIdentifier
+		dey 								; undo last, points at first non ID
+		tya  								; save the address in the data slot.
+		clc 								; changing Y doesn't matter.
+		adc 	codePtr
+		sta 	(idDataAddr)
+		lda 	codePtr+1
+		adc 	#0
+		ldy 	#1
+		sta 	(idDataAddr),y
+		;
+_PSNext:
+		clc 								; go to next
+		lda 	(codePtr)		
+		adc 	codePtr
+		sta 	codeptr
+		bcc 	_PSMain
+		inc 	codePtr+1
+		bra 	_PSMain
+_PSExit:				
 		rts
+		
 		

@@ -35,6 +35,8 @@ zTemp2: 		.word ?
 
 breakCount:		.byte ? 					; used to stop break firing every execution.
 
+idDataAddr:		.word ? 					; data address.
+
 ; ******************************************************************************
 ;
 ;				Allocate Memory in the current instance space
@@ -45,13 +47,13 @@ breakCount:		.byte ? 					; used to stop break firing every execution.
 
 AZVariables:	.fill	26*4 				; 26 x 4 byte variables, which are A-Z
 
+HashTable: 		.fill 	HashTableSize * 2 	; n x 2 links for the hash tables.
+
 VarMemory:		.word 	0 					; next free byte available for VARIABLES (going up)
 
 AllocMemory: 	.word 	0 					; last free byte availabel for ALLOC (going down)
 
 CurrentBase:	.byte 	0 					; base used for printing and tokenising constants.
-
-HashTable: 		.fill 	HashTableSize * 2 	; n x 2 links for the hash tables.
 
 CurrentIndex:	.dword 	0 					; value of the current index used in FOR/NEXT.
 

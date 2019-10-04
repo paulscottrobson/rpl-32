@@ -39,3 +39,40 @@ for i in range(1,stackp+1):
 print("Stack :")
 print("\t"+" ".join(["{0}".format(x) for x in stack]))
 print("\t"+" ".join(["${0:x}".format(x & 0xFFFFFFFF) for x in stack]))
+#
+#		Variable Dump
+#
+print("Statics :")
+svar = []
+for i in range(0,26):
+	p = 0x1000+i*4
+	w = data[p+0]+(data[p+1]<<8)+(data[p+2]<<16)+(data[p+3]<<24)
+	sw = w if (w & 0x80000000) == 0 else w - 0x100000000	
+	#print("{0:x}".format(p))
+	#
+	if sw != 0:
+		svar.append("{0} := {1}".format(chr(i+97),sw))
+
+print("\t"+" ".join(svar))
+
+hashTable = 0x1066
+hashCount = 16
+print("Variables :")
+for i in range(0,hashCount):
+	hashEntry = hashTable+i*2
+	print("\t# {0:2} ${1:04x}".format(i,hashEntry))
+	p = deek(hashEntry)
+	while p != 0:
+		p2 = deek(p+6)
+		done = False
+		name = ""
+		while not done:
+			done = (data[p2] >= 0xE0)
+			c = data[p2] & 0x1F
+			name = name + (chr(c+65) if c != 31 else '.')
+			p2 += 1
+		name = name.lower()
+		w = data[p+2]+(data[p+3]<<8)+(data[p+4]<<16)+(data[p+5]<<24)
+		sw = w if (w & 0x80000000) == 0 else w - 0x100000000	
+		print("\t\t${0:04x} [{4}] {1} := {2} ${3:x}".format(p,name,sw,w,chr(data[p+9])))
+		p = deek(p)

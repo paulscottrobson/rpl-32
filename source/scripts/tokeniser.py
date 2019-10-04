@@ -74,7 +74,7 @@ class Tokeniser(object):
 	#		Convert character to code
 	#
 	def convert(self,c):
-		return 0xBF if c == '.' else 0xC0+ord(c)-ord('A')
+		return 0xDF if c == '.' else 0xC0+ord(c)-ord('A')
 	#
 	#		Do one number (recursive)
 	#
@@ -107,4 +107,4 @@ if __name__ == "__main__":
 	tok.test("24576 ^prg prg0")
 	tok.test("1 - 1-")
 	tok.test("> >=")
-	
+	tok.test("hello.world")

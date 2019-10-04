@@ -114,7 +114,7 @@ KeywordVectorTable:
 	.word Mem_WPeek                        ; $43 W@
 	.word Stack_Xor                        ; $44 XOR
 	.word SyntaxError                      ; $45 []
-	.word SyntaxError                      ; $46 ^
+	.word WriteVariable                    ; $46 ^
 	.word Unary_Const_Minus                ; $47 {-}
 
 KWD_SPACE = $10                  ; $10  

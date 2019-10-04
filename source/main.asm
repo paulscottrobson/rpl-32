@@ -30,6 +30,7 @@ Start:
 		.include "generated/tables.inc" 	; keyword tables, constants, vector table.
 		.include "system/extern.asm"		; external functions.
 		.include "system/execute.asm"		; execution functions.	
+		.include "system/identifier.asm"	; identifier search/create
 		.include "system/reset.asm"			; reset variables etc., reset code to start
 		.include "system/scan.asm" 			; scan through code looking for procedures.
 		.include "functions/stack.asm"		; stack manipulation
@@ -38,6 +39,7 @@ Start:
 		.include "functions/binary.asm"		; simple binary functions
 		.include "functions/compare.asm"	; comparison functions
 		.include "miscellany/system.asm"	; system functions.
+		.include "miscellany/variables.asm"	; variable handlers.
 
 SyntaxError:		
 		.byte 	$FF		
