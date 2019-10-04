@@ -1,10 +1,5 @@
-- 	execution loop
-- 	constant scanning and the special unary minus.
--	token execution, strings, comments, next line, spaces
-- 	adapt dump.c (stack only) and check the basic arithmetic/stacking etc. works
-- 	next line
 - 	assert and some sort of unit code system.
--	code to store to identifiers (not if line# = 0)
+-	code to store to identifiers (no creation if line# = 0)
 -	code to find/access identifiers. no auto creation.
 - 	add procedure scanning to reset.asm
 - 	lshift rshift add ??

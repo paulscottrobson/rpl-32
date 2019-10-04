@@ -115,7 +115,7 @@ KeywordVectorTable:
 	.word Stack_Xor                        ; $44 XOR
 	.word SyntaxError                      ; $45 []
 	.word SyntaxError                      ; $46 ^
-	.word SyntaxError                      ; $47 {-}
+	.word Unary_Const_Minus                ; $47 {-}
 
 KWD_SPACE = $10                  ; $10  
 KWD_PLING = $11                  ; $11 !

@@ -27,6 +27,9 @@ Start:
 		jsr 	ResetCodePointer
 		jmp 	System_RUN
 
+		.include "generated/tables.inc" 	; keyword tables, constants, vector table.
+		.include "system/extern.asm"		; external functions.
+		.include "system/execute.asm"		; execution functions.	
 		.include "system/reset.asm"			; reset variables etc., reset code to start
 		.include "system/scan.asm" 			; scan through code looking for procedures.
 		.include "functions/stack.asm"		; stack manipulation
@@ -36,9 +39,6 @@ Start:
 		.include "functions/compare.asm"	; comparison functions
 		.include "miscellany/system.asm"	; system functions.
 
-Execute:	
-		.byte 	$FF
-		ldx 	#1
 SyntaxError:		
 		.byte 	$FF		
 		ldx 	#2
@@ -48,6 +48,9 @@ WarmStart:
 ErrorHandler:
 		.byte 	$FF		
 		ldx 	#4
+Identifier:
+		.byte 	$FF		
+		ldx 	#5
 
 		* = ProgramStart
 		.include "generated/testcode.inc"

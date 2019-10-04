@@ -51,7 +51,7 @@ class Tokeniser(object):
 		#
 		m = re.match("^(\\d+)(\\-?)(.*)$",s)								# constants
 		if m is not None:
-			self.compileNumber(int(m.group(1)) & 0xFFFF)					# get value and compile
+			self.compileNumber(int(m.group(1)) & 0xFFFFFFFF)				# get value and compile
 			if m.group(2) == "-":											# if -ve output the
 				self.code.append(self.tokens["{-}"])						# special constant -
 			return m.group(3) 	

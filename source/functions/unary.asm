@@ -27,6 +27,7 @@ Unary_Absolute: 	;; [abs]
 ; ******************************************************************************
 
 Unary_Negate: 	;; [negate]
+Unary_Const_Minus: ;; [{-}]
 		sec
 		lda		#0
 		sbc 	stack0,x

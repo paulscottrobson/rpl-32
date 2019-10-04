@@ -40,11 +40,11 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
-	
-	123  &test 0 &test 44- ^zzx 'xxx'
-	123- stop 
-	def z.z 257 ;
-	def test &z.z 42 &z.z "hello" ;
+	42 142 12345 'comment '
+	12345678 0 1- 
+	98765432-
+	"hello"
+	stop
 
 """.split("\n")
 	program = Program()
