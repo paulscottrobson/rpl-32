@@ -42,7 +42,7 @@ if __name__ == "__main__":
 	src = """
 	12345 144 ^z 991 ^a
 	42 ^dennis 2- ^the.menace
-	514 ^dennis
+	514 ^dennis 512- dup ^the ^the.menace
 	54321 stop
 	def bcd 1 2 3
 	def bat.cc 4 5 6	

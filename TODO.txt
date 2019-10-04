@@ -1,6 +1,5 @@
-- 	searched named identifiers
+-	access variables.
 - 	assert and some sort of unit code system.
--	code to find/access identifiers. no auto creation.
 - 	array access, subscript access
 -	for/next implementation
 - 	m/l proc code.
