@@ -4,12 +4,12 @@
 ;		Name : 		data.asm
 ;		Purpose : 	Data Allocation.
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
-;		Created : 	2nd October 2019
+;		Created : 	3rd October 2019
 ;
 ; ******************************************************************************
 ; ******************************************************************************
 
-BuildAddress = $A000 						; build the interpreter here
+BuildAddress = $6000 						; build the interpreter here
 StackAddress = $0C00 						; 1k of stack space (256 x 32 bits)
 MemoryStart = $1000 						; system memory starts here
 MemoryEnd = $6000 							; and ends here.
@@ -58,8 +58,6 @@ HashTable: 		.fill 	HashTableSize * 2 	; n x 2 links for the hash tables.
 VarMemory:		.word 	0 					; next free byte available for VARIABLES (going up)
 
 AllocMemory: 	.word 	0 					; last free byte availabel for ALLOC (going down)
-
-CurrentBase:	.byte 	0 					; base used for printing and tokenising constants.
 
 ProgramStart	= MemoryStart + $100 		; where code actually goes.
 

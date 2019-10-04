@@ -9,6 +9,8 @@
 # ******************************************************************************
 # ******************************************************************************
 
+import os,sys
+
 def deek(a):
 	return data[a]+(data[a+1] << 8)
 
@@ -21,6 +23,9 @@ def getName(a):
 		s = chr(c)+s
 		nw = int(nw/28)
 	return s+getName(a+2) if data[a] < 128 else s
+
+if not os.path.isfile("dump.bin"):
+	sys.exit(0)
 
 data = [x for x in open("dump.bin","rb").read(-1)]
 #

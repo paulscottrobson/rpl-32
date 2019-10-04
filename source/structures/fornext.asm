@@ -106,3 +106,35 @@ _CNLoop:
 
 _CNNoFor:
 		rerror	"Missing FOR"		
+
+; ******************************************************************************
+;
+;								Get current Index
+;
+; ******************************************************************************
+
+Command_Index: ;; [index]
+		phy
+		;
+		ldy 	#1 							; get the stack position of 
+		;
+		inx
+		sec
+		lda 	#$FE
+		sbc 	(ForAddr),y
+		sta 	stack0,x
+		iny
+		lda 	#$FF
+		sbc 	(ForAddr),y
+		sta 	stack1,x
+		iny
+		lda 	#$FF
+		sbc 	(ForAddr),y
+		sta 	stack2,x
+		iny
+		lda 	#$FF
+		sbc 	(ForAddr),y
+		sta 	stack3,x
+
+		ply
+		rts

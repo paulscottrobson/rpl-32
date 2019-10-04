@@ -40,7 +40,7 @@ class RPLTokens(object):
 		dup		drop 	over 	nip 	swap	empty
 		for 	index 	next
 		repeat 	until
-		if 		else 	then		
+		if 		else 	endif		
 		def 	; 		&
 		sys 	list	new 	old		run		stop	end 
 		^		[]		{-}		

@@ -51,4 +51,56 @@ System_New: ;; [new]
 		jsr		ResetForRun 				; clear vars, stacks etc.
 		rts
 
+; ******************************************************************************
+;
+;									Old Program
+;
+; ******************************************************************************
 		
+System_Old: ;; [old]
+		jsr 	ResetCodePointer 			; start of first line.
+_SOFindZero:
+		lda 	(codePtr),y 				; look for trailing $00
+		beq 	_SOFoundEnd
+		iny				
+		bne 	_SOFindZero
+		rerror 	"Cannot Recover"			; couldn't find it.
+;
+_SOFoundEnd:
+		iny 								; update the offset
+		sty 	ProgramStart		
+		jsr 	ResetForRun 				; redo all stacks etc.
+		rts
+
+; ******************************************************************************
+;
+;								Call Machine Code
+;
+; ******************************************************************************
+
+System_Sys: ;; [sys]
+
+		lda 	stack0,x 					; copy and drop call address
+		sta 	zTemp0
+		lda 	stack1,x
+		sta 	zTemp0+1
+		dex
+
+		phx
+		phy
+
+		lda 	AZVariables+('A'-'A')*4		; load AXY
+		ldx 	AZVariables+('X'-'A')*4
+		ldy 	AZVariables+('Y'-'A')*4
+		;
+		jsr 	_SSCall 					; effectively jsr (zTemp)
+		;
+		sta 	AZVariables+('A'-'A')*4 	; store AXY
+		stx 	AZVariables+('X'-'A')*4
+		sty 	AZVariables+('Y'-'A')*4
+
+		ply
+		plx
+		rts
+
+_SSCall:jmp 	(zTemp0)

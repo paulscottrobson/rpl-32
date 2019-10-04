@@ -31,25 +31,25 @@ KeywordText:
 	.byte $04,$05,$0c,$13,$05              ; $2b ELSE
 	.byte $05,$05,$0d,$10,$14,$19          ; $2c EMPTY
 	.byte $03,$05,$0e,$04                  ; $2d END
-	.byte $03,$06,$0f,$12                  ; $2e FOR
-	.byte $02,$09,$06                      ; $2f IF
-	.byte $05,$09,$0e,$04,$05,$18          ; $30 INDEX
-	.byte $04,$0c,$09,$13,$14              ; $31 LIST
-	.byte $03,$0d,$0f,$04                  ; $32 MOD
-	.byte $06,$0e,$05,$07,$01,$14,$05      ; $33 NEGATE
-	.byte $03,$0e,$05,$17                  ; $34 NEW
-	.byte $04,$0e,$05,$18,$14              ; $35 NEXT
-	.byte $03,$0e,$09,$10                  ; $36 NIP
-	.byte $03,$0e,$0f,$14                  ; $37 NOT
-	.byte $03,$0f,$0c,$04                  ; $38 OLD
-	.byte $02,$0f,$12                      ; $39 OR
-	.byte $04,$0f,$16,$05,$12              ; $3a OVER
-	.byte $06,$12,$05,$10,$05,$01,$14      ; $3b REPEAT
-	.byte $03,$12,$15,$0e                  ; $3c RUN
-	.byte $04,$13,$14,$0f,$10              ; $3d STOP
-	.byte $04,$13,$17,$01,$10              ; $3e SWAP
-	.byte $03,$13,$19,$13                  ; $3f SYS
-	.byte $04,$14,$08,$05,$0e              ; $40 THEN
+	.byte $05,$05,$0e,$04,$09,$06          ; $2e ENDIF
+	.byte $03,$06,$0f,$12                  ; $2f FOR
+	.byte $02,$09,$06                      ; $30 IF
+	.byte $05,$09,$0e,$04,$05,$18          ; $31 INDEX
+	.byte $04,$0c,$09,$13,$14              ; $32 LIST
+	.byte $03,$0d,$0f,$04                  ; $33 MOD
+	.byte $06,$0e,$05,$07,$01,$14,$05      ; $34 NEGATE
+	.byte $03,$0e,$05,$17                  ; $35 NEW
+	.byte $04,$0e,$05,$18,$14              ; $36 NEXT
+	.byte $03,$0e,$09,$10                  ; $37 NIP
+	.byte $03,$0e,$0f,$14                  ; $38 NOT
+	.byte $03,$0f,$0c,$04                  ; $39 OLD
+	.byte $02,$0f,$12                      ; $3a OR
+	.byte $04,$0f,$16,$05,$12              ; $3b OVER
+	.byte $06,$12,$05,$10,$05,$01,$14      ; $3c REPEAT
+	.byte $03,$12,$15,$0e                  ; $3d RUN
+	.byte $04,$13,$14,$0f,$10              ; $3e STOP
+	.byte $04,$13,$17,$01,$10              ; $3f SWAP
+	.byte $03,$13,$19,$13                  ; $40 SYS
 	.byte $05,$15,$0e,$14,$09,$0c          ; $41 UNTIL
 	.byte $02,$17,$21                      ; $42 W!
 	.byte $02,$17,$00                      ; $43 W@
@@ -90,25 +90,25 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $2b ELSE
 	.word Stack_Empty                      ; $2c EMPTY
 	.word System_END                       ; $2d END
-	.word Command_For                      ; $2e FOR
-	.word SyntaxError                      ; $2f IF
-	.word SyntaxError                      ; $30 INDEX
-	.word SyntaxError                      ; $31 LIST
-	.word ModInteger32                     ; $32 MOD
-	.word Unary_Negate                     ; $33 NEGATE
-	.word System_New                       ; $34 NEW
-	.word Command_Next                     ; $35 NEXT
-	.word Stack_Nip                        ; $36 NIP
-	.word Unary_Not                        ; $37 NOT
-	.word SyntaxError                      ; $38 OLD
-	.word Stack_Or                         ; $39 OR
-	.word Stack_Over                       ; $3a OVER
-	.word SyntaxError                      ; $3b REPEAT
-	.word System_RUN                       ; $3c RUN
-	.word System_STOP                      ; $3d STOP
-	.word Stack_Swap                       ; $3e SWAP
-	.word SyntaxError                      ; $3f SYS
-	.word SyntaxError                      ; $40 THEN
+	.word SyntaxError                      ; $2e ENDIF
+	.word Command_For                      ; $2f FOR
+	.word SyntaxError                      ; $30 IF
+	.word Command_Index                    ; $31 INDEX
+	.word SyntaxError                      ; $32 LIST
+	.word ModInteger32                     ; $33 MOD
+	.word Unary_Negate                     ; $34 NEGATE
+	.word System_New                       ; $35 NEW
+	.word Command_Next                     ; $36 NEXT
+	.word Stack_Nip                        ; $37 NIP
+	.word Unary_Not                        ; $38 NOT
+	.word System_Old                       ; $39 OLD
+	.word Stack_Or                         ; $3a OR
+	.word Stack_Over                       ; $3b OVER
+	.word SyntaxError                      ; $3c REPEAT
+	.word System_RUN                       ; $3d RUN
+	.word System_STOP                      ; $3e STOP
+	.word Stack_Swap                       ; $3f SWAP
+	.word System_Sys                       ; $40 SYS
 	.word SyntaxError                      ; $41 UNTIL
 	.word Mem_WPoke                        ; $42 W!
 	.word Mem_WPeek                        ; $43 W@
@@ -147,25 +147,25 @@ KWD_DUP = $2a                    ; $2a DUP
 KWD_ELSE = $2b                   ; $2b ELSE
 KWD_EMPTY = $2c                  ; $2c EMPTY
 KWD_END = $2d                    ; $2d END
-KWD_FOR = $2e                    ; $2e FOR
-KWD_IF = $2f                     ; $2f IF
-KWD_INDEX = $30                  ; $30 INDEX
-KWD_LIST = $31                   ; $31 LIST
-KWD_MOD = $32                    ; $32 MOD
-KWD_NEGATE = $33                 ; $33 NEGATE
-KWD_NEW = $34                    ; $34 NEW
-KWD_NEXT = $35                   ; $35 NEXT
-KWD_NIP = $36                    ; $36 NIP
-KWD_NOT = $37                    ; $37 NOT
-KWD_OLD = $38                    ; $38 OLD
-KWD_OR = $39                     ; $39 OR
-KWD_OVER = $3a                   ; $3a OVER
-KWD_REPEAT = $3b                 ; $3b REPEAT
-KWD_RUN = $3c                    ; $3c RUN
-KWD_STOP = $3d                   ; $3d STOP
-KWD_SWAP = $3e                   ; $3e SWAP
-KWD_SYS = $3f                    ; $3f SYS
-KWD_THEN = $40                   ; $40 THEN
+KWD_ENDIF = $2e                  ; $2e ENDIF
+KWD_FOR = $2f                    ; $2f FOR
+KWD_IF = $30                     ; $30 IF
+KWD_INDEX = $31                  ; $31 INDEX
+KWD_LIST = $32                   ; $32 LIST
+KWD_MOD = $33                    ; $33 MOD
+KWD_NEGATE = $34                 ; $34 NEGATE
+KWD_NEW = $35                    ; $35 NEW
+KWD_NEXT = $36                   ; $36 NEXT
+KWD_NIP = $37                    ; $37 NIP
+KWD_NOT = $38                    ; $38 NOT
+KWD_OLD = $39                    ; $39 OLD
+KWD_OR = $3a                     ; $3a OR
+KWD_OVER = $3b                   ; $3b OVER
+KWD_REPEAT = $3c                 ; $3c REPEAT
+KWD_RUN = $3d                    ; $3d RUN
+KWD_STOP = $3e                   ; $3e STOP
+KWD_SWAP = $3f                   ; $3f SWAP
+KWD_SYS = $40                    ; $40 SYS
 KWD_UNTIL = $41                  ; $41 UNTIL
 KWD_WPLING = $42                 ; $42 W!
 KWD_WAT = $43                    ; $43 W@

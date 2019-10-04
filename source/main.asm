@@ -2,9 +2,9 @@
 ; ******************************************************************************
 ;
 ;		Name : 		main.asm
-;		Purpose : 	RPL/65 Main Program
+;		Purpose : 	RPL/32 Main Program
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
-;		Created : 	2nd October 2019
+;		Created : 	3rd October 2019
 ;
 ; ******************************************************************************
 ; ******************************************************************************
@@ -19,11 +19,13 @@
 Start:	
 		ldx 	#$FF 						; reset the stack.
 		txs
-		lda 	#10 						; reset the base
-		sta 	CurrentBase
+
+		jsr 	System_New
+		jsr 	System_Old
 
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
+
 		jmp 	System_RUN
 
 		.include "generated/tables.inc" 	; keyword tables, constants, vector table.
@@ -60,4 +62,3 @@ ErrorHandler:
 		* = ProgramStart
 		.include "generated/testcode.inc"
 		.byte 	0
-

@@ -41,10 +41,10 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 	12345 
-
-	0
-	10000 for 
-		5+
+	1 14 ^a 65490 sys 30 ^a 65490 sys
+	64 for index 33 + ^a 65490 sys next
+	100 for
+		1000 for next
 	next
 	54321 stop
 
