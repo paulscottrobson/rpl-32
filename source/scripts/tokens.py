@@ -35,7 +35,7 @@ class RPLTokens(object):
 		+ 		-		*		/		mod		
 		and		or 		xor
 		<= 		>= 		=		<> 		> 		<
-		negate	not 	abs		bswap	alloc
+		negate	not 	abs		alloc
 		@ 		! 		c@ 		c! 		w@ 		w!
 		dup		drop 	over 	nip 	swap	empty
 		for 	index 	next

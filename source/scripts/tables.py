@@ -44,9 +44,13 @@ for root,dirs,files in os.walk(".."):									# scan all source dirs
 				assert kw not in routines,"Duplicate definition "+kw
 				assert kw in tokens,"Unknown keyword "+kw
 				routines[kw] = m.group(1)
-missing = [x for x in tokenNames if x not in routines]
+#
+#		Work out the "todo" list.
+#
+notDone = [ "[]","{-}" ]
+missing = [x for x in tokenNames if x not in routines and x not in notDone]
 if len(missing) > 0:
-	sys.stderr.write("Missing {0}\n".format(" ".join([x.lower() for x in missing])))
+	sys.stderr.write("Missing ({1}) {0}\n".format(" ".join([x.lower() for x in missing]),len(missing)))
 #
 #		Generate a jump table
 #

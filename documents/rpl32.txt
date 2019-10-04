@@ -13,10 +13,13 @@ Encoding
 01 xx 		ASCIIZ string (xx is the total length in bytes)
 02 xx 		ASCIIZ comment
 03-0F 		Reserved
-10-7F 		Tokens
+10-7F 		Tokens (112)
 80-BF 		6 bits of number data, shifted in, representing positive numbers.
 C0-DF 		Identifier labels (A-Z .) (27 off)
 E0-FF 		Identifier labels (A-Z .) (27 off), end of identifier marker.
+
+-ve numbers are done backwards. The token used in 27- when encoded is not the unary -,
+but the {-} alternate minus. 
 
 <offset> <line low> <line high>	<first token>
 
@@ -32,11 +35,7 @@ Binary Comparison:
 		< 		<= 		> 		>= 		=		<>
 
 Unary:		
-		negate	not 	abs		++		--		<<		>> 		bswap	alloc
-
-		<encoded ->. This is a token that decodes as '-' which comes after the constant.
-		tokenising should put the unencoded version first. Listed as [-] and fudged.
-		Detokenising should use this when extracting a negative value.
+		negate	not 	abs		++		--		<<		>> 		alloc
 
 Memory:		
 		@ 		! 		c@ 		c! 		w@ 		w!
@@ -70,8 +69,8 @@ Hash (probably 16 ?) ->
 
 +02..+05 	Data : 
 				Variable : holds the 32 bit data.
-				Machine Code : holds the address to call (low, high, bank,$00)
-				Procedure : holds the procedure location (low, high, bank,$00)
+				Machine Code : holds the address to call (low, high, bank, unused)
+				Procedure : holds the procedure location (low, high, bank, yPosition)
 
 +06..+08 	Pointer to variable name in program. (Variables cannot be created from such)
 			The third byte is a bank byte if its stored in there.
@@ -80,7 +79,7 @@ Hash (probably 16 ?) ->
 				'V' 'M'	'P' 	supported.
 
 0000-007F 	Zero Page storage
-0C00-0FFF 	
+0C00-0FFF 	Stack Space
 1000-10FF 	Variables (A-Z) (104 bytes)
 			Link Addresses etc.
 			Hash Tables (2 per byte)
