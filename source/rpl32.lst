@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Fri Oct  4 19:17:10 2019
+; Fri Oct  4 21:02:48 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -25,12 +25,12 @@
 >000e					breakCount:		.byte ? 					; used to stop break firing every execution.
 >000f					idDataAddr:		.word ? 					; data address.
 >0011					SignCount:		.byte ?						; sign count for divide
+>0012					ForAddr:		.byte ? 					; points to current FOR structure
 >1000					AZVariables:	.fill	26*4 				; 26 x 4 byte variables, which are A-Z
 >1068					HashTable: 		.fill 	HashTableSize * 2 	; n x 2 links for the hash tables.
 >1088	00 00				VarMemory:		.word 	0 					; next free byte available for VARIABLES (going up)
 >108a	00 00				AllocMemory: 	.word 	0 					; last free byte availabel for ALLOC (going down)
 >108c	00				CurrentBase:	.byte 	0 					; base used for printing and tokenising constants.
->108d	00 00 00 00			CurrentIndex:	.dword 	0 					; value of the current index used in FOR/NEXT.
 =4352					ProgramStart	= MemoryStart + $100 		; where code actually goes.
 =$0c00					stack0 = StackAddress
 =3328					stack1 = StackAddress+256
@@ -122,16 +122,16 @@
 >a0db	01 2d					.byte $01,$2d                          ; $47 {-}
 >a0dd	00					.byte $00
 .a0de					KeywordVectorTable:
->a0de	e7 a8					.word SyntaxError                      ; $10
+>a0de	af a9					.word SyntaxError                      ; $10
 >a0e0	a5 a5					.word Mem_DPoke                        ; $11 !
->a0e2	e7 a8					.word SyntaxError                      ; $12 &
+>a0e2	af a9					.word SyntaxError                      ; $12 &
 >a0e4	8c a6					.word MulInteger32                     ; $13 *
 >a0e6	cc a5					.word Stack_Add                        ; $14 +
 >a0e8	cc a4					.word Unary_Increment                  ; $15 ++
 >a0ea	f3 a5					.word Stack_Sub                        ; $16 -
 >a0ec	df a4					.word Unary_Decrement                  ; $17 --
 >a0ee	d5 a6					.word DivInteger32                     ; $18 /
->a0f0	e7 a8					.word SyntaxError                      ; $19 ;
+>a0f0	af a9					.word SyntaxError                      ; $19 ;
 >a0f2	b9 a7					.word Comp_Less                        ; $1a <
 >a0f4	01 a5					.word Unary_Shl                        ; $1b <<
 >a0f6	e4 a7					.word Comp_LessEqual                   ; $1c <=
@@ -142,40 +142,40 @@
 >a100	0e a5					.word Unary_Shr                        ; $21 >>
 >a102	53 a5					.word Mem_DPeek                        ; $22 @
 >a104	83 a4					.word Unary_Absolute                   ; $23 ABS
->a106	e7 a8					.word SyntaxError                      ; $24 ALLOC
+>a106	af a9					.word SyntaxError                      ; $24 ALLOC
 >a108	1a a6					.word Stack_And                        ; $25 AND
 >a10a	78 a5					.word Mem_Poke                         ; $26 C!
 >a10c	1b a5					.word Mem_Peek                         ; $27 C@
->a10e	e7 a8					.word SyntaxError                      ; $28 DEF
+>a10e	af a9					.word SyntaxError                      ; $28 DEF
 >a110	f8 a3					.word Stack_Drop                       ; $29 DROP
 >a112	fa a3					.word Stack_Dup                        ; $2a DUP
->a114	e7 a8					.word SyntaxError                      ; $2b ELSE
+>a114	af a9					.word SyntaxError                      ; $2b ELSE
 >a116	f5 a3					.word Stack_Empty                      ; $2c EMPTY
 >a118	18 a8					.word System_END                       ; $2d END
->a11a	e7 a8					.word SyntaxError                      ; $2e FOR
->a11c	e7 a8					.word SyntaxError                      ; $2f IF
->a11e	e7 a8					.word SyntaxError                      ; $30 INDEX
->a120	e7 a8					.word SyntaxError                      ; $31 LIST
+>a11a	e7 a8					.word Command_For                      ; $2e FOR
+>a11c	af a9					.word SyntaxError                      ; $2f IF
+>a11e	af a9					.word SyntaxError                      ; $30 INDEX
+>a120	af a9					.word SyntaxError                      ; $31 LIST
 >a122	67 a7					.word ModInteger32                     ; $32 MOD
 >a124	89 a4					.word Unary_Negate                     ; $33 NEGATE
 >a126	27 a8					.word System_New                       ; $34 NEW
->a128	e7 a8					.word SyntaxError                      ; $35 NEXT
+>a128	3e a9					.word Command_Next                     ; $35 NEXT
 >a12a	14 a4					.word Stack_Nip                        ; $36 NIP
 >a12c	ab a4					.word Unary_Not                        ; $37 NOT
->a12e	e7 a8					.word SyntaxError                      ; $38 OLD
+>a12e	af a9					.word SyntaxError                      ; $38 OLD
 >a130	66 a6					.word Stack_Or                         ; $39 OR
 >a132	2e a4					.word Stack_Over                       ; $3a OVER
->a134	e7 a8					.word SyntaxError                      ; $3b REPEAT
+>a134	af a9					.word SyntaxError                      ; $3b REPEAT
 >a136	0f a8					.word System_RUN                       ; $3c RUN
 >a138	1c a8					.word System_STOP                      ; $3d STOP
 >a13a	48 a4					.word Stack_Swap                       ; $3e SWAP
->a13c	e7 a8					.word SyntaxError                      ; $3f SYS
->a13e	e7 a8					.word SyntaxError                      ; $40 THEN
->a140	e7 a8					.word SyntaxError                      ; $41 UNTIL
+>a13c	af a9					.word SyntaxError                      ; $3f SYS
+>a13e	af a9					.word SyntaxError                      ; $40 THEN
+>a140	af a9					.word SyntaxError                      ; $41 UNTIL
 >a142	8a a5					.word Mem_WPoke                        ; $42 W!
 >a144	34 a5					.word Mem_WPeek                        ; $43 W@
 >a146	40 a6					.word Stack_Xor                        ; $44 XOR
->a148	e7 a8					.word SyntaxError                      ; $45 []
+>a148	af a9					.word SyntaxError                      ; $45 []
 >a14a	88 a8					.word WriteVariable                    ; $46 ^
 >a14c	89 a4					.word Unary_Const_Minus                ; $47 {-}
 =$10					KWD_SPACE = $10                  ; $10
@@ -249,7 +249,7 @@
 .a156	fa		plx				plx
 .a157	60		rts				rts
 .a158					_ECBExit:
-.a158	4c ea a8	jmp $a8ea			jmp 	WarmStart
+.a158	4c b2 a9	jmp $a9b2			jmp 	WarmStart
 
 ;******  Return to file: main.asm
 
@@ -657,7 +657,7 @@
 .a3dc	7a		ply				ply
 .a3dd	60		rts				rts
 .a3de					_ICZero:
-.a3de	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a3de	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a3e1	55 6e 69 6e 69 74 69 61				.text 	"Uninitialised array",0
 >a3e9	6c 69 73 65 64 20 61 72 72 61 79 00
 
@@ -1044,7 +1044,7 @@
 .a6dc	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
 .a6df	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
 .a6e2	d0 14		bne $a6f8			bne 	_BFDOkay
-.a6e4	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a6e4	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a6e7	44 69 76 69 73 69 6f 6e				.text 	"Division by Zero",0
 >a6ef	20 62 79 20 5a 65 72 6f 00
 .a6f8					_BFDOkay:
@@ -1220,10 +1220,10 @@
 .a815	4c 71 a1	jmp $a171			jmp 	Execute						; and run
 .a818					System_END:
 >a818	ff						.byte 	$FF
-.a819	4c ea a8	jmp $a8ea			jmp 	WarmStart
+.a819	4c b2 a9	jmp $a9b2			jmp 	WarmStart
 .a81c					System_STOP:
 .a81c	4c ff ff	jmp $ffff			jmp 	$FFFF
-.a81f	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a81f	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a822	53 54 4f 50 00					.text 	"STOP",0
 .a827					System_New:
 .a827	9c 00 11	stz $1100			stz 	ProgramStart 				; zero the first offset, erases.
@@ -1263,11 +1263,11 @@
 .a85d	7a		ply				ply
 .a85e	60		rts				rts
 .a85f					_IDUnknown:
-.a85f	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a85f	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a862	55 6e 6b 6e 6f 77 6e 20				.text 	"Unknown variable",0
 >a86a	76 61 72 69 61 62 6c 65 00
 .a873					IDTypeError:
-.a873	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a873	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a876	56 61 72 69 61 62 6c 65				.text 	"Variable Required",0
 >a87e	20 52 65 71 75 69 72 65 64 00
 .a888					WriteVariable:
@@ -1311,7 +1311,7 @@
 .a8c9	ca		dex				dex 								; drop
 .a8ca	4c 71 a1	jmp $a171			jmp 	Execute 					; go back and execute again.
 .a8cd					_WVCantCreate:
-.a8cd	20 ed a8	jsr $a8ed			jsr 	ErrorHandler
+.a8cd	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
 >a8d0	43 61 6e 6e 6f 74 20 63				.text 	"Cannot create variable",0
 >a8d8	72 65 61 74 65 20 76 61 72 69 61 62 6c 65 00
 
@@ -1329,27 +1329,143 @@
 
 ;******  Return to file: main.asm
 
-.a8e7					SyntaxError:
->a8e7	ff						.byte 	$FF
-.a8e8	a2 02		ldx #$02			ldx 	#2
-.a8ea					WarmStart:
->a8ea	ff						.byte 	$FF
-.a8eb	a2 03		ldx #$03			ldx 	#3
-.a8ed					ErrorHandler:
->a8ed	ff						.byte 	$FF
-.a8ee	a2 04		ldx #$04			ldx 	#4
 
-;******  Processing file: generated/testcode.inc
+;******  Processing file: structures/fornext.asm
 
->1100	07 e8 03 83 80 b9 00 0c			.byte $07,$e8,$03,$83,$80,$b9,$00,$0c,$f2,$03,$98,$8a,$b8,$10,$a1,$47,$10,$18,$00,$09,$fc,$03,$8d,$90,$b1,$10,$3d,$00,$0f,$06,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$10,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$1a,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
->1108	f2 03 98 8a b8 10 a1 47 10 18 00 09 fc 03 8d 90
->1118	b1 10 3d 00 0f 06 04 28 10 c1 c2 e3 10 81 10 82
->1128	10 83 00 12 10 04 28 10 c1 c0 d3 df c2 e2 10 84
->1138	10 85 10 86 00 11 1a 04 28 10 c7 c4 cb cb ce df
->1148	d6 ce d1 cb e3 00
+.a8e7					Command_For:
+.a8e7	20 89 a9	jsr $a989			jsr 	StructPushCurrent 			; push current on the stack.
+.a8ea	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; check zero
+.a8ed	1d 00 0d	ora $0d00,x			ora 	stack1,x
+.a8f0	1d 00 0e	ora $0e00,x			ora 	stack2,x
+.a8f3	1d 00 0f	ora $0f00,x			ora 	stack3,x
+.a8f6	f0 34		beq $a92c			beq 	_CFZero
+.a8f8	bd 00 0f	lda $0f00,x			lda 	stack3,x 					; push 1's complement of index on
+.a8fb	49 ff		eor #$ff			eor 	#$FF 						; structure stack.
+.a8fd	c6 02		dec $02				dec 	StructSP
+.a8ff	92 02		sta ($02)			sta 	(StructSP)
+.a901	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.a904	49 ff		eor #$ff			eor 	#$FF
+.a906	c6 02		dec $02				dec 	StructSP
+.a908	92 02		sta ($02)			sta 	(StructSP)
+.a90a	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.a90d	49 ff		eor #$ff			eor 	#$FF
+.a90f	c6 02		dec $02				dec 	StructSP
+.a911	92 02		sta ($02)			sta 	(StructSP)
+.a913	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.a916	49 ff		eor #$ff			eor 	#$FF
+.a918	c6 02		dec $02				dec 	StructSP
+.a91a	92 02		sta ($02)			sta 	(StructSP)
+.a91c	ca		dex				dex 								; pop stack value
+.a91d	a9 46		lda #$46			lda 	#STM_FOR 					; push FOR marker
+.a91f	c6 02		dec $02				dec 	StructSP
+.a921	92 02		sta ($02)			sta 	(StructSP)
+.a923	a5 02		lda $02				lda 	StructSP 					; copy current so it can access it.
+.a925	85 12		sta $12				sta 	ForAddr
+.a927	a5 03		lda $03				lda 	StructSP+1
+.a929	85 13		sta $13				sta 	ForAddr+1
+.a92b	60		rts				rts
+.a92c					_CFZero:
+.a92c	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
+>a92f	46 4f 52 20 63 6f 75 6e				.text 	"FOR count zero",0
+>a937	74 20 7a 65 72 6f 00
+.a93e					Command_Next:
+.a93e	b2 02		lda ($02)			lda 	(StructSP)					; check it's FOR.
+.a940	c9 46		cmp #$46			cmp 	#STM_FOR
+.a942	d0 30		bne $a974			bne 	_CNNoFor
+.a944	5a		phy				phy
+.a945	a0 00		ldy #$00			ldy 	#0
+.a947					_CNIncrement:
+.a947	c8		iny				iny
+.a948	b1 02		lda ($02),y			lda 	(StructSP),y 				; increment the index
+.a94a	1a		inc a				inc 	a
+.a94b	91 02		sta ($02),y			sta 	(StructSP),y
+.a94d	f0 f8		beq $a947			beq		_CNIncrement 				; carry out.
+.a94f	a0 01		ldy #$01			ldy 	#1 							; now and all the counts together
+.a951	b1 02		lda ($02),y			lda 	(StructSP),y 				; on the last time round they
+.a953	c8		iny				iny 								; will all be $FF
+.a954	31 02		and ($02),y			and 	(StructSP),y
+.a956	c8		iny				iny
+.a957	31 02		and ($02),y			and 	(StructSP),y
+.a959	c8		iny				iny
+.a95a	31 02		and ($02),y			and 	(StructSP),y
+.a95c	7a		ply				ply 								; restore Y
+.a95d	1a		inc a				inc 	a 							; so this will be zero last time round
+.a95e	d0 06		bne $a966			bne 	_CNLoop 					; loop back if non-zero
+.a960	a9 09		lda #$09			lda 	#9 							; pop 9 elements off structure stack.
+.a962	20 83 a9	jsr $a983			jsr 	StructPopCount
+.a965	60		rts				rts
+.a966					_CNLoop:
+.a966	a5 02		lda $02				lda 	StructSP 					; copy current so it can access it.
+.a968	85 12		sta $12				sta 	ForAddr
+.a96a	a5 03		lda $03				lda 	StructSP+1
+.a96c	85 13		sta $13				sta 	ForAddr+1
+.a96e	a0 05		ldy #$05			ldy 	#5 							; restore the position
+.a970	20 a1 a9	jsr $a9a1			jsr 	StructPopCurrent
+.a973	60		rts				rts
+.a974					_CNNoFor:
+.a974	20 b5 a9	jsr $a9b5			jsr 	ErrorHandler
+>a977	4d 69 73 73 69 6e 67 20				.text 	"Missing FOR",0
+>a97f	46 4f 52 00
 
 ;******  Return to file: main.asm
 
->114e	00						.byte 	0
+
+;******  Processing file: structures/structures.asm
+
+.a983					StructPopCount:
+.a983	18		clc				clc
+.a984	65 02		adc $02				adc 	StructSP
+.a986	85 02		sta $02				sta 	StructSP
+.a988	60		rts				rts
+.a989					StructPushCurrent:
+.a989	a9 00		lda #$00			lda 	#0							; push bank
+.a98b	c6 02		dec $02				dec 	StructSP
+.a98d	92 02		sta ($02)			sta 	(StructSP)
+.a98f	98		tya				tya									; y Offset
+.a990	c6 02		dec $02				dec 	StructSP
+.a992	92 02		sta ($02)			sta 	(StructSP)
+.a994	a5 01		lda $01				lda 	codePtr+1 					; codeptr high
+.a996	c6 02		dec $02				dec 	StructSP
+.a998	92 02		sta ($02)			sta 	(StructSP)
+.a99a	a5 00		lda $00				lda 	codePtr 					; codeptr low
+.a99c	c6 02		dec $02				dec 	StructSP
+.a99e	92 02		sta ($02)			sta 	(StructSP)
+.a9a0	60		rts				rts
+.a9a1					StructPopCurrent:
+.a9a1	b1 02		lda ($02),y			lda 	(StructSP),y 				; codeptr low
+.a9a3	85 00		sta $00				sta 	codePtr
+.a9a5	c8		iny				iny
+.a9a6	b1 02		lda ($02),y			lda 	(StructSP),y 				; codeptr high
+.a9a8	85 01		sta $01				sta 	codePtr+1
+.a9aa	c8		iny				iny
+.a9ab	b1 02		lda ($02),y			lda 	(StructSP),y				; y offset
+.a9ad	a8		tay				tay
+.a9ae	60		rts				rts
+
+;******  Return to file: main.asm
+
+.a9af					SyntaxError:
+>a9af	ff						.byte 	$FF
+.a9b0	a2 02		ldx #$02			ldx 	#2
+.a9b2					WarmStart:
+>a9b2	ff						.byte 	$FF
+.a9b3	a2 03		ldx #$03			ldx 	#3
+.a9b5					ErrorHandler:
+>a9b5	ff						.byte 	$FF
+.a9b6	a2 04		ldx #$04			ldx 	#4
+
+;******  Processing file: generated/testcode.inc
+
+>1100	07 e8 03 83 80 b9 00 05			.byte $07,$e8,$03,$83,$80,$b9,$00,$05,$f2,$03,$80,$00,$09,$fc,$03,$82,$9c,$90,$10,$2e,$00,$06,$06,$04,$85,$14,$00,$05,$10,$04,$35,$00,$09,$1a,$04,$8d,$90,$b1,$10,$3d,$00,$0f,$24,$04,$28,$10,$c1,$c2,$e3,$10,$81,$10,$82,$10,$83,$00,$12,$2e,$04,$28,$10,$c1,$c0,$d3,$df,$c2,$e2,$10,$84,$10,$85,$10,$86,$00,$11,$38,$04,$28,$10,$c7,$c4,$cb,$cb,$ce,$df,$d6,$ce,$d1,$cb,$e3,$00
+>1108	f2 03 80 00 09 fc 03 82 9c 90 10 2e 00 06 06 04
+>1118	85 14 00 05 10 04 35 00 09 1a 04 8d 90 b1 10 3d
+>1128	00 0f 24 04 28 10 c1 c2 e3 10 81 10 82 10 83 00
+>1138	12 2e 04 28 10 c1 c0 d3 df c2 e2 10 84 10 85 10
+>1148	86 00 11 38 04 28 10 c7 c4 cb cb ce df d6 ce d1
+>1158	cb e3 00
+
+;******  Return to file: main.asm
+
+>115b	00						.byte 	0
 
 ;******  End of listing

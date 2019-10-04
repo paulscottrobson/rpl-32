@@ -19,3 +19,15 @@ rerror:	.macro
 		jsr 	ErrorHandler
 		.text 	\1,0
 		.endm
+
+; ******************************************************************************
+;
+;						  Push on structure stack
+;
+; ******************************************************************************
+
+pushstruct: .macro
+		dec 	StructSP
+		sta 	(StructSP)
+		.endm
+

@@ -1,9 +1,8 @@
--	for/next implementation & see how quick it is.
 - 	assert and some sort of unit code system.
 -	write integer conversion code.
-- 	m/l proc code.
-- 	lshift rshift operators.
+- 	add : lshift rshift operators.
 -	procedure calls
+- 	m/l proc code.
 -	repeat/until implementation
 -	if/then 
 - 	keyboard commands, tokenisation, editing etc.
@@ -12,3 +11,4 @@ Fixes
 =====
 - 	memory overflow creating identifier.
 -	procedure cannot be called A-Z.
+- 	check structure stack if < 10 ?

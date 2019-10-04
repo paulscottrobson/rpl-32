@@ -41,6 +41,8 @@ idDataAddr:		.word ? 					; data address.
 
 SignCount:		.byte ?						; sign count for divide
 
+ForAddr:		.byte ? 					; points to current FOR structure
+
 ; ******************************************************************************
 ;
 ;				Allocate Memory in the current instance space
@@ -58,8 +60,6 @@ VarMemory:		.word 	0 					; next free byte available for VARIABLES (going up)
 AllocMemory: 	.word 	0 					; last free byte availabel for ALLOC (going down)
 
 CurrentBase:	.byte 	0 					; base used for printing and tokenising constants.
-
-CurrentIndex:	.dword 	0 					; value of the current index used in FOR/NEXT.
 
 ProgramStart	= MemoryStart + $100 		; where code actually goes.
 

@@ -9,7 +9,6 @@
 ; ******************************************************************************
 ; ******************************************************************************
 
-
 		.include "data.asm"
 		.include "macro.asm"
 
@@ -45,7 +44,9 @@ Start:
 		.include "miscellany/variables.asm"	; variable handlers.
 		.include "miscellany/inttostr.asm"	; conversion
 		.include "miscellany/intfromstr.asm"; conversion
-		
+		.include "structures/fornext.asm"	; for/next code
+		.include "structures/structures.asm"; structure utility code.
+
 SyntaxError:		
 		.byte 	$FF		
 		ldx 	#2

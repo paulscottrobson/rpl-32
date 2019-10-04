@@ -90,14 +90,14 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $2b ELSE
 	.word Stack_Empty                      ; $2c EMPTY
 	.word System_END                       ; $2d END
-	.word SyntaxError                      ; $2e FOR
+	.word Command_For                      ; $2e FOR
 	.word SyntaxError                      ; $2f IF
 	.word SyntaxError                      ; $30 INDEX
 	.word SyntaxError                      ; $31 LIST
 	.word ModInteger32                     ; $32 MOD
 	.word Unary_Negate                     ; $33 NEGATE
 	.word System_New                       ; $34 NEW
-	.word SyntaxError                      ; $35 NEXT
+	.word Command_Next                     ; $35 NEXT
 	.word Stack_Nip                        ; $36 NIP
 	.word Unary_Not                        ; $37 NOT
 	.word SyntaxError                      ; $38 OLD

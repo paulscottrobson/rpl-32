@@ -42,8 +42,10 @@ if __name__ == "__main__":
 	src = """
 	12345 
 
-	99000 33- /
-
+	0
+	10000 for 
+		5+
+	next
 	54321 stop
 
 	def bcd 1 2 3
