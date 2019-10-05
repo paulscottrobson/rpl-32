@@ -120,3 +120,36 @@ System_Sys: ;; [sys]
 		rts
 
 _SSCall:jmp 	(zTemp0)
+
+; ******************************************************************************
+;
+;								Stack command
+;
+; ******************************************************************************
+
+System_Stack: ;; [stack]
+		phx 								; save stack
+		phy
+		stx 	zTemp2 						; save old TOS
+		lda 	#"["
+		jsr 	ExternPrint
+		cpx 	#0 							; empty
+		beq 	_SSEnd
+		ldx 	#1 							; start here
+_SSLoop:
+		jsr 	IntegerToString 			; print TOS
+		jsr 	ErrorPrintIntegerBuffer
+		cpx 	zTemp2 						; done TOS exit
+		beq 	_SSEnd
+		inx	 								; advance pointer print ,
+		lda 	#','
+		jsr 	ExternPrint
+		bra 	_SSLoop
+_SSEnd:				
+		lda 	#"]"						; finish off.
+		jsr 	ExternPrint
+		lda 	#13
+		jsr 	ExternPrint
+		ply
+		plx
+		rts

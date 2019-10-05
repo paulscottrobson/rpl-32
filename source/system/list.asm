@@ -59,6 +59,11 @@ _CLISkip:
 _CLIEnd:				
 		jmp 	WarmStart
 
+; ******************************************************************************
+;
+;							List current line number
+;
+; ******************************************************************************
 
 ListCurrent:
 		lda 	#CTH_NUMBER
@@ -149,14 +154,16 @@ _LCCNotDot:
 ;		Constant
 ;
 _LCConstant:
-		lda 	#CTH_NUMBER
+		lda 	#CTH_NUMBER 				; number colour
 		jsr 	ExternColour
-		ldx 	#254
-		jsr 	ExtractIntegerToTOS
-		jsr 	IntegerToString
+		ldx 	#254 						; use the topmost stack element
+		jsr 	ExtractIntegerToTOS 		; so there is a very rare case
+		jsr 	IntegerToString 			; this could corrupt stack if full :)
 		jsr 	ErrorPrintIntegerBuffer
 		bra 	_LCLoop
-
+;
+;		Print token in A
+;
 ListPrintToken:			
 		phy
 		pha 								; token colour

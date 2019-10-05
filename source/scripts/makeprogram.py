@@ -21,7 +21,7 @@ import sys
 class Program(object):
 	def __init__(self):
 		self.tokeniser = Tokeniser()
-		self.nextLine = 980
+		self.nextLine = 100
 		self.code = []
 		self.echo = False
 	#
@@ -44,11 +44,10 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
- list "STRING" '42COMMENT**' 12 
- 1234567 stop a.b.c.d
- 42 ^
- 12 19 + ^test 
-    &fred -- 
+ 'list' "STRING" '42COMMENT**' 12 
+ 1234567 
+ 42
+ 12 19 + stack list
  stop
 
 """.split("\n")

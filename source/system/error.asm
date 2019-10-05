@@ -66,6 +66,8 @@ _ErrorNoLine:
 		jmp 	WarmStart
 
 WarmStart:	
+		lda 	#COL_WHITE
+		jsr 	ExternColour
 		jmp		WarmStart
 		.byte 	$FF		
 

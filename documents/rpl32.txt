@@ -21,6 +21,9 @@ E0-FF 		Identifier labels (A-Z .) (27 off), end of identifier marker.
 -ve numbers are done backwards. The token used in 27- when encoded is not the unary -,
 but the {-} alternate minus. 
 
+Tokenising is full-word - so def tokenises as the def token, but define tokenises as
+a 6 character identifier. Double spaces are removed in tokenising.
+
 <offset> <line low> <line high>	<first token>
 
 Operators 

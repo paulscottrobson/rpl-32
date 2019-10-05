@@ -6,7 +6,8 @@ Todo
 -	repeat/until implementation
 -	if/else/endif implementation
 - 	alloc
-- 	keyboard commands, tokenisation, editing etc.
+- 	keyboard commands, tokenisation
+-	editing etc.
 
 Fixes/Bugs/Improvements
 =======================
