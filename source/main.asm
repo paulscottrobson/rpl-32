@@ -32,6 +32,7 @@ _Display:
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
+
 		jmp 	System_RUN
 
 BootMessage:
@@ -46,6 +47,7 @@ BootMessage:
 		.include "system/indexing.asm"		; array indexing
 		.include "system/error.asm" 		; error handling.
 		.include "system/inttostr.asm"		; integer to ASCII routines.
+		.include "system/intfromstr.asm"	; integer to ASCII routines.
 		.include "system/list.asm"			; list command
 		.include "functions/stack.asm"		; stack manipulation
 		.include "functions/unary.asm"		; unary functions.
@@ -56,8 +58,6 @@ BootMessage:
 		.include "functions/compare.asm"	; comparison functions
 		.include "miscellany/system.asm"	; system functions.
 		.include "miscellany/variables.asm"	; variable handlers.
-		.include "miscellany/inttostr.asm"	; conversion
-		.include "miscellany/intfromstr.asm"; conversion
 		.include "structures/fornext.asm"	; for/next code
 		.include "structures/structures.asm"; structure utility code.
 

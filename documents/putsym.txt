@@ -1,0 +1,78 @@
+
+
+
+outst:
+	"symbol table" print 		; print text
+	13 1 print 					; print cr
+	# 							; duplicate
+	@ 							; read start
+	%							; swap
+	2 +							; add 2
+	@ 							; read last
+
+
+ostlp:
+	;						duplicate top 2 values
+	;
+	> 						if start > last
+	if
+		#					duplicate top
+		pushst &			push string (pointer -> stack)
+		basprt &			print decoded
+		": " print 			print :
+
+		# peek 				read byte which is string length ?
+		+ 					add so points to last char in string.
+		# 1 + @				duplicate, add 1, read value associated
+
+		# str$ print 		print as integeer
+
+		" ($" print
+		chr$ print ")"		print as hex.
+		print
+
+		13 1 print 			print cr
+
+		3 + ostlp goto		go to next and loop round again.
+		end
+	.
+	.
+	return
+
+
+189 5 1		lda $0105,x
+133 		sta zpa
+189 6 1		lda $0106,x
+133 		sta zpb
+189 7 1		lda $0107,x
+141	ctr		sta ctr
+
+169	127		lda #127
+136			dey
+loop:
+200			iny
+49	zpa		and (zpa),y
+221 7 1		cmp $0107,x
+208 14		bne other
+232			inx
+232 		inx
+
+169 255		lda #255
+204 [ctr]	cpy ctr
+208 239 	bne loop
+186 		tax
+157 3 1		sta $0103,x
+96			rts
+
+other:
+186			tsx
+160	00		ldy #0
+177 zpa 	lda (zpa),y
+41	127 	and #127
+24			clc
+105 3 		adc #3
+101 zpa 	adc zpa
+157 5 1		sta $0105,x
+144	3		bcc $03
+254 6 1		inc $0106,x
+96				rts

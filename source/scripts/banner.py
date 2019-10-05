@@ -11,14 +11,14 @@
 
 from datetime import datetime
 
-build = 142
+build = 0
 
 d = datetime.now().strftime("%d-%b-%Y")
 
 s = "**** RPL/32 Interpreter ****"
 s = s + chr(13)+chr(13)
 
-s = s + "Build:"+str(build)+" Date:"+d
+s = s + "Build:"+(str(build) if build > 0 else "Dev")+" Date:"+d
 s = s + chr(13)+chr(13)
 
 s = s + chr(0)
