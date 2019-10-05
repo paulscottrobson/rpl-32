@@ -48,9 +48,9 @@ _IDSkip:iny
 		jmp 	Execute
 
 _IDUnknown:
-		.rerror "Unknown variable"
+		.rerror "UNKNOWN VARIABLE"
 IDTypeError:
-		.rerror	"Variable Required"
+		.rerror	"MISSING VARIABLE"
 
 ; ******************************************************************************
 ;
@@ -59,6 +59,10 @@ IDTypeError:
 ; ******************************************************************************
 
 WriteVariable: ;; [^]
+		lda 	(codePtr),y 				; check variable 
+		cmp 	#$C0
+		bcc 	IDTypeError
+		;
 		jsr 	IdentifierSearch 			; does it exist
 		bcc 	_WVNoIdentifier
 		;
@@ -111,6 +115,6 @@ _WVSkipIdentifier:
 		rts									; go back and execute again.
 
 _WVCantCreate:
-		.rerror	"Cannot create variable"
+		.rerror	"CANNOT CREATE VARIABLE"
 
 		

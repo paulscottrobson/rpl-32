@@ -53,9 +53,7 @@ System_Assert: ;; [assert]
 		ora 	stack1+2,x
 		ora 	stack1+3,x
 		bne 	_SAOkay
-		.byte 	$FF
-		lda 	$A5
-		.rerror "Assert"
+		.rerror "ASSERT"
 _SAOkay:rts		
 
 ; ******************************************************************************
@@ -82,7 +80,7 @@ _SOFindZero:
 		beq 	_SOFoundEnd
 		iny				
 		bne 	_SOFindZero
-		rerror 	"Cannot Recover"			; couldn't find it.
+		rerror 	"CANNOT RECOVER"			; couldn't find it.
 ;
 _SOFoundEnd:
 		iny 								; update the offset

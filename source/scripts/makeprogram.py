@@ -44,7 +44,7 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
- 42 ^a a a 
+ 42 ^
  stop
 
 """.split("\n")

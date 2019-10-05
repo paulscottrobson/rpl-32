@@ -19,14 +19,23 @@
 Start:	
 		ldx 	#$FF 						; reset the stack.
 		txs
+		jsr 	ExternInitialise 			; interface setup
 
-		jsr 	System_New
-		jsr 	System_Old
+		ldx 	#0 							; display boot message
+_Display:
+		lda 	BootMessage,x
+		jsr 	ExternPrint
+		inx		
+		lda 	BootMessage,x
+		bne 	_Display
 
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
 		jmp 	System_RUN
+
+BootMessage:
+		.include "generated/bootmessage.inc"
 
 		.include "generated/tables.inc" 	; keyword tables, constants, vector table.
 		.include "system/extern.asm"		; external functions.
@@ -35,6 +44,8 @@ Start:
 		.include "system/reset.asm"			; reset variables etc., reset code to start
 		.include "system/scan.asm" 			; scan through code looking for procedures.
 		.include "system/indexing.asm"		; array indexing
+		.include "system/error.asm" 		; error handling.
+		.include "system/inttostr.asm"		; integer to ASCII routines.
 		.include "functions/stack.asm"		; stack manipulation
 		.include "functions/unary.asm"		; unary functions.
 		.include "functions/memory.asm"		; memory r/w functions
@@ -49,15 +60,6 @@ Start:
 		.include "structures/fornext.asm"	; for/next code
 		.include "structures/structures.asm"; structure utility code.
 
-SyntaxError:		
-		.byte 	$FF		
-		ldx 	#2
-WarmStart:	
-		.byte 	$FF		
-		ldx 	#3
-ErrorHandler:
-		.byte 	$FF		
-		ldx 	#4
 
 		* = ProgramStart
 		.include "generated/testcode.inc"

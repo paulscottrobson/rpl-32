@@ -81,5 +81,5 @@ _ICAddSubscript:
 		rts
 
 _ICZero:
-		.rerror "Uninitialised array"		
+		.rerror "UNINITIALISED ARRAY"		
 

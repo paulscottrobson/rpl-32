@@ -1,8 +1,5 @@
 Todo
 ====
--	^ alone doesn't work ? end of line
--	error displays / warm start
--	write integer conversion code
 - 	add : lshift rshift operators.
 -	procedure calls / return
 - 	m/l proc code
@@ -16,5 +13,4 @@ Fixes/Bugs/Improvements
 - 	memory overflow creating identifier.
 -	procedure cannot be called A-Z.
 - 	check structure stack if < 10 ?
-- 	mod - 1919633271 mod −8 is wrong. perhaps
 

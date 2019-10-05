@@ -17,7 +17,7 @@ DivInteger32: 	;; [/]
 		ora 	stack2+1,x
 		ora 	stack3+1,x
 		bne 	_BFDOkay
-		rerror	"Division by Zero"
+		rerror	"DIVISION BY ZERO"
 		;
 		;		Reset the interim values
 		;

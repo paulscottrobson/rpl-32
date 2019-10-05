@@ -16,6 +16,8 @@ MemoryEnd = $6000 							; and ends here.
 
 StructureStack = $0BFF 						; structure stack (works down to $xx00)
 
+ExtDataArea = $0A00 						; space where non zp data goes
+
 HashTableSize = 16 							; hash tables to search.
 
 ; ******************************************************************************
@@ -35,13 +37,29 @@ zTemp2: 		.word ?
 
 zLTemp1:		.dword ?					; temporary longs
 
-breakCount:		.byte ? 					; used to stop break firing every execution.
-
 idDataAddr:		.word ? 					; data address.
+
+ForAddr:		.byte ? 					; points to current FOR structure
+
+; ******************************************************************************
+;
+;							Non zero page data area
+;
+; ******************************************************************************
+
+		* = ExtDataArea
+
+SBuffer:		.fill 32 					; string buffer
+
+SBPosition:		.byte ? 					; position in String Buffer
+
+NumConvCount:	.byte ? 					; used in int to string
+
+breakCount:		.byte ? 					; used to stop break firing every execution.
 
 SignCount:		.byte ?						; sign count for divide
 
-ForAddr:		.byte ? 					; points to current FOR structure
+NumSuppress:	.byte ? 					; zero suppression flag
 
 ; ******************************************************************************
 ;
@@ -89,3 +107,18 @@ IDT_CODEPROC = 'C'							; machine language procedure.
 STM_FOR = 'F'								; structure markers (for/next)
 STM_CALL = 'C'								; call & return  (& ;)
 STM_REPEAT = 'R'							; repeat & until
+;
+;		Colours.
+;
+COL_BLACK = 0 		
+COL_RED = 1
+COL_GREEN = 2
+COL_YELLOW = 3
+COL_BLUE = 4
+COL_MAGENTA = 5
+COL_CYAN = 6
+COL_WHITE = 7
+;
+;		Theming
+;
+CTH_ERROR = COL_MAGENTA

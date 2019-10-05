@@ -55,7 +55,7 @@ Command_For: ;; [for]
 		sta 	ForAddr+1
 		rts
 		
-_CFZero:rerror 	"FOR count zero"
+_CFZero:rerror 	"FOR COUNT ZERO"
 
 ; ******************************************************************************
 ;
@@ -105,7 +105,7 @@ _CNLoop:
 		rts
 
 _CNNoFor:
-		rerror	"Missing FOR"		
+		rerror	"MISSING FOR"		
 
 ; ******************************************************************************
 ;
