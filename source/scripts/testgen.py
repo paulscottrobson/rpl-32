@@ -29,10 +29,13 @@ class TestProgram(object):
 	#
 	def create(self,count = 1):
 		self.program = Program()
-		for i in range(0,count):
-			self.generateOne(self.program)
+		self.createBody(count,self.program)
 		self.program.addLine("stop")
 		self.program.render(sys.stdout)
+	#
+	def createBody(self,count,prg):
+		for i in range(0,count):
+			self.generateOne(prg)
 	#
 	def getInteger(self):
 		n = random.randint(0,10)
@@ -106,5 +109,66 @@ class MathTest(TestProgram):
 
 		prg.addLine(self.c(n1)+" "+self.c(n2)+" "+op+" "+self.c(result)+" = assert")
 
+# ******************************************************************************
+#
+#								unary tests
+#
+# ******************************************************************************
+
+class UnaryTest(TestProgram):
+	def __init__(self,seed = None):
+		TestProgram.__init__(self,seed)
+		self.options = "not,negate,abs,++,--,>>,<<".split(",")
+
+	def generateOne(self,prg):
+		prg.echo = True
+		ok = False
+		while not ok:
+			ok = True
+			result = None
+			op = self.options[random.randint(0,len(self.options)-1)]
+			n1 = self.getInteger()
+			if op == "not":
+				result = n1 ^ 0xFFFFFFFF
+			if op == "abs":
+				result = abs(n1)
+			if op == "negate":
+				result = (-n1) & 0xFFFFFFFF
+			if op == "++" or op == "--":
+				result = n1+(1 if op == "++" else -1)
+				ok = self.inRange(n1)
+			if op == "<<" or op == ">>":
+				result = (n1 << 1) if op == "<<" else (n1 >> 1) & 0x7FFFFFFF
+				result = result & 0xFFFFFFFF
+		prg.addLine(self.c(n1)+" "+op+" "+self.c(result)+" = assert")
+
+# ******************************************************************************
+#
+#						assignment/identifier  tests
+#
+# ******************************************************************************
+
+class AssignmentTest(TestProgram):
+	def createBody(self,count,prg):
+		prg.echo = True
+		self.variables = {}
+		while len(self.variables.keys()) != count:
+			newVar = "".join([chr(random.randint(0,25)+97) for x in range(0,random.randint(1,5))])
+			self.variables[newVar] = self.getInteger()			
+		for k in self.variables.keys():
+			prg.addLine(self.c(self.variables[k])+" ^"+k)
+		self.check(prg)
+		self.check(prg)
+
+	def check(self,prg):
+		for k in self.variables.keys():
+			prg.addLine(self.c(self.variables[k])+" "+k+ " = assert")
+
 if __name__ == "__main__":
-	MathTest().create(500)
+	t = 1 if len(sys.argv) == 1 else int(sys.argv[1])
+	if t == 1:
+		MathTest().create(500)
+	if t == 2:
+		UnaryTest().create(500)
+	if t == 3:
+		AssignmentTest(42).create(1)

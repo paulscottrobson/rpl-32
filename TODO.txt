@@ -1,8 +1,8 @@
 Todo
 ====
--	check << and >> work.
-- 	unary functions test
--	variable creation and update test
+-	fix a a a bug
+-	^ alone doesn't work ? end of line
+- 	complete assignment unit test
 -	error displays / warm start
 -	write integer conversion code
 - 	add : lshift rshift operators.
@@ -13,10 +13,10 @@ Todo
 - 	alloc
 - 	keyboard commands, tokenisation, editing etc.
 
-Fixes
-=====
+Fixes/Bugs/Improvements
+=======================
 - 	memory overflow creating identifier.
 -	procedure cannot be called A-Z.
 - 	check structure stack if < 10 ?
-- 	mod - 1919633271 mod −8 is wrong.
+- 	mod - 1919633271 mod −8 is wrong. perhaps
 

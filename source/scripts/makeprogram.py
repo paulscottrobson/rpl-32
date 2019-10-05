@@ -43,13 +43,9 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
-	12345 
-	42
-	54321 1 assert stop
+ 42 ^a a a 
+ stop
 
-	def bcd 1 2 3
-	def bat.cc 4 5 6	
-	def hello.world
 """.split("\n")
 	program = Program()
 	for s in src:
