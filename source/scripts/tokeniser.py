@@ -56,18 +56,18 @@ class Tokeniser(object):
 				self.code.append(self.tokens["{-}"])						# special constant -
 			return m.group(3) 	
 		#
-		for l in range(self.maxLen,0,-1):									# check all lengths
-			if s[:l].upper() in self.tokens: 								# found a match
-				self.code.append(self.tokens[s[:l].upper()])				# add the token
-				return s[l:] 												# remove from string
-		#
 		m = re.match("^([A-Za-z\\.]+)(.*)$",s)								# identifiers
-		if m is not None:
+		if m is not None and m.group(1).upper() not in self.tokens.keys()	:
 			ident = m.group(1).upper()										# make upper case.
 			ident = [self.convert(c) for c in ident]
 			ident[-1] += 0x20 												# mark end of identifier
 			self.code += ident
 			return m.group(2)												# return rest of line
+		#
+		for l in range(self.maxLen,0,-1):									# check all lengths
+			if s[:l].upper() in self.tokens: 								# found a match
+				self.code.append(self.tokens[s[:l].upper()])				# add the token
+				return s[l:] 												# remove from string
 		#
 		assert False,"Can't tokenise {"+s+"}"
 	#
@@ -108,3 +108,4 @@ if __name__ == "__main__":
 	tok.test("1 - 1-")
 	tok.test("> >=")
 	tok.test("hello.world")
+	tok.test("defa ")

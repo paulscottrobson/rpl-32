@@ -60,7 +60,7 @@ for i in range(0,26):
 
 print("\t"+" ".join(svar))
 
-hashTable = 0x1066
+hashTable = 0x1068
 hashCount = 16
 print("Variables :")
 for i in range(0,hashCount):

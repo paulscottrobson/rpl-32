@@ -45,7 +45,7 @@ _IDSkip:iny
 		sta 	stack3,x
 		ply
 		;
-		rts
+		jmp 	Execute
 
 _IDUnknown:
 		.rerror "Unknown variable"
@@ -108,7 +108,7 @@ _WVSkipIdentifier:
 		;
 		;		skip over identifier.
 		;
-		jmp 	Execute 					; go back and execute again.
+		rts									; go back and execute again.
 
 _WVCantCreate:
 		.rerror	"Cannot create variable"

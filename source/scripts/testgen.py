@@ -11,6 +11,7 @@
 
 import random,sys
 from makeprogram import *
+from tokens import *
 
 # ******************************************************************************
 #
@@ -25,10 +26,12 @@ class TestProgram(object):
 			random.seed()
 			seed = random.randint(0,99999)
 		random.seed(seed)
-		sys.stderr.write("*** Test # "+str(seed)+ "***\n")
+		sys.stderr.write("*** Test # "+str(seed)+" "+self.getName()+" ***\n")
+		self.tokens = RPLTokens().getTokens()
 	#
-	def create(self,count = 1):
+	def create(self,count = 1,echo = False):
 		self.program = Program()
+		self.program.echo = echo
 		self.createBody(count,self.program)
 		self.program.addLine("stop")
 		self.program.render(sys.stdout)
@@ -64,8 +67,10 @@ class MathTest(TestProgram):
 		TestProgram.__init__(self,seed)
 		self.options = "<,>,>=,<=,=,<>,+,-,*,/,and,or,xor".split(",")
 
+	def getName(self):
+		return "Maths"
+
 	def generateOne(self,prg):
-		prg.echo = True
 		ok = False
 		while not ok:
 			ok = True
@@ -120,8 +125,10 @@ class UnaryTest(TestProgram):
 		TestProgram.__init__(self,seed)
 		self.options = "not,negate,abs,++,--,>>,<<".split(",")
 
+	def getName(self):
+		return "Unary"
+		
 	def generateOne(self,prg):
-		prg.echo = True
 		ok = False
 		while not ok:
 			ok = True
@@ -149,26 +156,38 @@ class UnaryTest(TestProgram):
 # ******************************************************************************
 
 class AssignmentTest(TestProgram):
+
+	def getName(self):
+		return "Assignment"
+		
 	def createBody(self,count,prg):
-		prg.echo = True
 		self.variables = {}
 		while len(self.variables.keys()) != count:
 			newVar = "".join([chr(random.randint(0,25)+97) for x in range(0,random.randint(1,5))])
-			self.variables[newVar] = self.getInteger()			
-		for k in self.variables.keys():
+			if newVar.upper() not in self.tokens:
+				self.variables[newVar] = self.getInteger()			
+		vList = [x for x in self.variables.keys()]
+		for k in vList:
 			prg.addLine(self.c(self.variables[k])+" ^"+k)
 		self.check(prg)
-		self.check(prg)
+		for p in range(1,5):
+			for n in range(0,count >> 1):
+				v = vList[random.randint(0,len(vList)-1)]
+				self.variables[v] = self.getInteger()
+				prg.addLine(self.c(self.variables[v])+" ^"+v)
+			self.check(prg)
 
 	def check(self,prg):
 		for k in self.variables.keys():
 			prg.addLine(self.c(self.variables[k])+" "+k+ " = assert")
 
 if __name__ == "__main__":
-	t = 1 if len(sys.argv) == 1 else int(sys.argv[1])
+	t = 0 if len(sys.argv) == 1 else int(sys.argv[1])
+	if t == 0:
+		AssignmentTest(53167).create(200,True)
 	if t == 1:
 		MathTest().create(500)
 	if t == 2:
 		UnaryTest().create(500)
 	if t == 3:
-		AssignmentTest(42).create(1)
+		AssignmentTest().create(200)

@@ -9,7 +9,7 @@
 ; ******************************************************************************
 ; ******************************************************************************
 
-BuildAddress = $6000 						; build the interpreter here
+BuildAddress = $A000 						; build the interpreter here
 StackAddress = $0C00 						; 1k of stack space (256 x 32 bits)
 MemoryStart = $1000 						; system memory starts here
 MemoryEnd = $6000 							; and ends here.

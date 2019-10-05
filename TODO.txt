@@ -1,8 +1,6 @@
 Todo
 ====
--	fix a a a bug
 -	^ alone doesn't work ? end of line
-- 	complete assignment unit test
 -	error displays / warm start
 -	write integer conversion code
 - 	add : lshift rshift operators.

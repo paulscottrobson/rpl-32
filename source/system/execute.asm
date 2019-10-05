@@ -24,6 +24,7 @@ EXNextLine:
 		bcc 	_EXNLNoBump
 		inc 	codePtr+1
 _EXNLNoBump:
+
 		ldy 	#3 							; position in that line
 		lda 	(codePtr) 					; read offset
 		bne 	Execute 					; not end of program
