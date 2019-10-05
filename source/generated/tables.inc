@@ -19,44 +19,44 @@ KeywordText:
 	.byte $01,$3e                          ; $1f >
 	.byte $02,$3e,$3d                      ; $20 >=
 	.byte $02,$3e,$3e                      ; $21 >>
-	.byte $01,$00                          ; $22 @
-	.byte $03,$01,$02,$13                  ; $23 ABS
-	.byte $05,$01,$0c,$0c,$0f,$03          ; $24 ALLOC
-	.byte $03,$01,$0e,$04                  ; $25 AND
-	.byte $06,$01,$13,$13,$05,$12,$14      ; $26 ASSERT
-	.byte $02,$03,$21                      ; $27 C!
-	.byte $02,$03,$00                      ; $28 C@
-	.byte $03,$04,$05,$06                  ; $29 DEF
-	.byte $04,$04,$12,$0f,$10              ; $2a DROP
-	.byte $03,$04,$15,$10                  ; $2b DUP
-	.byte $04,$05,$0c,$13,$05              ; $2c ELSE
-	.byte $05,$05,$0d,$10,$14,$19          ; $2d EMPTY
-	.byte $03,$05,$0e,$04                  ; $2e END
-	.byte $05,$05,$0e,$04,$09,$06          ; $2f ENDIF
-	.byte $03,$06,$0f,$12                  ; $30 FOR
-	.byte $02,$09,$06                      ; $31 IF
-	.byte $05,$09,$0e,$04,$05,$18          ; $32 INDEX
-	.byte $04,$0c,$09,$13,$14              ; $33 LIST
-	.byte $03,$0d,$0f,$04                  ; $34 MOD
-	.byte $06,$0e,$05,$07,$01,$14,$05      ; $35 NEGATE
-	.byte $03,$0e,$05,$17                  ; $36 NEW
-	.byte $04,$0e,$05,$18,$14              ; $37 NEXT
-	.byte $03,$0e,$09,$10                  ; $38 NIP
-	.byte $03,$0e,$0f,$14                  ; $39 NOT
-	.byte $03,$0f,$0c,$04                  ; $3a OLD
-	.byte $02,$0f,$12                      ; $3b OR
-	.byte $04,$0f,$16,$05,$12              ; $3c OVER
-	.byte $06,$12,$05,$10,$05,$01,$14      ; $3d REPEAT
-	.byte $03,$12,$15,$0e                  ; $3e RUN
-	.byte $04,$13,$14,$0f,$10              ; $3f STOP
-	.byte $04,$13,$17,$01,$10              ; $40 SWAP
-	.byte $03,$13,$19,$13                  ; $41 SYS
-	.byte $05,$15,$0e,$14,$09,$0c          ; $42 UNTIL
-	.byte $02,$17,$21                      ; $43 W!
-	.byte $02,$17,$00                      ; $44 W@
-	.byte $03,$18,$0f,$12                  ; $45 XOR
-	.byte $02,$1b,$1d                      ; $46 []
-	.byte $01,$1e                          ; $47 ^
+	.byte $01,$40                          ; $22 @
+	.byte $03,$41,$42,$53                  ; $23 ABS
+	.byte $05,$41,$4c,$4c,$4f,$43          ; $24 ALLOC
+	.byte $03,$41,$4e,$44                  ; $25 AND
+	.byte $06,$41,$53,$53,$45,$52,$54      ; $26 ASSERT
+	.byte $02,$43,$21                      ; $27 C!
+	.byte $02,$43,$40                      ; $28 C@
+	.byte $03,$44,$45,$46                  ; $29 DEF
+	.byte $04,$44,$52,$4f,$50              ; $2a DROP
+	.byte $03,$44,$55,$50                  ; $2b DUP
+	.byte $04,$45,$4c,$53,$45              ; $2c ELSE
+	.byte $05,$45,$4d,$50,$54,$59          ; $2d EMPTY
+	.byte $03,$45,$4e,$44                  ; $2e END
+	.byte $05,$45,$4e,$44,$49,$46          ; $2f ENDIF
+	.byte $03,$46,$4f,$52                  ; $30 FOR
+	.byte $02,$49,$46                      ; $31 IF
+	.byte $05,$49,$4e,$44,$45,$58          ; $32 INDEX
+	.byte $04,$4c,$49,$53,$54              ; $33 LIST
+	.byte $03,$4d,$4f,$44                  ; $34 MOD
+	.byte $06,$4e,$45,$47,$41,$54,$45      ; $35 NEGATE
+	.byte $03,$4e,$45,$57                  ; $36 NEW
+	.byte $04,$4e,$45,$58,$54              ; $37 NEXT
+	.byte $03,$4e,$49,$50                  ; $38 NIP
+	.byte $03,$4e,$4f,$54                  ; $39 NOT
+	.byte $03,$4f,$4c,$44                  ; $3a OLD
+	.byte $02,$4f,$52                      ; $3b OR
+	.byte $04,$4f,$56,$45,$52              ; $3c OVER
+	.byte $06,$52,$45,$50,$45,$41,$54      ; $3d REPEAT
+	.byte $03,$52,$55,$4e                  ; $3e RUN
+	.byte $04,$53,$54,$4f,$50              ; $3f STOP
+	.byte $04,$53,$57,$41,$50              ; $40 SWAP
+	.byte $03,$53,$59,$53                  ; $41 SYS
+	.byte $05,$55,$4e,$54,$49,$4c          ; $42 UNTIL
+	.byte $02,$57,$21                      ; $43 W!
+	.byte $02,$57,$40                      ; $44 W@
+	.byte $03,$58,$4f,$52                  ; $45 XOR
+	.byte $02,$5b,$5d                      ; $46 []
+	.byte $01,$5e                          ; $47 ^
 	.byte $01,$2d                          ; $48 {-}
 	.byte $00
 
@@ -96,7 +96,7 @@ KeywordVectorTable:
 	.word Command_For                      ; $30 FOR
 	.word SyntaxError                      ; $31 IF
 	.word Command_Index                    ; $32 INDEX
-	.word SyntaxError                      ; $33 LIST
+	.word Cmd_List                         ; $33 LIST
 	.word ModInteger32                     ; $34 MOD
 	.word Unary_Negate                     ; $35 NEGATE
 	.word System_New                       ; $36 NEW

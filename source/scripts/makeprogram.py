@@ -21,7 +21,7 @@ import sys
 class Program(object):
 	def __init__(self):
 		self.tokeniser = Tokeniser()
-		self.nextLine = 1000
+		self.nextLine = 980
 		self.code = []
 		self.echo = False
 	#
@@ -34,7 +34,7 @@ class Program(object):
 		self.code.append(self.nextLine & 0xFF)
 		self.code.append(self.nextLine >> 8)
 		self.code += code
-		self.nextLine += 1
+		self.nextLine += 10
 	#
 	def render(self,h):
 		s = ",".join(["${0:02x}".format(x) for x in self.code])	
@@ -44,7 +44,11 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
+ list "STRING" '42COMMENT**' 12 
+ 1234567 stop a.b.c.d
  42 ^
+ 12 19 + ^test 
+    &fred -- 
  stop
 
 """.split("\n")

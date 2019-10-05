@@ -65,40 +65,9 @@ _EXGetNext:
 ; ******************************************************************************
 
 EXPushConstant:
-		inx 								; make stack space
-		and 	#$3F 						; to start with, it's just that value
-		sta 	stack0,x
-		stz 	stack1,x
-		stz 	stack2,x
-		stz 	stack3,x
-_EXConstantLoop:		
-		lda 	(codePtr),y 				; look at next ?
-		and 	#$C0 						; in range 80-FF e.g. 10xx xxxx
-		cmp 	#$80 
-		bne		Execute 					; no do the next.
-		;
-		;		First multiply the whole thing by 256, preserving the MSB
-		;
-		lda 	stack3,x 					; put the MSB in A
-		pha
-		lda 	stack2,x 					; shift every byte up one, e.g. x 256
-		sta 	stack3,x
-		lda 	stack1,x
-		sta 	stack2,x
-		lda 	stack0,x
-		sta 	stack1,x
-		stz 	stack0,x
-		pla
-		;
-		jsr 	EXShiftTOSRight 				; shift the whole A:Top of Stack right twice
-		jsr 	EXShiftTOSRight				; which will be x64
-		;
-		lda 	(codePtr),y 				; get and skip constant shift
-		iny
-		and 	#$3F
-		ora 	stack0,x 					; or into low byte
-		sta 	stack0,x
-		bra 	_EXConstantLoop
+		dey 
+		jsr 	ExtractIntegerToTOS 		; extract integer
+		bra 	Execute
 
 ; ******************************************************************************
 ;
@@ -148,7 +117,7 @@ EXStringSkip:
 		adc 	(codePtr),y					; add the total length
 		tay 			 					; and make that the current position.
 		dey 								; back one because of the initial skip
-		jmp 	Execute
+		bra 	Execute
 
 ; ******************************************************************************
 ;	
@@ -163,4 +132,49 @@ EXShiftTOSRight:
 		ror 	stack1,x
 		ror 	stack0,x
 		rts
+
+; ******************************************************************************
+;
+;					Extract integer at (codePtr),y to TOS
+;
+; ******************************************************************************
 		
+ExtractIntegerToTOS:		
+		lda 	(codePtr),y
+		iny
+		inx 								; make stack space
+		and 	#$3F 						; to start with, it's just that value
+		sta 	stack0,x
+		stz 	stack1,x
+		stz 	stack2,x
+		stz 	stack3,x
+_EXConstantLoop:		
+		lda 	(codePtr),y 				; look at next ?
+		and 	#$C0 						; in range 80-FF e.g. 10xx xxxx
+		cmp 	#$80 
+		bne		_EXDone 					; no then exit
+		;
+		;		First multiply the whole thing by 256, preserving the MSB
+		;
+		lda 	stack3,x 					; put the MSB in A
+		pha
+		lda 	stack2,x 					; shift every byte up one, e.g. x 256
+		sta 	stack3,x
+		lda 	stack1,x
+		sta 	stack2,x
+		lda 	stack0,x
+		sta 	stack1,x
+		stz 	stack0,x
+		pla
+		;
+		jsr 	EXShiftTOSRight 				; shift the whole A:Top of Stack right twice
+		jsr 	EXShiftTOSRight				; which will be x64
+		;
+		lda 	(codePtr),y 				; get and skip constant shift
+		iny
+		and 	#$3F
+		ora 	stack0,x 					; or into low byte
+		sta 	stack0,x
+		bra 	_EXConstantLoop
+_EXDone:
+		rts		

@@ -46,6 +46,7 @@ BootMessage:
 		.include "system/indexing.asm"		; array indexing
 		.include "system/error.asm" 		; error handling.
 		.include "system/inttostr.asm"		; integer to ASCII routines.
+		.include "system/list.asm"			; list command
 		.include "functions/stack.asm"		; stack manipulation
 		.include "functions/unary.asm"		; unary functions.
 		.include "functions/memory.asm"		; memory r/w functions

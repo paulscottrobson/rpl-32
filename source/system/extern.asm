@@ -16,8 +16,10 @@
 ; ******************************************************************************
 
 ExternInitialise:
-		lda 	#$60 							; set colour
+		lda 	#$07 						; set colour
 		sta 	646
+		lda 	#14							; lower case
+		jsr 	$FFD2
 		lda 	#147 						; clear screen
 		jsr 	$FFD2
 		lda 	#COL_WHITE 					; white text.
@@ -80,7 +82,7 @@ _ECTable:
 		.byte 	158
 		.byte 	31
 		.byte 	156
-		.byte 	169
+		.byte 	159
 		.byte 	5
 
 

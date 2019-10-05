@@ -10,6 +10,7 @@ Todo
 
 Fixes/Bugs/Improvements
 =======================
+- 	fix listing numbers, make one of the yellows cyan (number)
 - 	memory overflow creating identifier.
 -	procedure cannot be called A-Z.
 - 	check structure stack if < 10 ?

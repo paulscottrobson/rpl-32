@@ -29,7 +29,7 @@ class Tokeniser(object):
 	#
 	def tokenise(self,s):
 		self.code = []														# result code 
-		s = s.replace("\n"," ").replace("\t"," ")
+		s = s.replace("\n"," ").replace("\t"," ").strip()
 		while s != "":														# tokenise everything
 			s = self.tokeniseOne(s)
 		self.code.append(0)													# end of line marker

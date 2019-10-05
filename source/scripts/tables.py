@@ -25,7 +25,7 @@ for i in range(0,len(tokenNames)):
 	name = tokenNames[i] if tokenNames[i] != "{-}" else "-"				# convert constant minus
 	for c in [ord(x) for x in name]:									# check legal 6 bit ASCII
 		assert c >= 32 and c < 96
-	kbytes = [ord(x) & 0x3F for x in name]								# convert to ASCII
+	kbytes = [ord(x) for x in name]										# convert to ASCII
 	kbytes.insert(0,len(kbytes))										# insert length
 	kbytes = ",".join(["${0:02x}".format(c) for c in kbytes])			# make byte string
 	print("\t.byte {0:32} ; ${1:02x} {2}".format(kbytes,i+0x10,tokenNames[i]))
