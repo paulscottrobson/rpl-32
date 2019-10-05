@@ -22,7 +22,7 @@ EXNextLine:
 		adc 	codePtr
 		sta 	codePtr
 		bcc 	_EXNLNoBump
-		inc 	codePtr
+		inc 	codePtr+1
 _EXNLNoBump:
 		ldy 	#3 							; position in that line
 		lda 	(codePtr) 					; read offset

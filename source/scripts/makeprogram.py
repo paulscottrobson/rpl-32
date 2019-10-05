@@ -23,9 +23,12 @@ class Program(object):
 		self.tokeniser = Tokeniser()
 		self.nextLine = 1000
 		self.code = []
+		self.echo = False
 	#
 	def addLine(self,txt):
 		txt = txt.strip().replace("\t"," ").replace("\n"," ")
+		if self.echo:
+			sys.stderr.write("{0:5} {1}\n".format(self.nextLine,txt))
 		code = self.tokeniser.tokenise(txt)
 		self.code.append(len(code)+3)
 		self.code.append(self.nextLine & 0xFF)
@@ -41,12 +44,8 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 	12345 
-	1 14 ^a 65490 sys 30 ^a 65490 sys
-	64 for index 33 + ^a 65490 sys next
-	100 for
-		1000 for next
-	next
-	54321 stop
+	42
+	54321 1 assert stop
 
 	def bcd 1 2 3
 	def bat.cc 4 5 6	

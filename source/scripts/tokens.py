@@ -42,7 +42,7 @@ class RPLTokens(object):
 		repeat 	until
 		if 		else 	endif		
 		def 	; 		&
-		sys 	list	new 	old		run		stop	end 
+		sys 	list	new 	old		run		stop	end 	assert
 		^		[]		{-}		
 """		
 RPLTokens.tokens = None														# Static tokens

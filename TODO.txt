@@ -1,13 +1,16 @@
+Todo
+====
+-	check << and >> work.
+- 	unary functions test
+-	variable creation and update test
 -	error displays / warm start
-- 	assert and some sort of unit code system.
--	write integer conversion code.
+-	write integer conversion code
 - 	add : lshift rshift operators.
 -	procedure calls / return
 - 	m/l proc code
 -	repeat/until implementation
 -	if/else/endif implementation
 - 	alloc
--	if/then 
 - 	keyboard commands, tokenisation, editing etc.
 
 Fixes
@@ -15,4 +18,5 @@ Fixes
 - 	memory overflow creating identifier.
 -	procedure cannot be called A-Z.
 - 	check structure stack if < 10 ?
+- 	mod - 1919633271 mod −8 is wrong.
 
