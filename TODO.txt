@@ -1,9 +1,7 @@
 Todo
 ====
-- 	add : lshift rshift operators.
 -	procedure calls / return
 - 	m/l proc code
--	repeat/until implementation
 -	if/else/endif implementation
 - 	alloc
 - 	keyboard commands, tokenisation
@@ -11,8 +9,7 @@ Todo
 
 Fixes/Bugs/Improvements
 =======================
-- 	fix listing numbers, make one of the yellows cyan (number)
-- 	memory overflow creating identifier.
+- 	memory overflow creating identifier (alloc and ident create)
 -	procedure cannot be called A-Z.
 - 	check structure stack if < 10 ?
 

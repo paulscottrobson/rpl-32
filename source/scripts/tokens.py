@@ -31,9 +31,9 @@ class RPLTokens(object):
 
 	def getTokenSource(self):
 		return """
-		++		--		<<		>> 
+		++		--		<<		>> 		
 		+ 		-		*		/		mod		
-		and		or 		xor
+		and		or 		xor 	shl 	shr
 		<= 		>= 		=		<> 		> 		<
 		negate	not 	abs		alloc
 		@ 		! 		c@ 		c! 		w@ 		w!

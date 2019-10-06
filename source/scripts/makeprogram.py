@@ -44,10 +44,12 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
- 'list' "STRING" '42COMMENT**' 12 
- 1234567 
- 42
- 12 19 + stack list
+
+12345 
+
+1- 4 shr
+
+54321
  stop
 
 """.split("\n")

@@ -59,6 +59,7 @@ BootMessage:
 		.include "miscellany/system.asm"	; system functions.
 		.include "miscellany/variables.asm"	; variable handlers.
 		.include "structures/fornext.asm"	; for/next code
+		.include "structures/repeat.asm"	; repeat/until code.
 		.include "structures/structures.asm"; structure utility code.
 
 

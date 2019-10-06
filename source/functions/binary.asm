@@ -138,3 +138,46 @@ Stack_Or: 	;; [or]
 		rts
 
 		
+; ******************************************************************************
+;
+;								Shift left/right multiple times
+;
+; ******************************************************************************
+
+Stack_Shl: 	;; [shl]		
+		sec
+		bra 	StackShift
+Stack_Shr:	;; [shr]
+		clc
+StackShift:
+		php
+		dex 
+		lda 	stack0+1,x 					; if the shift >= 32
+		and 	#$E0 						; going to be zero.
+		ora 	stack1+1,x		
+		ora 	stack2+1,x
+		ora 	stack3+1,x
+		bne 	_SSZero
+		;
+_SSLoop:		
+		dec 	stack0+1,x 					; dec check count
+		bmi 	_SSDone 					; completed ?
+		plp 								; restore flag
+		php	
+		bcs 	_SSLeft 					; do either shift.
+		jsr 	Unary_Shr
+		bra 	_SSLoop
+_SSLeft:		
+		jsr 	Unary_Shl
+		bra 	_SSLoop
+		;
+_SSZero:									; zero TOS
+		stz 	stack0,x 					; too many shifts.
+		stz 	stack1,x
+		stz 	stack2,x
+		stz 	stack3,x
+_SSDone:
+		plp 								; throw flag.
+		rts		
+
+
