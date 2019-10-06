@@ -128,6 +128,7 @@ _SSCall:jmp 	(zTemp0)
 ; ******************************************************************************
 
 System_Stack: ;; [stack]
+		rts
 		phx 								; save stack
 		phy
 		stx 	zTemp2 						; save old TOS

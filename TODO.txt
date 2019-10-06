@@ -1,5 +1,13 @@
 Todo
 ====
+-   fix seperator problem with numbers ?? (follow with sign always {+})
+		- add to tokenise.py so {+} or {-} is added.
+		- modify the scanner to cope with it.
+		- modify the lister to stop the + being printed.
+		- modify the tokeniser to generate it.
+- 	add element spaces in list.
+-	complete tokenisation
+- 	check tokenises correct + - (not {+} {-})
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation
@@ -10,6 +18,6 @@ Todo
 Fixes/Bugs/Improvements
 =======================
 - 	memory overflow creating identifier (alloc and ident create)
--	procedure cannot be called A-Z.
+-	procedure cannot be called A-Z and must be followed by an identifier.
 - 	check structure stack if < 10 ?
 

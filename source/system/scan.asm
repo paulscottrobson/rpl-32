@@ -25,18 +25,11 @@ ProcedureScan:
 _PSMain:lda 	(codePtr)					; check if end
 		beq 	_PSExit
 		ldy 	#3 							; start of line
-_PSSkipSpace:
 		lda 	(codePtr),y 				; skip over spaces
-		iny
-		cmp 	#KWD_SPACE
-		beq 	_PSSkipSpace
 		cmp 	#KWD_DEF 					; first thing is DEF ?
 		bne 	_PSNext
-_PSSkipSpace2:		
 		iny 								; skip over def first, any following spaces
 		lda 	(codePtr),y
-		cmp 	#KWD_SPACE
-		beq 	_PSSkipSpace2
 		;
 		lda 	#IDT_PROCEDURE 				; create a procedure 
 		jsr 	IdentifierCreate

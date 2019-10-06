@@ -21,6 +21,7 @@ h1:		bra 	h1
 		
 Test:	.text 	" 517 REPEATX"
 		.byte 	0
+
 ; ******************************************************************************
 ;
 ;					Tokenise (codePtr) to (zTemp1)
@@ -29,55 +30,38 @@ Test:	.text 	" 517 REPEATX"
 ; ******************************************************************************
 
 Tokenise:
-		ldy 	#0
-		;
-		;		Skip any leading spaces
-		;
-_TKSkip:lda 	(codePtr),y 				; get next
-		beq 	_TKExit 					; exit if zero.
+		ldy 	#255 						; predecrement
+_TKSkip:
 		iny
-		cmp 	#" "
-		beq 	_TKSkip 					; skip leading spaces.
-		dey
-		;
-		;		Main Loop
-		;
 _TKMainLoop:		
 		lda 	(codePtr),y 				; get and check end.
+		cmp 	#" "
+		beq 	_TKSkip
 		bne 	_TKNotEnd
 		;
 _TKExit:sta 	(zTemp1) 					; and ending $00
 		rts
 		;
-		;		Check for space, quotes
+		;		Handle quoted strings, either type.
 		;
 _TKNotEnd:
-		cmp 	#" " 						; is it space ?		
-		bne 	_TKNotSpace
-		lda 	#KWD_SPACE 					; write space token
-		jsr 	TokWriteToken
-		bra 	_TKSkip 					; skip multiple spaces.
-		;
-		;		Check for decimal constant
-		;
-_TKNotSpace:
 		cmp 	#'"'
 		beq 	_TKIsQuote
 		cmp 	#"'"
 		bne 	_TKNotQuote
-		;
-		;		Handle quoted strings, either type.
-		;
 _TKIsQuote:
 		.byte 	$FF
 		bra 	_TKMainLoop
+		;
+		;		Check for decimal constant
+		;
+_TKNotQuote:		
 		;
 		;		Update codePtr by adding Y to it, so codePtr points
 		;		to the current token. Also copy this to zTemp0
 		;		for string->integer conversion.
 		;
 		; // TODO		
-_TKNotQuote:		
 		tya 								; current pos -> zTemp0
 		clc
 		adc 	codePtr
@@ -170,13 +154,13 @@ _TKComplete:
 		;  // TODO
 		;
 		.byte 	$FF
-_TKTokenFail:
 		;
 		;		Not a token. Output an identifier sequence, if
 		;		no such sequence present, report an error
 		;
 		;  // TODO
 _TKTokenFail:
+		.byte 	$FF
 
 ; ******************************************************************************
 ;

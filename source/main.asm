@@ -32,7 +32,7 @@ _Display:
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
-		jmp 	TTest
+		;jmp 	TTest
 		
 		jmp 	System_RUN
 

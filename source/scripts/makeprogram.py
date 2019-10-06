@@ -47,10 +47,10 @@ if __name__ == "__main__":
 
 12345 
 
-1- 4 shr
+100 0
 
 54321
- stop
+ stack stop
 
 """.split("\n")
 	program = Program()

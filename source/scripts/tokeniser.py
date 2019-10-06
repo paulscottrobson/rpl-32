@@ -31,7 +31,7 @@ class Tokeniser(object):
 		self.code = []														# result code 
 		s = s.replace("\n"," ").replace("\t"," ").strip()
 		while s != "":														# tokenise everything
-			s = self.tokeniseOne(s)
+			s = self.tokeniseOne(s).strip()
 		self.code.append(0)													# end of line marker
 		return self.code
 	#

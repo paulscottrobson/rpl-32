@@ -43,12 +43,9 @@ Execute:
 		jsr 	ExternCheckBreak
 _EXNoBreak:		
 		;
-_EXGetNext:		
 		lda 	(codePtr),y 				; load the character
 		beq 	EXNextLine 					; reached end of the line.
 		iny 								; advance pointer.
-		cmp 	#KWD_SPACE 					; skip spaces
-		beq 	_ExGetNext
 		;
 		cmp 	#$10 						; is it 01-0F, which means a string/comment ?
 		bcc 	EXStringComment
