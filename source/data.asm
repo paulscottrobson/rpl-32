@@ -34,6 +34,8 @@ StructSP: 		.word ?						; structure stack pointer
 zTemp0:			.word ?						; temporary words
 zTemp1: 		.word ?
 zTemp2: 		.word ?
+zTemp3: 		.word ?
+zTemp4:			.word ?
 
 zLTemp1:		.dword ?					; temporary longs
 
