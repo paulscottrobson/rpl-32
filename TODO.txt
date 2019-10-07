@@ -1,7 +1,6 @@
 Todo
 ====
 -	complete tokenisation
-- 	check tokenises correct + - (not {+} {-})
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation

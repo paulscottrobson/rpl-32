@@ -19,7 +19,7 @@ TTest:	stz 	zTemp1
 		jsr 	Tokenise
 h1:		bra 	h1
 		
-Test:	.text 	" 517 REPEATX"
+Test:	.text 	" 6 66 66- + --DEF REPEATX 4"
 		.byte 	0
 
 ; ******************************************************************************
@@ -35,9 +35,10 @@ _TKSkip:
 		iny
 _TKMainLoop:		
 		lda 	(codePtr),y 				; get and check end.
+		beq 	_TKExit
 		cmp 	#" "
 		beq 	_TKSkip
-		bne 	_TKNotEnd
+		bra 	_TKNotEnd
 		;
 _TKExit:sta 	(zTemp1) 					; and ending $00
 		rts
@@ -50,7 +51,7 @@ _TKNotEnd:
 		cmp 	#"'"
 		bne 	_TKNotQuote
 _TKIsQuote:
-		.byte 	$FF
+		.byte 	$FF ; TODO
 		bra 	_TKMainLoop
 		;
 		;		Check for decimal constant
@@ -60,8 +61,7 @@ _TKNotQuote:
 		;		Update codePtr by adding Y to it, so codePtr points
 		;		to the current token. Also copy this to zTemp0
 		;		for string->integer conversion.
-		;
-		; // TODO		
+		;		
 		tya 								; current pos -> zTemp0
 		clc
 		adc 	codePtr
@@ -86,6 +86,17 @@ _TKNotQuote:
 		jsr 	TokWriteConstant 			; do constant recursively.
 		ply
 		dex
+		;
+		lda 	(codePtr),y
+		cmp 	#"-"						; followed by minus
+		bne 	_TKIsPositive
+		iny									; skip it
+		lda 	#KWD_CONSTANT_MINUS
+		jsr 	TokWriteToken 				; write token out
+		bra 	_TKMainLoop 				; loop back.
+_TKIsPositive:
+		lda 	#KWD_CONSTANT_PLUS
+		jsr 	TokWriteToken 				; write token out
 		bra 	_TKMainLoop 				; loop back.
 		;
 		;		Search token table
@@ -135,6 +146,7 @@ _TKFound:
 		tya
 		cmp 	zTemp3 						; check best
 		bcc 	_TKNext 					; if < best try next
+		beq 	_TKNext 					; if equal this is one of the special +- tokens
 		sta 	zTemp3 						; update best
 		lda 	zTemp3+1 					; save current token.
 		sta 	zTemp4
@@ -143,24 +155,82 @@ _TKFound:
 		;		Checked all the tokens.
 		;
 _TKComplete:
-		.byte 	$FF
-		.byte 	$FF
 		lda 	zTemp3 						; get "best score"
-		beq		_TKTokenFail
+		beq		_TKTokenFail 				; if zero no match occurred
 		;
 		;		Check if it is an identifier token, if so, check
 		;		it is a 'complete' identifier e.g. we don't have
 		;		REPEATNAME 
-		;  // TODO
+		;	
+		ldy 	zTemp3 						; length in Y
+		lda 	(codePtr) 					; look at first character
+		jsr 	TOKIsIdentifier 			; identifier character
+		bcc 	_TKOutput 					; if not, then token is okay
 		;
-		.byte 	$FF
+		lda 	(codePtr),y 				; look at character after
+		jsr 	TOKIsIdentifier 			; is that an identifier
+		bcs 	_TKTokenFail 				; if so it must be something like DEFAULT (DEF-AULT)
+_TKOutput:
+		lda 	zTemp4 						; output actual token
+		jsr 	TOKWriteToken
+		jmp 	_TKMainLoop					; go round again
 		;
 		;		Not a token. Output an identifier sequence, if
 		;		no such sequence present, report an error
 		;
-		;  // TODO
 _TKTokenFail:
-		.byte 	$FF
+		ldy 	#0
+		lda 	(codePtr) 					; is the first an identifier ?
+		jsr 	TOKIsIdentifier
+		bcs 	_TKCopyIdent 				; if yes copy it
+		rerror	"CANNOT TOKENISE"			; can't encode the line
+;
+_TKCopyIdent:
+		iny 								; get next
+		lda 	(codePtr),y
+		jsr 	TOKIsIdentifier 			; if identifier
+		php 								; save CS on stack
+		;
+		dey 								; back to character
+		lda 	(codePtr),y 				; get it
+		iny
+		cmp 	#"."
+		bne 	_TKNotDot
+		lda 	#'A'+31 					; to map . to 31
+_TKNotDot:
+		sec
+		sbc		#'A'
+		ora 	#$C0 						; in right range
+		plp 								; CS if next is identifier
+		php
+		bcs 	_TKNotLast					; CC if next is not identifier
+		ora 	#$E0 						; range E0-FF 
+_TKNotLast:
+		jsr 	TOKWriteToken 				; write out
+		plp 								; get test result
+		bcs 	_TKCopyIdent 				; get the next identifier.
+		jmp 	_TKMainLoop
+		
+
+; ******************************************************************************
+;
+;							CS if token is identifier
+;
+; ******************************************************************************
+
+TOKIsIdentifier:
+		cmp 	#"."
+		beq 	_TIIYes
+		cmp 	#"A"
+		bcc 	_TIINo
+		cmp 	#"Z"+1
+		bcs 	_TIINo
+_TIIYes:
+		sec
+		rts
+_TIINo:
+		clc
+		rts
 
 ; ******************************************************************************
 ;
