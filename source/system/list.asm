@@ -91,6 +91,7 @@ _LCPadOut:									; pad out to align neatly
 _LCLoop:
 		lda 	#' '						; space
 		jsr 	ExternPrint
+_LCLoopNoSpace:
 		lda 	(codePtr),y 				; get first	
 		bmi 	_LCIdentConst 				; identifier or constant
 		bne 	_LCStringToken
@@ -101,7 +102,10 @@ _LCStringToken:
 		cmp 	#$10 						; if < 10 it's a string.
 		bcc		_LCString 
 		jsr 	ListPrintToken
+		lda 	(codePtr),y 				; no space if ^
 		iny 								; advance pointer
+		cmp 	#KWD_HAT
+		beq 	_LCLoopNoSpace
 		bra 	_LCLoop 					; go round again.
 ;
 ;		Print a string or comment
