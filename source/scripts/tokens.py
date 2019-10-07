@@ -36,7 +36,7 @@ class RPLTokens(object):
 		<= 		>= 		=		<> 		> 		<
 		negate	not 	abs		alloc
 		@ 		! 		c@ 		c! 		w@ 		w!
-		dup		drop 	over 	nip 	swap	empty 	stack
+		dup		drop 	over 	nip 	swap	empty 	.
 		for 	index 	next
 		repeat 	until
 		if 		else 	endif		

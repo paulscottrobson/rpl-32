@@ -1,10 +1,11 @@
 Todo
 ====
+- 	keyboard commands
+-	make stack .
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation
 - 	alloc
-- 	keyboard commands
 -	editing etc.
 
 Fixes/Bugs/Improvements

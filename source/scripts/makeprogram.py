@@ -45,14 +45,8 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 
-12345 
-
-42  42-
-
-^hello.world
-
-54321
- stack list stop
+4 5 6 7 
+list stop
 
 """.split("\n")
 	program = Program()

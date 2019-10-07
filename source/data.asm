@@ -16,7 +16,9 @@ MemoryEnd = $6000 							; and ends here.
 
 StructureStack = $0BFF 						; structure stack (works down to $xx00)
 
-ExtDataArea = $0A00 						; space where non zp data goes
+ExtDataArea = $0800 						; space where non zp data goes
+InputBuffer = $0900 						; Input Buffer
+TokeniseBuffer = $0A00						; Tokenising buffer
 
 HashTableSize = 16 							; hash tables to search.
 

@@ -65,12 +65,6 @@ _ErrorNoLine:
 		jsr 	ExternPrint
 		jmp 	WarmStart
 
-WarmStart:	
-		lda 	#COL_WHITE
-		jsr 	ExternColour
-		jmp		WarmStart
-		.byte 	$FF		
-
 ; ******************************************************************************
 ;
 ;			   Print YA as a 16 bit integer. Return digit count in A

@@ -31,8 +31,36 @@ _Display:
 
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
-		
-		jmp 	System_RUN
+
+WarmStart:
+		txa
+		ldx 	#$FF 						; reset stack colour
+		txs
+		tax
+		lda 	#13
+		jsr 	ExternPrint
+		lda 	#COL_WHITE
+		jsr 	ExternColour
+		jsr 	ExternInput 				; input text
+		lda 	#InputBuffer & $FF 			; codePtr = input buffer
+		sta 	codePtr
+		lda 	#InputBuffer >> 8
+		sta 	codePtr+1
+		lda 	#(TokeniseBuffer+3) & $FF 	; zTemp1 is set up as a fake line
+		sta 	zTemp1 						; with line number 0 by being
+		lda 	#(TokeniseBuffer+3) >> 8 	; prefixed with three zeros
+		sta 	zTemp1+1
+		stz 	TokeniseBuffer+0			; put in those three zeroes
+		stz		TokeniseBuffer+1
+		stz 	TokeniseBuffer+2
+		jsr 	Tokenise
+		lda 	#TokeniseBuffer & 255 		; set tokenise buffer as faux line
+		sta 	codePtr
+		lda 	#TokeniseBuffer >> 8 
+		sta 	codePtr+1
+		ldy 	#3
+		.byte 	$FF
+		jmp 	Execute 					; and run it
 
 BootMessage:
 		.include "generated/bootmessage.inc"

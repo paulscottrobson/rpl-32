@@ -70,7 +70,7 @@ for i in range(0,len(tokenNames)):
 	s = s.replace("]","RSQPAREN").replace("*","ASTERISK").replace("+","PLUS").replace("-","MINUS")
 	s = s.replace("/","SLASH").replace("<","LESS").replace("=","EQUAL").replace(">","GREATER")
 	s = s.replace("@","AT").replace("^","HAT").replace("%","PERCENT").replace("&","AMPERSAND")
-	s = s.replace(";","SEMICOLON")
+	s = s.replace(";","SEMICOLON").replace(".","DOT")
 	assert re.match("^[A-Z\\_]*$",s) is not None
 	s = "{0} = ${1:02x}".format(s,i+0x10)								# code and write it
 	print("{0:32} ; ${1:02x} {2}".format(s,i+0x10,tokenNames[i]))

@@ -85,4 +85,28 @@ _ECTable:
 		.byte 	159
 		.byte 	5
 
+; ******************************************************************************
+;
+;			  Input a command, ASCII U/C String in InputBuffer
+;
+; ******************************************************************************
+
+ExternInput:
+		lda 	#(InputBuffer & $FF)
+		sta 	zTemp0
+		lda 	#(InputBuffer >> 8)
+		sta 	zTemp0+1
+		lda 	#COL_WHITE
+		jsr 	ExternColour
+_EIRead:jsr 	$FFCF
+		cmp 	#13
+		beq 	_EIExit
+		sta 	(zTemp0)
+		inc 	zTemp0
+		bne 	_EIRead
+		inc 	zTemp0+1
+		bra 	_EIRead
+_EIExit:lda 	#0
+		sta 	(zTemp0)
+		rts
 
