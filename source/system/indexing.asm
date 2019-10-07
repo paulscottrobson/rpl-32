@@ -20,21 +20,8 @@ IndexCheck:
 		cmp 	#KWD_LSQPARENRSQPAREN 		; left/right square bracket ?
 		beq 	_ICArrayAccess
 		;
-		and 	#$C0 						; constant (e.g. 10xx xxxx)
-		cmp 	#$80
-		bcs 	_ICSubscript
 _ICExit:
 		rts
-		;
-		;		Subscript by number
-		;		
-_ICSubscript:
-		lda 	(codePtr),y
-		iny 								; skip over subscript
-		and 	#$3F 						; lower 6 bits only.
-		sta 	zTemp1 						; save in zTemp1	
-		stz 	zTemp1+1
-		bra 	_ICAddSubscript 			; double and add to value.
 		;
 		;		Subscript by TOS
 		;		

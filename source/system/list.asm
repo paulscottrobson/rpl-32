@@ -148,7 +148,6 @@ _LCIdentConst:
 		jsr 	ExternColour 				
 _LCCIdLoop:
 		lda 	(codePtr),y 				; read
-		iny
 		and 	#$1F 						; convert
 		clc
 		adc 	#'A'
@@ -157,10 +156,11 @@ _LCCIdLoop:
 		lda 	#'.'
 _LCCNotDot:		
 		jsr 	ExternPrint
-		lda 	(codePtr),y 				; another
-		cmp 	#$C0
-		bcs 	_LCCIdLoop
-		bra 	_LCLoop
+		lda 	(codePtr),y 				; at end ?
+		iny
+		cmp 	#$E0
+		bcs 	_LCLoop
+		bra 	_LCCIdLoop
 ;
 ;		Constant
 ;

@@ -22,10 +22,11 @@ Identifier:
 		cmp 	#IDT_VARIABLE 				; must be a variable
 		bne 	IDTypeError
 		;
-_IDSkip:iny
+_IDSkip:
 		lda 	(codePtr),y
-		cmp 	#$C0
-		bcs 	_IDSkip		
+		iny
+		cmp 	#$E0
+		bcc 	_IDSkip		
 		;
 		jsr 	IndexCheck 					; check index/subscript
 		;
@@ -87,10 +88,10 @@ _WVNoIdentifier:
 _WVWriteTOS:		
 		dey 								; skip over identifier.
 _WVSkipIdentifier:
-		iny
 		lda 	(codePtr),y
-		cmp 	#$C0
-		bcs 	_WVSkipIdentifier
+		iny
+		cmp 	#$E0
+		bcc 	_WVSkipIdentifier
 		;
 		jsr 	IndexCheck 					; check index/subscript
 		;

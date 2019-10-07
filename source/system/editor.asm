@@ -51,7 +51,7 @@ _EPNotFound:
 		jsr 	EDInsertLine
 _EPNoInsert:
 		jsr 	ResetForRun
-		jmp 	WarmStart
+		jmp 	NewCommand
 
 ; *******************************************************************************************
 ;

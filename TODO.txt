@@ -1,5 +1,6 @@
 Todo
 ====
+-	[] becoming that or [short constant shortcut]
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation

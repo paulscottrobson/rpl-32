@@ -31,7 +31,19 @@ _Display:
 
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
+
+		.if debug != 0
+		jmp 	System_Run
+		.endif
+
 WarmStart:
+		lda 	#"O"
+		jsr 	ExternPrint
+		lda 	#"K"
+		jsr 	ExternPrint
+		lda 	#13
+		jsr 	ExternPrint
+NewCommand:
 		txa
 		ldx 	#$FF 						; reset stack colour
 		txs
