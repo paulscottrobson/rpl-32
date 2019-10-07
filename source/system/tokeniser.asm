@@ -9,18 +9,20 @@
 ; ******************************************************************************
 ; ******************************************************************************
 
-TTest:	stz 	zTemp1
-		lda 	#$0B
-		sta		zTemp1+1
-		lda 	#Test & 255
-		sta 	codePtr
-		lda 	#Test >> 8
-		sta 	codePtr+1
-		jsr 	Tokenise
-h1:		bra 	h1
-		
-Test:	.text 	" 6 66 66- + --DEF REPEATX 4"
-		.byte 	0
+;TTest:	stz 	zTemp1
+;		lda 	#$0B
+;		sta		zTemp1+1
+;		lda 	#Test & 255
+;		sta 	codePtr
+;		lda 	#Test >> 8
+;		sta 	codePtr+1
+;		jsr 	Tokenise
+;		.byte 	$FF
+;h1:		bra 	h1
+;		
+;Test:	.text 	" 6 66 66- + --DEF REPEATX 4 'sing'"
+;		.text 	'5"double'
+;		.byte 	0
 
 ; ******************************************************************************
 ;
@@ -51,7 +53,7 @@ _TKNotEnd:
 		cmp 	#"'"
 		bne 	_TKNotQuote
 _TKIsQuote:
-		.byte 	$FF ; TODO
+		jsr		TOKQuotedString
 		bra 	_TKMainLoop
 		;
 		;		Check for decimal constant
@@ -277,3 +279,43 @@ _TWCNoCall:
 		pla
 		ora 	#$80						; make digit token
 		bra 	TokWriteToken 				; and write it out.		
+
+; ******************************************************************************
+;
+;		Tokenise a quoted string. Quote "type" in A
+;
+; ******************************************************************************
+
+TokQuotedString:
+		sta 	zTemp2 						; save quote
+		eor 	#'"'						; now zero if double quotes
+		beq 	_TQDouble
+		lda 	#1
+_TQDouble:
+		inc 	a 							; 1 for double, 2 for single
+		jsr 	TOKWriteToken 				; write out
+		lda 	zTemp1 						; copy zTemp1 to zTemp3 (byte count addr)
+		sta 	zTemp3
+		lda 	zTemp1+1
+		sta 	zTemp3+1
+		lda 	#3 							; 3 is the size if it is empty - type,size,null
+		jsr 	TOKWriteToken
+		;
+_TQLoop:
+		iny 								; next character
+		lda 	(codePtr),y
+		beq 	_TQExit 					; if zero exit
+		cmp 	zTemp2 						; matching quote
+		beq 	_TQSkipExit 				; skip it and exit
+		jsr 	TOKWriteToken 				; write out
+		lda 	(zTemp3)					; inc char count
+		inc 	a
+		sta 	(zTemp3)
+		bra 	_TQLoop						; go round
+
+_TQSkipExit:
+		iny
+_TQExit:
+		lda 	#0 							; write out ASCIIZ
+		jsr 	TOKWriteToken
+		rts
