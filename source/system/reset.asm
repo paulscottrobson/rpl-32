@@ -81,22 +81,26 @@ _RRErase:
 ; ******************************************************************************
 
 ResetVarMemory:
-		jsr 	ResetCodePointer 			; code Pointer to start of program
+		lda 	#ProgramStart & $FF
+		sta 	zTemp0
+		lda 	#ProgramStart >> 8
+		sta 	zTemp0+1
+
 _RRFindEnd:
-		lda 	(codePtr)					; at end ?
+		lda 	(zTemp0)					; at end ?
 		beq 	_RRFoundEnd
 		clc 								; no, add offset to pointer.
-		adc 	codePtr
-		sta 	codePtr
+		adc 	zTemp0
+		sta 	zTemp0
 		bcc 	_RRFindEnd
-		inc 	codePtr+1
+		inc 	zTemp0+1
 		bra 	_RRFindEnd		
 _RRFoundEnd:
 		clc 								; add 1 to this, as it points to the last
-		lda 	codePtr 					; offset, and store in Variable Memory pointer
+		lda 	zTemp0 					; offset, and store in Variable Memory pointer
 		adc 	#1
 		sta 	VarMemory
-		lda 	codePtr+1
+		lda 	zTemp0+1
 		adc 	#0
 		sta 	VarMemory+1
 		rts

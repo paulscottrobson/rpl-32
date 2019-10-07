@@ -1,6 +1,5 @@
 Todo
 ====
--  lines adding junk with "xxx"
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation

@@ -128,6 +128,7 @@ _EDDelNext:
 		inc 	zTemp1+1
 		bra 	_EDDelLoop
 _EDDelExit:
+		jsr 	ResetVarMemory
 		rts 	
 
 ; *******************************************************************************************
@@ -149,18 +150,26 @@ EDInsertLine:
 		;
 		ldy 	#0 							; work out the line length.
 _EDGetLength:
-		lda 	(codePtr),y
+		lda 	(codePtr),y  				; get token
+		beq 	_EDGotLength 				; if 0, Y is the length
 		iny
-		cmp 	#0
-		bne 	_EDGetLength
-		dey 								; fix up.
+		cmp 	#3 							; 1 and 2 are ASCIIZ strings so skip them.
+		bcs 	_EDGetLength
+		tya 								; get original position
+		dec 	a
+		clc
+		adc 	(codePtr),y
+		tay
+		bra 	_EDGetLength
 		;
 		;		Shift up memory to make room. Use VarMemory as we'll reset it after.
 		;
+_EDGotLength:
 		tya
 		clc
 		adc 	#1+2+1 						; size required. 1 for offset, 2 for line#, 1 for end.
 		pha 								; save total size (e.g. offset)
+		sta 	zTemp4 						; save for copying
 		tay 								; in Y
 		ldx 	#0 			
 _EDInsLoop:
@@ -207,7 +216,9 @@ _EDICopyCode:
 		bne 	_EDINoCarry
 		inc 	codePtr+1
 _EDINoCarry:	
-		cmp 	#0 							; until zero copied
+		dec 	zTemp4 						; copy data in
+		lda 	zTemp4 						; this is the total count - first 3 bytes seperate
+		cmp 	#3 							; so exit on 3
 		bne 	_EDICopyCode
 		rts
 
