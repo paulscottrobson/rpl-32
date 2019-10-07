@@ -51,6 +51,23 @@ WarmStart:
 		stz		TokeniseBuffer+1
 		stz 	TokeniseBuffer+2
 		jsr 	Tokenise
+
+		ldy 	#0 							; see what's at the start re numbers
+SkipSpaces:
+		lda 	InputBuffer,y
+		iny
+		cmp 	#' '
+		beq 	SkipSpaces
+		cmp 	#'0'
+		bcc 	ExecuteCLI
+		cmp 	#'9'+1
+		bcs 	ExecuteCLI
+		lda 	InputBuffer
+		cmp 	#' '
+		beq 	ExecuteCLI
+		jmp 	SyntaxError
+
+ExecuteCLI:
 		lda 	#TokeniseBuffer & 255 		; set tokenise buffer as faux line
 		sta 	codePtr
 		lda 	#TokeniseBuffer >> 8 

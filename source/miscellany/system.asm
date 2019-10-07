@@ -69,7 +69,7 @@ _SAOkay:rts
 System_New: ;; [new]		
 		stz 	ProgramStart 				; zero the first offset, erases.
 		jsr		ResetForRun 				; clear vars, stacks etc.
-		rts
+		jmp 	WarmStart
 
 ; ******************************************************************************
 ;
