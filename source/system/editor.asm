@@ -3,7 +3,7 @@
 ;
 ;		Name : 		editor.asm
 ;		Purpose :	Edit Program
-;		Date :		29th July 2019
+;		Date :		7th October 2019
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;
 ; *******************************************************************************************
@@ -11,66 +11,61 @@
 
 ; *******************************************************************************************
 ;
-;		Editing command (e.g. begins with a digit). Tokenised Code at (zCurrentLine),y
+;									Editor Program
 ;
 ; *******************************************************************************************
 
-EditProgram:	
+EditProgram:
 		ldx 	#0
-		jsr 	EvaluateAtomCurrentLevel 	; get the line number
-		lda 	evalStack+2,x 				; upper bytes must be zero
-		ora 	evalStack+3,x
-		bne 	_EPBadLine
-		lda 	evalStack+0,x 				; lower bytes must be non-zero
-		ora 	evalStack+1,x
-		beq 	_EPBadLine
-		phy 								; save position
-		jsr 	EDFindLine 					; locate the line.
-		bcc 	_EPNotFound 				; skip delete if not found.
+		lda 	#(TokeniseBuffer+3) & $FF
+		sta 	codePtr
+		lda 	#(TokeniseBuffer+3) >> 8
+		sta 	codePtr+1
+		ldy 	#0
 		;
-		;		Delete the line as it already exists.
+		ldx 	#255
+		jsr 	ExtractIntegerToTOS
 		;
-		lda 	zTemp1 						; save the target address, as we will
-		pha 								; insert the line, if done, at the same
-		lda 	zTemp1+1 					; place
-		pha
-		jsr 	COMMAND_Clear 				; clear all vars, make sure zLowMemory is right.
-		jsr 	EDDeleteLine 				; delete the line at zTemp1
-		pla 								; restore the target address.
-		sta 	zTemp1+1
-		pla
-		sta 	zTemp1
-_EPNotFound		
-		jsr 	COMMAND_Clear 				; set up all the pointers again and reset everything.
-		ply 								; get pointer back
-_EPSkipSpaces:
-		lda 	(zCurrentLine),y 			; get character
-		beq 	_EPGoWarmStart 				; EOL, just delete, so warm start.
-		iny
-		cmp 	#32
-		beq 	_EPSkipSpaces
-		dey
-		jsr 	EDInsertLine 				; insert the line.
-		jsr 	COMMAND_Clear 				; set up all the pointers again and reset everything.
-_EPGoWarmStart:
-		jmp 	WarmStart
+		tya
+		clc
+		adc 	codePtr
+		sta 	codePtr
+		bcc 	_EPNoCarry
+		inc 	codePtr+1
+_EPNoCarry:
+		jsr 	EDFindLine
+		bcc 	_EPNotFound
 
-_EPBadLine:
-		#error	"BAD LINE"		
+		lda 	zTemp1
+		pha
+		lda 	zTemp1+1
+		pha
+		jsr 	EDDeleteLine
+		pla
+		sta 	zTemp1+1
+		pla 
+		sta 	zTemp1
+_EPNotFound:
+		lda 	(codePtr)
+		beq 	_EPNoInsert
+		jsr 	EDInsertLine
+_EPNoInsert:
+		jsr 	ResetForRun
+		jmp 	WarmStart
 
 ; *******************************************************************************************
 ;
 ;		Find line. If found then return CS and zTemp1 points to the line. If
 ;		not found return CC and zTemp1 points to the next line after it.
 ;
-;		Line# is in evalStack+0,1
+;		Line# is in stack entry 0
 ;
 ; *******************************************************************************************
 
 EDFindLine:		
-		lda 	#BasicProgram & $FF 		; set zTemp1 
+		lda 	#ProgramStart & $FF 		; set zTemp1 to start of program 
 		sta 	zTemp1
-		lda 	#BasicProgram >> 8 			
+		lda 	#ProgramStart >> 8 			
 		sta 	zTemp1+1
 _EDFLLoop:
 		ldy 	#0 							; reached the end
@@ -79,10 +74,10 @@ _EDFLLoop:
 		;
 		iny
 		sec
-		lda 	evalStack+0					; subtract the current from the target
+		lda 	stack0						; subtract the current from the target
 		sbc 	(zTemp1),y 					; so if searching for 100 and this one is 90, 
 		tax	 								; this will return 10.
-		lda 	evalStack+1
+		lda 	stack1
 		iny
 		sbc 	(zTemp1),y
 		bcc 	_EDFLFail					; if target < current then failed.
@@ -121,10 +116,10 @@ _EDDelLoop:
 		sta 	(zTemp1,x) 					; write it.
 		;
 		lda 	zTemp1 						; check if pointer has reached the end of 
-		cmp		zLowMemory 					; low memory. We will have copied down an
+		cmp		VarMemory 					; low memory. We will have copied down an
 		bne 	_EDDelNext 					; extra pile of stuff - technically should
 		lda 	zTemp1+1 					; check the upper value (e.g. zTemp1+y)
-		cmp 	zLowMemory+1				; doesn't really matter.
+		cmp 	VarMemory+1					; doesn't really matter.
 		beq		_EDDelExit
 		;
 _EDDelNext:		
@@ -133,32 +128,34 @@ _EDDelNext:
 		inc 	zTemp1+1
 		bra 	_EDDelLoop
 _EDDelExit:
-		rts
+		rts 	
 
 ; *******************************************************************************************
 ;
-;				Insert line at (zCurrentLine),y into program space at (zTemp1)
+;						Insert line at (codePtr) in program space at (zTemp1)
+;
+;						Line Number at xStack,x
 ;
 ; *******************************************************************************************
 
 EDInsertLine:
-		tya 								; make zCurrentLine point to the actual new line.
-		clc
-		adc 	zCurrentLine
-		sta 	zCurrentLine
+		lda 	VarMemory 					; copy high memory to zTemp3
+		sta 	zTemp3
+		lda 	VarMemory+1
+		sta 	zTemp3+1
 		;
 		;		Work out in Y, the line length in pure characters - so NO offset,
-		; 		line number or end marker. So A=4 is 3.
+		; 		line number or end marker. So A= 4 is 3.
 		;
 		ldy 	#0 							; work out the line length.
 _EDGetLength:
-		lda 	(zCurrentLine),y
+		lda 	(codePtr),y
 		iny
 		cmp 	#0
 		bne 	_EDGetLength
 		dey 								; fix up.
 		;
-		;		Shift up memory to make room. Use zLowMemory as we'll reset it after.
+		;		Shift up memory to make room. Use VarMemory as we'll reset it after.
 		;
 		tya
 		clc
@@ -167,22 +164,22 @@ _EDGetLength:
 		tay 								; in Y
 		ldx 	#0 			
 _EDInsLoop:
-		lda 	(zLowMemory,x)				; copy it up
-		sta 	(zLowMemory),y
+		lda 	(zTemp3,x)					; copy it up
+		sta 	(zTemp3),y
 		;
-		lda 	zLowMemory 					; reached the insert point (zTemp1)
+		lda 	zTemp3 						; reached the insert point (zTemp1)
 		cmp 	zTemp1
 		bne 	_EDINextShift
-		lda 	zLowMemory+1
+		lda 	zTemp3+1
 		cmp 	zTemp1+1
 		beq 	_EDIShiftOver
 		;
 _EDINextShift:		
-		lda 	zLowMemory 					; decrement the copy pointer.
+		lda 	zTemp3 					; decrement the copy pointer.
 		bne 	_EDINoBorrow
-		dec 	zLowMemory+1
+		dec 	zTemp3+1
 _EDINoBorrow:
-		dec 	zLowMemory			
+		dec 	zTemp3			
 		bra 	_EDInsLoop
 		;
 		;		Shift is done. So copy the new stuff in.
@@ -190,23 +187,26 @@ _EDINoBorrow:
 _EDIShiftOver:		
 		pla 								; this is the size + others, e.g. offset
 		ldy 	#0 			 							
-		sta 	(zLowMemory),y 				; write that out.
-		lda 	evalStack+0 				; write LIne# out
+		sta 	(zTemp3),y 					; write that out.
+		lda 	stack0 						; write LIne# out
 		iny
-		sta 	(zLowMemory),y
-		lda 	evalStack+1
+		sta 	(zTemp3),y
+		lda 	stack1
 		iny
-		sta 	(zLowMemory),y
+		sta 	(zTemp3),y
 		iny 								; where the code goes.
 		;
 		;		Finally copy in the tokenised code.
 		;
 		ldx 	#0 							; comes from
 _EDICopyCode:
-		lda 	(zCurrentLine,x)			; read from the current line
-		sta 	(zLowMemory),y 				; write out
+		lda 	(codePtr,x)					; read from the current line
+		sta 	(zTemp3),y 					; write out
 		iny 								; bump pointers
-		inc 	zCurrentLine		
+		inc 	codePtr	
+		bne 	_EDINoCarry
+		inc 	codePtr+1
+_EDINoCarry:	
 		cmp 	#0 							; until zero copied
 		bne 	_EDICopyCode
 		rts

@@ -16,7 +16,7 @@
 		jmp 	Start
 
 		* = BuildAddress
-Start:	
+Start:
 		ldx 	#$FF 						; reset the stack.
 		txs
 		jsr 	ExternInitialise 			; interface setup
@@ -65,7 +65,7 @@ SkipSpaces:
 		lda 	InputBuffer
 		cmp 	#' '
 		beq 	ExecuteCLI
-		jmp 	SyntaxError
+		jmp		EditProgram
 
 ExecuteCLI:
 		lda 	#TokeniseBuffer & 255 		; set tokenise buffer as faux line
@@ -90,6 +90,7 @@ BootMessage:
 		.include "system/intfromstr.asm"	; integer to ASCII routines.
 		.include "system/list.asm"			; list command
 		.include "system/tokeniser.asm"		; tokeniser
+		.include "system/editor.asm"		; find/delete/edit lines
 		.include "functions/stack.asm"		; stack manipulation
 		.include "functions/unary.asm"		; unary functions.
 		.include "functions/memory.asm"		; memory r/w functions

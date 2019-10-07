@@ -44,26 +44,9 @@ _RRErase:
 		cpx 	#HashTableSize * 2
 		bne 	_RRErase
 		;
-		;		Find the end of program pointer
+		;		Reset VarMemory to byte after program
 		;
-		jsr 	ResetCodePointer 			; code Pointer to start of program
-_RRFindEnd:
-		lda 	(codePtr)					; at end ?
-		beq 	_RRFoundEnd
-		clc 								; no, add offset to pointer.
-		adc 	codePtr
-		sta 	codePtr
-		bcc 	_RRFindEnd
-		inc 	codePtr+1
-		bra 	_RRFindEnd		
-_RRFoundEnd:
-		clc 								; add 1 to this, as it points to the last
-		lda 	codePtr 					; offset, and store in Variable Memory pointer
-		adc 	#1
-		sta 	VarMemory
-		lda 	codePtr+1
-		adc 	#0
-		sta 	VarMemory+1
+		jsr 	ResetVarMemory
 		;
 		;		Copy high memory to Alloc Memory 
 		;
@@ -89,4 +72,31 @@ _RRFoundEnd:
 		ldx 	#0 							; empty the stack
 		ply
 		pla
+		rts
+
+; ******************************************************************************
+;
+;							Find the end of program pointer
+;
+; ******************************************************************************
+
+ResetVarMemory:
+		jsr 	ResetCodePointer 			; code Pointer to start of program
+_RRFindEnd:
+		lda 	(codePtr)					; at end ?
+		beq 	_RRFoundEnd
+		clc 								; no, add offset to pointer.
+		adc 	codePtr
+		sta 	codePtr
+		bcc 	_RRFindEnd
+		inc 	codePtr+1
+		bra 	_RRFindEnd		
+_RRFoundEnd:
+		clc 								; add 1 to this, as it points to the last
+		lda 	codePtr 					; offset, and store in Variable Memory pointer
+		adc 	#1
+		sta 	VarMemory
+		lda 	codePtr+1
+		adc 	#0
+		sta 	VarMemory+1
 		rts
