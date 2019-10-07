@@ -108,5 +108,7 @@ _EIRead:jsr 	$FFCF
 		bra 	_EIRead
 _EIExit:lda 	#0
 		sta 	(zTemp0)
+		lda 	#13
+		jsr 	ExternPrint
 		rts
 

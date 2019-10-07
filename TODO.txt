@@ -1,7 +1,6 @@
 Todo
 ====
-- 	keyboard commands
--	make stack .
+-	line# / code problem.
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation
@@ -15,3 +14,4 @@ Fixes/Bugs/Improvements
 - 	check structure stack if < 10 on push address ?
 -	stack underflow/overflow main loop ?
 -	^xxxx in command line currently doesn't work.
+-	string persistence in command line.

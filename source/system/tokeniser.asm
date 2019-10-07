@@ -32,6 +32,7 @@
 ; ******************************************************************************
 
 Tokenise:
+		phx
 		ldy 	#255 						; predecrement
 _TKSkip:
 		iny
@@ -43,6 +44,7 @@ _TKMainLoop:
 		bra 	_TKNotEnd
 		;
 _TKExit:sta 	(zTemp1) 					; and ending $00
+		plx
 		rts
 		;
 		;		Handle quoted strings, either type.

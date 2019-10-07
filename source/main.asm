@@ -31,14 +31,11 @@ _Display:
 
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
-
 WarmStart:
 		txa
 		ldx 	#$FF 						; reset stack colour
 		txs
 		tax
-		lda 	#13
-		jsr 	ExternPrint
 		lda 	#COL_WHITE
 		jsr 	ExternColour
 		jsr 	ExternInput 				; input text
@@ -59,7 +56,6 @@ WarmStart:
 		lda 	#TokeniseBuffer >> 8 
 		sta 	codePtr+1
 		ldy 	#3
-		.byte 	$FF
 		jmp 	Execute 					; and run it
 
 BootMessage:

@@ -26,11 +26,11 @@ KeywordText:
 	.byte $06,$41,$53,$53,$45,$52,$54      ; $26 ASSERT
 	.byte $02,$43,$21                      ; $27 C!
 	.byte $02,$43,$40                      ; $28 C@
-	.byte $03,$44,$45,$46                  ; $29 DEF
-	.byte $04,$44,$52,$4f,$50              ; $2a DROP
-	.byte $03,$44,$55,$50                  ; $2b DUP
-	.byte $04,$45,$4c,$53,$45              ; $2c ELSE
-	.byte $05,$45,$4d,$50,$54,$59          ; $2d EMPTY
+	.byte $03,$43,$4c,$52                  ; $29 CLR
+	.byte $03,$44,$45,$46                  ; $2a DEF
+	.byte $04,$44,$52,$4f,$50              ; $2b DROP
+	.byte $03,$44,$55,$50                  ; $2c DUP
+	.byte $04,$45,$4c,$53,$45              ; $2d ELSE
 	.byte $03,$45,$4e,$44                  ; $2e END
 	.byte $05,$45,$4e,$44,$49,$46          ; $2f ENDIF
 	.byte $03,$46,$4f,$52                  ; $30 FOR
@@ -89,11 +89,11 @@ KeywordVectorTable:
 	.word System_Assert                    ; $26 ASSERT
 	.word Mem_Poke                         ; $27 C!
 	.word Mem_Peek                         ; $28 C@
-	.word SyntaxError                      ; $29 DEF
-	.word Stack_Drop                       ; $2a DROP
-	.word Stack_Dup                        ; $2b DUP
-	.word SyntaxError                      ; $2c ELSE
-	.word Stack_Empty                      ; $2d EMPTY
+	.word Stack_Empty                      ; $29 CLR
+	.word SyntaxError                      ; $2a DEF
+	.word Stack_Drop                       ; $2b DROP
+	.word Stack_Dup                        ; $2c DUP
+	.word SyntaxError                      ; $2d ELSE
 	.word System_END                       ; $2e END
 	.word SyntaxError                      ; $2f ENDIF
 	.word Command_For                      ; $30 FOR
@@ -150,11 +150,11 @@ KWD_AND = $25                    ; $25 AND
 KWD_ASSERT = $26                 ; $26 ASSERT
 KWD_CPLING = $27                 ; $27 C!
 KWD_CAT = $28                    ; $28 C@
-KWD_DEF = $29                    ; $29 DEF
-KWD_DROP = $2a                   ; $2a DROP
-KWD_DUP = $2b                    ; $2b DUP
-KWD_ELSE = $2c                   ; $2c ELSE
-KWD_EMPTY = $2d                  ; $2d EMPTY
+KWD_CLR = $29                    ; $29 CLR
+KWD_DEF = $2a                    ; $2a DEF
+KWD_DROP = $2b                   ; $2b DROP
+KWD_DUP = $2c                    ; $2c DUP
+KWD_ELSE = $2d                   ; $2d ELSE
 KWD_END = $2e                    ; $2e END
 KWD_ENDIF = $2f                  ; $2f ENDIF
 KWD_FOR = $30                    ; $30 FOR
