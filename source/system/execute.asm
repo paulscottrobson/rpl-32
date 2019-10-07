@@ -173,5 +173,10 @@ _EXConstantLoop:
 		ora 	stack0,x 					; or into low byte
 		sta 	stack0,x
 		bra 	_EXConstantLoop
-_EXDone:
+_EXDone:lda 	(codePtr),y
+		iny 								; skip over unary constant + -
+		cmp 	#KWD_CONSTANT_MINUS
+		bne 	_EXPositive
+		jmp 	Unary_Negate
+_EXPositive:
 		rts		

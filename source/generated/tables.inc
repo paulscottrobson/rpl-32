@@ -123,7 +123,7 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $48 []
 	.word WriteVariable                    ; $49 ^
 	.word SyntaxError                      ; $4a {+}
-	.word Unary_Const_Minus                ; $4b {-}
+	.word SyntaxError                      ; $4b {-}
 
 KWD_PLING = $10                  ; $10 !
 KWD_AMPERSAND = $11              ; $11 &
@@ -183,3 +183,5 @@ KWD_WAT = $46                    ; $46 W@
 KWD_XOR = $47                    ; $47 XOR
 KWD_LSQPARENRSQPAREN = $48       ; $48 []
 KWD_HAT = $49                    ; $49 ^
+KWD_CONSTANT_PLUS = $4a          ; $4a {+}
+KWD_CONSTANT_MINUS = $4b         ; $4b {-}

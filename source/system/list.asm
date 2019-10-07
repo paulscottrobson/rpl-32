@@ -82,13 +82,16 @@ _LCPadOut:									; pad out to align neatly
 		lda 	#' '
 		jsr 	ExternPrint
 		iny
-		cpy 	#6
+		cpy 	#5
 		bne 	_LCPadOut
 		ldy 	#3 							; start here
 		;
 		;		List loop
 		;		
-_LCLoop:lda 	(codePtr),y 				; get first	
+_LCLoop:
+		lda 	#' '						; space
+		jsr 	ExternPrint
+		lda 	(codePtr),y 				; get first	
 		bmi 	_LCIdentConst 				; identifier or constant
 		bne 	_LCStringToken
 		lda 	#13
@@ -139,6 +142,7 @@ _LCIdentConst:
 ;
 		lda 	#CTH_IDENT 					; set colour
 		jsr 	ExternColour 				
+_LCCIdLoop:
 		lda 	(codePtr),y 				; read
 		iny
 		and 	#$1F 						; convert
@@ -149,6 +153,9 @@ _LCIdentConst:
 		lda 	#'.'
 _LCCNotDot:		
 		jsr 	ExternPrint
+		lda 	(codePtr),y 				; another
+		cmp 	#$C0
+		bcs 	_LCCIdLoop
 		bra 	_LCLoop
 ;
 ;		Constant
@@ -158,9 +165,15 @@ _LCConstant:
 		jsr 	ExternColour
 		ldx 	#254 						; use the topmost stack element
 		jsr 	ExtractIntegerToTOS 		; so there is a very rare case
+		lda 	stack3+0,x					; save stack top byte
+		pha
 		jsr 	IntegerToString 			; this could corrupt stack if full :)
 		jsr 	ErrorPrintIntegerBuffer
-		bra 	_LCLoop
+		pla 								; sign back
+		bpl 	_LCLoop
+		lda 	#"-"
+		jsr 	ExternPrint
+		jmp 	_LCLoop
 ;
 ;		Print token in A
 ;

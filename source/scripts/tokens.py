@@ -49,3 +49,4 @@ RPLTokens.tokens = None														# Static tokens
 if __name__ == "__main__":
 	s = RPLTokens()
 	print(s.getTokens())
+	

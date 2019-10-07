@@ -65,6 +65,7 @@ print()
 for i in range(0,len(tokenNames)):
 	s = "KWD_"+tokenNames[i]	
 	s = s.replace("{-}","CONSTANT_MINUS")	
+	s = s.replace("{+}","CONSTANT_PLUS")	
 	s = s.replace(" ","SPACE").replace("!","PLING").replace("#","HASH").replace("[","LSQPAREN")
 	s = s.replace("]","RSQPAREN").replace("*","ASTERISK").replace("+","PLUS").replace("-","MINUS")
 	s = s.replace("/","SLASH").replace("<","LESS").replace("=","EQUAL").replace(">","GREATER")

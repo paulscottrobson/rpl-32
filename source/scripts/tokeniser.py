@@ -53,7 +53,9 @@ class Tokeniser(object):
 		if m is not None:
 			self.compileNumber(int(m.group(1)) & 0xFFFFFFFF)				# get value and compile
 			if m.group(2) == "-":											# if -ve output the
-				self.code.append(self.tokens["{-}"])						# special constant -
+				self.code.append(self.tokens["{-}"])						# special constant +/-
+			else:
+				self.code.append(self.tokens["{+}"])
 			return m.group(3) 	
 		#
 		m = re.match("^([A-Za-z\\.]+)(.*)$",s)								# identifiers
@@ -108,4 +110,4 @@ if __name__ == "__main__":
 	tok.test("1 - 1-")
 	tok.test("> >=")
 	tok.test("hello.world")
-	tok.test("defa ")
+	tok.test("defa 42 42-")
