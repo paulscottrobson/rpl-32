@@ -48,9 +48,8 @@ if __name__ == "__main__":
 	12345
 	54321
 	. end
-	def star 42 ;
-	def rom &A000 ;
-	def ts rom star ;
+	def star 42 emit ;
+	def emit ^a &FFD2 sys ;
 
 """.split("\n")
 	program = Program()

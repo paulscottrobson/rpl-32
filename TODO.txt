@@ -7,11 +7,8 @@ Todo
 
 Fixes/Bugs/Improvements
 =======================
--   memory overflow inserting new line.
--	procedure cannot be called A-Z and must be followed by an identifier.
 
-Issues
-======
--	^xxxx in command line currently doesn't work.
--	string persistence in command line.
+-	^xxxx in command line currently doesn't work (no permanent name)
+-	string persistence in command line (beyond that execution, note)
+
 

@@ -28,9 +28,13 @@ _PSMain:lda 	(codePtr)					; check if end
 		lda 	(codePtr),y 				; skip over spaces
 		cmp 	#KWD_DEF 					; first thing is DEF ?
 		bne 	_PSNext
-		iny 								; skip over def first, any following spaces
+		iny 								; skip over def first
 		;
-		lda 	(codePtr),y
+		lda 	(codePtr),y 				; next, must be C0-DF - a multi char ID
+		and 	#$E0
+		cmp 	#$C0
+		bne 	_PSNext 					; otherwise ignore it.
+		;
 		lda 	#IDT_PROCEDURE 				; create a procedure 
 		jsr 	IdentifierCreate
 		;
