@@ -1,0 +1,25 @@
+(Equivalent Benchmarks)
+BM1
+
+RPL32	0.03s
+C64 	1.2s
+X16		0.15s
+
+BM2
+
+RPL32	0.18s
+C64 	9.3s
+X16		1.16s
+
+BM3
+
+RPL32	0.86s
+C64 	17.6s
+X16		2.2s
+
+BM4
+
+RPL32	0.94s
+C64 	19.5s
+X16		2.44s
+

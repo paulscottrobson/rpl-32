@@ -45,11 +45,14 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 
-4 ^a 6 ^b
-end
-
-def star 42 ;
-def double 2 * ;
+	10 for
+	0 ^k
+	repeat
+		k ++ ^k
+		k 2 / 3 * 4 + 5 - ^a
+	k 1000 = until
+	next
+	stop
 
 """.split("\n")
 	program = Program()

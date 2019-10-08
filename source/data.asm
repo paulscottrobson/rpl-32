@@ -28,7 +28,7 @@ HashTableSize = 16 							; hash tables to search.
 ;
 ; ******************************************************************************
 
-		* = $0000
+		* = $0010
 
 CodePtr: 		.word ? 					; code pointer
 StructSP: 		.word ?						; structure stack pointer

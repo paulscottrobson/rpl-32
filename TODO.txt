@@ -1,6 +1,6 @@
 Todo
 ====
-- 	& constant token.
+- 	& constant token for hexadecimal.
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation

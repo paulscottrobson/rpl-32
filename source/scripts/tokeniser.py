@@ -49,6 +49,12 @@ class Tokeniser(object):
 			self.code.append(0)												# ASCIIZ
 			return s[n+2:]
 		#
+		m = re.match("^\\&([0-9A-Fa-f]+)(.*)$",s)								# constants
+		if m is not None:
+			self.compileNumber(int(m.group(1),16) & 0xFFFFFFFF)				# get value and compile
+			self.code.append(self.tokens["{+}"])
+			return m.group(2) 			
+		#
 		m = re.match("^(\\d+)(\\-?)(.*)$",s)								# constants
 		if m is not None:
 			self.compileNumber(int(m.group(1)) & 0xFFFFFFFF)				# get value and compile
@@ -111,3 +117,4 @@ if __name__ == "__main__":
 	tok.test("> >=")
 	tok.test("hello.world")
 	tok.test("defa 42 42-")
+	tok.test("&2a")
