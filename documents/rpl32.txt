@@ -58,6 +58,7 @@ Words:
 
 Commands/Other:
 		sys 	list	new 	old		run		stop	end 	(space)
+		emit 	
 
 Variables/Arrays:
 		^		[]

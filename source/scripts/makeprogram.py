@@ -45,14 +45,12 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 
-	10 for
-	0 ^k
-	repeat
-		k ++ ^k
-		k 2 / 3 * 4 + 5 - ^a
-	k 1000 = until
-	next
-	stop
+	12345
+	54321
+	. end
+	def star 42 ;
+	def rom &A000 ;
+	def ts rom star ;
 
 """.split("\n")
 	program = Program()

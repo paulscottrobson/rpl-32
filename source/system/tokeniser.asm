@@ -79,11 +79,14 @@ _TKNotQuote:
 		ldy 	#0 							; reset and get character
 		lda 	(codePtr),y
 
+		cmp 	#"&"						; hex marker
+		beq 	_TKIsNumber
 		cmp 	#"0"						; check for decimal.						
 		bcc 	_TKNotNumber
 		cmp 	#"9"+1
 		bcs 	_TKNotNumber
 		;
+_TKIsNumber:		
 		inx
 		jsr 	IntFromString 				; convert to integer
 		pha

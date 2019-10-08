@@ -19,14 +19,17 @@ Identifier:
 		dey 								; wind back to identifier start
 		jsr 	IdentifierSearch 			; try to find it.
 		bcc 	_IDUnknown 					; not known, give up.
-		cmp 	#IDT_VARIABLE 				; must be a variable
-		bne 	IDTypeError
+		pha
 		;
 _IDSkip:
 		lda 	(codePtr),y
 		iny
 		cmp 	#$E0
 		bcc 	_IDSkip		
+		;
+		pla
+		cmp 	#IDT_VARIABLE 				; check a variable
+		bne 	_IDCall
 		;
 		jsr 	IndexCheck 					; check index/subscript
 		;
@@ -50,8 +53,45 @@ _IDSkip:
 
 _IDUnknown:
 		.rerror "UNKNOWN VARIABLE"
-IDTypeError:
-		.rerror	"MISSING VARIABLE"
+		;
+		;		Handle Procedure Call
+		;
+_IDCall:
+		cmp 	#IDT_PROCEDURE
+		bne 	_IDCode
+		jsr 	StructPushCurrent 			; push current on the stack.
+		lda 	#STM_CALL 					; push marker
+		pushstruct		
+		;
+		ldy 	#1 							; line address
+		lda 	(idDataAddr)
+		sta 	codePtr
+		lda 	(idDataAddr),y
+		sta 	codePtr+1
+		ldy 	#3 							; line position
+		lda 	(idDataAddr),y
+		tay
+		jmp 	Execute
+
+_IDCode:
+		.byte 	$FF
+
+; ******************************************************************************
+;
+;								Handle Return
+;
+; ******************************************************************************
+
+ProcReturn: ;; [;]
+ProcReturn2: ;; [return]
+
+		lda 	(StructSP)					; check it's CALL
+		cmp 	#STM_CALL
+		ldy 	#1 							; restore the position
+		jsr 	StructPopCurrent
+		lda 	#5 							; pop 5 elements off structure stack.
+		jsr 	StructPopCount
+		rts
 
 ; ******************************************************************************
 ;
@@ -62,14 +102,14 @@ IDTypeError:
 WriteVariable: ;; [^]
 		lda 	(codePtr),y 				; check variable 
 		cmp 	#$C0
-		bcc 	IDTypeError
+		bcc 	_WVTypeError
 		;
 		jsr 	IdentifierSearch 			; does it exist
 		bcc 	_WVNoIdentifier
 		;
 		cmp 	#IDT_VARIABLE 				; must be a variable
 		beq 	_WVWriteTOS 				; if so write TOS to it.
-		bra 	IDTypeError 				; not, then can't do anything.
+		bra 	_WVTypeError 				; not, then can't do anything.
 		;
 _WVNoIdentifier:
 		phy 								; get current line number
@@ -117,5 +157,6 @@ _WVSkipIdentifier:
 
 _WVCantCreate:
 		.rerror	"CANNOT CREATE VARIABLE"
-
+_WVTypeError:
+		.rerror "WRONG TYPE"
 		

@@ -46,21 +46,22 @@ KeywordText:
 	.byte $02,$4f,$52                      ; $3a OR
 	.byte $04,$4f,$56,$45,$52              ; $3b OVER
 	.byte $06,$52,$45,$50,$45,$41,$54      ; $3c REPEAT
-	.byte $03,$52,$55,$4e                  ; $3d RUN
-	.byte $03,$53,$48,$4c                  ; $3e SHL
-	.byte $03,$53,$48,$52                  ; $3f SHR
-	.byte $04,$53,$54,$4f,$50              ; $40 STOP
-	.byte $04,$53,$57,$41,$50              ; $41 SWAP
-	.byte $03,$53,$59,$53                  ; $42 SYS
-	.byte $05,$55,$4e,$54,$49,$4c          ; $43 UNTIL
-	.byte $02,$57,$21                      ; $44 W!
-	.byte $02,$57,$40                      ; $45 W@
-	.byte $03,$58,$4f,$52                  ; $46 XOR
-	.byte $01,$5b                          ; $47 [
-	.byte $01,$5d                          ; $48 ]
-	.byte $01,$5e                          ; $49 ^
-	.byte $01,$2b                          ; $4a {+}
-	.byte $01,$2d                          ; $4b {-}
+	.byte $06,$52,$45,$54,$55,$52,$4e      ; $3d RETURN
+	.byte $03,$52,$55,$4e                  ; $3e RUN
+	.byte $03,$53,$48,$4c                  ; $3f SHL
+	.byte $03,$53,$48,$52                  ; $40 SHR
+	.byte $04,$53,$54,$4f,$50              ; $41 STOP
+	.byte $04,$53,$57,$41,$50              ; $42 SWAP
+	.byte $03,$53,$59,$53                  ; $43 SYS
+	.byte $05,$55,$4e,$54,$49,$4c          ; $44 UNTIL
+	.byte $02,$57,$21                      ; $45 W!
+	.byte $02,$57,$40                      ; $46 W@
+	.byte $03,$58,$4f,$52                  ; $47 XOR
+	.byte $01,$5b                          ; $48 [
+	.byte $01,$5d                          ; $49 ]
+	.byte $01,$5e                          ; $4a ^
+	.byte $01,$2b                          ; $4b {+}
+	.byte $01,$2d                          ; $4c {-}
 	.byte $00
 
 KeywordVectorTable:
@@ -72,7 +73,7 @@ KeywordVectorTable:
 	.word Unary_Decrement                  ; $15 --
 	.word System_ShowStack                 ; $16 .
 	.word DivInteger32                     ; $17 /
-	.word SyntaxError                      ; $18 ;
+	.word ProcReturn                       ; $18 ;
 	.word Comp_Less                        ; $19 <
 	.word Unary_Shl                        ; $1a <<
 	.word Comp_LessEqual                   ; $1b <=
@@ -109,21 +110,22 @@ KeywordVectorTable:
 	.word Stack_Or                         ; $3a OR
 	.word Stack_Over                       ; $3b OVER
 	.word Command_Repeat                   ; $3c REPEAT
-	.word System_RUN                       ; $3d RUN
-	.word Stack_Shl                        ; $3e SHL
-	.word Stack_Shr                        ; $3f SHR
-	.word System_STOP                      ; $40 STOP
-	.word Stack_Swap                       ; $41 SWAP
-	.word System_Sys                       ; $42 SYS
-	.word Command_Until                    ; $43 UNTIL
-	.word Mem_WPoke                        ; $44 W!
-	.word Mem_WPeek                        ; $45 W@
-	.word Stack_Xor                        ; $46 XOR
-	.word SyntaxError                      ; $47 [
-	.word SyntaxError                      ; $48 ]
-	.word WriteVariable                    ; $49 ^
-	.word SyntaxError                      ; $4a {+}
-	.word SyntaxError                      ; $4b {-}
+	.word ProcReturn2                      ; $3d RETURN
+	.word System_RUN                       ; $3e RUN
+	.word Stack_Shl                        ; $3f SHL
+	.word Stack_Shr                        ; $40 SHR
+	.word System_STOP                      ; $41 STOP
+	.word Stack_Swap                       ; $42 SWAP
+	.word System_Sys                       ; $43 SYS
+	.word Command_Until                    ; $44 UNTIL
+	.word Mem_WPoke                        ; $45 W!
+	.word Mem_WPeek                        ; $46 W@
+	.word Stack_Xor                        ; $47 XOR
+	.word SyntaxError                      ; $48 [
+	.word SyntaxError                      ; $49 ]
+	.word WriteVariable                    ; $4a ^
+	.word SyntaxError                      ; $4b {+}
+	.word SyntaxError                      ; $4c {-}
 
 KWD_PLING = $10                  ; $10 !
 KWD_ASTERISK = $11               ; $11 *
@@ -170,18 +172,19 @@ KWD_OLD = $39                    ; $39 OLD
 KWD_OR = $3a                     ; $3a OR
 KWD_OVER = $3b                   ; $3b OVER
 KWD_REPEAT = $3c                 ; $3c REPEAT
-KWD_RUN = $3d                    ; $3d RUN
-KWD_SHL = $3e                    ; $3e SHL
-KWD_SHR = $3f                    ; $3f SHR
-KWD_STOP = $40                   ; $40 STOP
-KWD_SWAP = $41                   ; $41 SWAP
-KWD_SYS = $42                    ; $42 SYS
-KWD_UNTIL = $43                  ; $43 UNTIL
-KWD_WPLING = $44                 ; $44 W!
-KWD_WAT = $45                    ; $45 W@
-KWD_XOR = $46                    ; $46 XOR
-KWD_LSQPAREN = $47               ; $47 [
-KWD_RSQPAREN = $48               ; $48 ]
-KWD_HAT = $49                    ; $49 ^
-KWD_CONSTANT_PLUS = $4a          ; $4a {+}
-KWD_CONSTANT_MINUS = $4b         ; $4b {-}
+KWD_RETURN = $3d                 ; $3d RETURN
+KWD_RUN = $3e                    ; $3e RUN
+KWD_SHL = $3f                    ; $3f SHL
+KWD_SHR = $40                    ; $40 SHR
+KWD_STOP = $41                   ; $41 STOP
+KWD_SWAP = $42                   ; $42 SWAP
+KWD_SYS = $43                    ; $43 SYS
+KWD_UNTIL = $44                  ; $44 UNTIL
+KWD_WPLING = $45                 ; $45 W!
+KWD_WAT = $46                    ; $46 W@
+KWD_XOR = $47                    ; $47 XOR
+KWD_LSQPAREN = $48               ; $48 [
+KWD_RSQPAREN = $49               ; $49 ]
+KWD_HAT = $4a                    ; $4a ^
+KWD_CONSTANT_PLUS = $4b          ; $4b {+}
+KWD_CONSTANT_MINUS = $4c         ; $4c {-}

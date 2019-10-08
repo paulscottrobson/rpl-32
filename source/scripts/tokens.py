@@ -40,8 +40,8 @@ class RPLTokens(object):
 		for 	index 	next
 		repeat 	until
 		if 		else 	endif		
-		def 	; 
-		sys 	list	new 	old		run		stop	end 	assert
+		def 	; 		return
+		sys 	list	new 	old		run		stop	end 	assert 
 		^		[		]		{-}		{+}
 """		
 RPLTokens.tokens = None														# Static tokens

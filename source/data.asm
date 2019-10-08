@@ -65,6 +65,8 @@ SignCount:		.byte ?						; sign count for divide
 
 NumSuppress:	.byte ? 					; zero suppression flag
 
+IFSHexFlag:		.byte ? 					; $FF if hex, $00 if dec
+
 ; ******************************************************************************
 ;
 ;				Allocate Memory in the current instance space

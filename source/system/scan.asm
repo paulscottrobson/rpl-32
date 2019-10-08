@@ -29,25 +29,25 @@ _PSMain:lda 	(codePtr)					; check if end
 		cmp 	#KWD_DEF 					; first thing is DEF ?
 		bne 	_PSNext
 		iny 								; skip over def first, any following spaces
-		lda 	(codePtr),y
 		;
+		lda 	(codePtr),y
 		lda 	#IDT_PROCEDURE 				; create a procedure 
 		jsr 	IdentifierCreate
 		;
 _PSSkipIdentifier: 							; go past the identifier.
 		lda 	(codePtr),y
+		cmp 	#$E0
 		iny
-		cmp 	#$C0
-		bcs 	_PSSkipIdentifier
-		dey 								; undo last, points at first non ID
+		bcc 	_PSSkipIdentifier
+		;
 		tya  								; save the address in the data slot.
-		clc 								; changing Y doesn't matter.
-		adc 	codePtr
-		sta 	(idDataAddr)
+		ldy 	#3
+		sta 	(idDataAddr),y 				; offset
+		lda 	codePtr 
+		sta 	(idDataAddr) 				; position.low
 		lda 	codePtr+1
-		adc 	#0
-		ldy 	#1
-		sta 	(idDataAddr),y
+		ldy 	#1 	
+		sta 	(idDataAddr),y 				; position.high
 		;
 _PSNext:
 		clc 								; go to next
