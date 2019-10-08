@@ -98,11 +98,9 @@ BootMessage:
 		.include "system/identifier.asm"	; identifier search/create
 		.include "system/reset.asm"			; reset variables etc., reset code to start
 		.include "system/scan.asm" 			; scan through code looking for procedures.
-		.include "system/indexing.asm"		; array indexing
 		.include "system/error.asm" 		; error handling.
 		.include "system/inttostr.asm"		; integer to ASCII routines.
 		.include "system/intfromstr.asm"	; integer to ASCII routines.
-		.include "system/list.asm"			; list command
 		.include "system/tokeniser.asm"		; tokeniser
 		.include "system/editor.asm"		; find/delete/edit lines
 		.include "functions/stack.asm"		; stack manipulation
@@ -112,8 +110,11 @@ BootMessage:
 		.include "functions/multiply.asm"	; multiply
 		.include "functions/divide.asm" 	; divide
 		.include "functions/compare.asm"	; comparison functions
+		.include "miscellany/list.asm"		; list command
 		.include "miscellany/system.asm"	; system functions.
+		.include "miscellany/saveload.asm"	; save/load.
 		.include "miscellany/variables.asm"	; variable handlers.
+		.include "miscellany/indexing.asm"	; array indexing
 		.include "structures/fornext.asm"	; for/next code
 		.include "structures/repeat.asm"	; repeat/until code.
 		.include "structures/structures.asm"; structure utility code.

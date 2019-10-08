@@ -42,6 +42,7 @@ class RPLTokens(object):
 		if 		else 	endif		
 		def 	; 		return 	assert
 		sys 	list	new 	old		run		stop	end 	renumber
+		save 	load
 		^		[		]		{-}		{+}
 """		
 RPLTokens.tokens = None														# Static tokens
