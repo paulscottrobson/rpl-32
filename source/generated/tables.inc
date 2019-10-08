@@ -87,7 +87,7 @@ KeywordVectorTable:
 	.word Unary_Shr                        ; $20 >>
 	.word Mem_DPeek                        ; $21 @
 	.word Unary_Absolute                   ; $22 ABS
-	.word SyntaxError                      ; $23 ALLOC
+	.word Allocate                         ; $23 ALLOC
 	.word Stack_And                        ; $24 AND
 	.word System_Assert                    ; $25 ASSERT
 	.word Mem_Poke                         ; $26 C!

@@ -29,6 +29,15 @@ _Display:
 		lda 	BootMessage,x
 		bne 	_Display
 
+		lda 	#(MemoryEnd-ProgramStart) & $FF
+		ldy 	#(MemoryEnd-ProgramStart) >>8
+		ldx 	#0
+		jsr 	ErrorPrint16
+		
+		lda 	#13
+		jsr 	ExternPrint
+		jsr 	ExternPrint
+
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
@@ -110,6 +119,7 @@ BootMessage:
 		.include "functions/multiply.asm"	; multiply
 		.include "functions/divide.asm" 	; divide
 		.include "functions/compare.asm"	; comparison functions
+		.include "miscellany/alloc.asm"		; memory allocation
 		.include "miscellany/list.asm"		; list command
 		.include "miscellany/renumber.asm"	; renumber command
 		.include "miscellany/system.asm"	; system functions.

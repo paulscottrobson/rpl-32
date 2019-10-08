@@ -2,7 +2,6 @@ Todo
 ====
 - 	m/l proc code & library system.
 -	if/else/endif implementation
-- 	alloc / memory overflow.
 
 Fixes/Bugs/Improvements
 =======================

@@ -24,6 +24,7 @@ s = s + chr(13)+chr(13)
 s = s + "Build:"+(str(build) if build > 0 else "Dev")+" Date:"+d
 s = s + chr(13)+chr(13)
 
+s = s + "Memory available "
 s = s + chr(0)
 b = [ord(c) for c in s.upper()]
 print("\t.byte {0}".format(",".join(["${0:02x}".format(n) for n in b])))
