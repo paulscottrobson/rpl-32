@@ -111,6 +111,7 @@ BootMessage:
 		.include "functions/divide.asm" 	; divide
 		.include "functions/compare.asm"	; comparison functions
 		.include "miscellany/list.asm"		; list command
+		.include "miscellany/renumber.asm"	; renumber command
 		.include "miscellany/system.asm"	; system functions.
 		.include "miscellany/saveload.asm"	; save/load.
 		.include "miscellany/variables.asm"	; variable handlers.

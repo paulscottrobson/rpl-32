@@ -113,7 +113,7 @@ KeywordVectorTable:
 	.word System_Old                       ; $3a OLD
 	.word Stack_Or                         ; $3b OR
 	.word Stack_Over                       ; $3c OVER
-	.word SyntaxError                      ; $3d RENUMBER
+	.word Cmd_Renumber                     ; $3d RENUMBER
 	.word Command_Repeat                   ; $3e REPEAT
 	.word ProcReturn2                      ; $3f RETURN
 	.word System_RUN                       ; $40 RUN
