@@ -28,6 +28,9 @@ StructPopCount:
 ; ******************************************************************************
 
 StructPushCurrent:
+		lda 	StructSP 					; check space for more
+		cmp 	#10
+		bcc 	_SPCSpace
 		lda 	#0							; push bank
 		pushstruct		
 		tya									; y Offset
@@ -37,7 +40,9 @@ StructPushCurrent:
 		lda 	codePtr 					; codeptr low
 		pushstruct		
 		rts
-
+_SPCSpace:
+		rerror "RETURN STACK SPACE"
+		
 ; ******************************************************************************
 ;
 ;				Pop current position off stack, at (StructSP),y

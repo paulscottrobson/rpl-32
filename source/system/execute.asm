@@ -37,7 +37,8 @@ _EXNLWarmStart:
 ;
 ; ******************************************************************************
 
-Execute:
+Execute:cpx 	#$FC  						; stack overflow
+		bcs 	EXStackOverflow
 		inc 	BreakCount 					; break occasionally. too slow otherwise.
 		bne 	_EXNoBreak
 		jsr 	ExternCheckBreak
@@ -55,6 +56,9 @@ _EXNoBreak:
 		bcc 	EXPushConstant 
 		jmp 	Identifier 					; it's an identifier C0-FF
 
+EXStackOverflow:
+		rerror 	"STACK OVERFLOW"
+		
 ; ******************************************************************************
 ;
 ;				Extract a numeric constant and push on the stack.

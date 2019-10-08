@@ -1,6 +1,6 @@
 Todo
 ====
--	[] becoming that or [short constant shortcut]
+- 	& constant token.
 -	procedure calls / return
 - 	m/l proc code
 -	if/else/endif implementation
@@ -11,7 +11,6 @@ Fixes/Bugs/Improvements
 - 	memory overflow creating identifier (alloc and ident create)
 -   memory overflow inserting new line.
 -	procedure cannot be called A-Z and must be followed by an identifier.
-- 	check structure stack if < 10 on push address ?
--	stack underflow/overflow main loop ?
 -	^xxxx in command line currently doesn't work.
 -	string persistence in command line.
+

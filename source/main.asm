@@ -37,6 +37,8 @@ _Display:
 		.endif
 
 WarmStart:
+		lda 	#COL_CYAN
+		jsr 	ExternColour
 		lda 	#"O"
 		jsr 	ExternPrint
 		lda 	#"K"

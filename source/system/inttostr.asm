@@ -18,6 +18,14 @@
 IntegerToString:
 		pha
 		phy
+		lda 	stack0,x
+		pha
+		lda 	stack1,x
+		pha
+		lda 	stack2,x
+		pha
+		lda 	stack3,x
+		pha
 		;
 		;			Check sign.
 		;
@@ -99,6 +107,16 @@ _ITSGoNextSubtractor:
 		lda 		stack0,x 		; and the last digit is left.
 		ora 		#"0"					
 		jsr 		ITSOutputCharacter
+
+		pla
+		sta 	stack3,x
+		pla
+		sta 	stack2,x
+		pla
+		sta 	stack1,x
+		pla
+		sta 	stack0,x
+
 		ply 								; and exit
 		pla
 		rts		

@@ -48,6 +48,9 @@ if __name__ == "__main__":
 4 ^a 6 ^b
 end
 
+def star 42 ;
+def double 2 * ;
+
 """.split("\n")
 	program = Program()
 	for s in src:

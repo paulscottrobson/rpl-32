@@ -17,11 +17,38 @@
 
 IndexCheck:
 		lda 	(codePtr),y 				; check next character
-		cmp 	#KWD_LSQPARENRSQPAREN 		; left/right square bracket ?
+		cmp 	#KWD_LSQPAREN 				; is it [ ?
+		bne 	_ICExit
+		iny
+		lda 	(codePtr),y 				; next is ] ?
+		cmp 	#KWD_RSQPAREN
 		beq 	_ICArrayAccess
+		and 	#$C0 						; is it a constant
+		cmp 	#$80
+		beq 	_ICConstAccess 
+_ICSyntax:
+		jmp 	SyntaxError
 		;
 _ICExit:
 		rts
+		;
+		;		Subscript by constant
+		;
+_ICConstAccess:
+		lda 	(codePtr),y 				; get constant, copy in.
+		and 	#$3F 						; to subscript in zTemp1
+		sta 	zTemp1
+		stz 	zTemp1+1
+		iny
+		lda 	(codePtr),y 				; get next
+		iny
+		cmp 	#KWD_CONSTANT_PLUS 			; ok if K+
+		bne 	_ICSyntax
+		lda 	(codePtr),y 				; get next
+		iny
+		cmp 	#KWD_RSQPAREN 				; ok if ]
+		bne 	_ICSyntax		
+		bra 	_ICAddSubscript
 		;
 		;		Subscript by TOS
 		;		
@@ -29,9 +56,9 @@ _ICArrayAccess:
 		iny 								; point to next
 		;
 		lda 	stack0,x 					; copy TOS to zTemp1
-		sta 	zTemp1+1 					; no point in the rest !
+		sta 	zTemp1 						; no point in the rest !
 		lda 	stack1,x
-		sta 	zTemp1
+		sta 	zTemp1+1
 		dex
 		;
 _ICAddSubscript:

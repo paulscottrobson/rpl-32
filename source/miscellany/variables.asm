@@ -77,8 +77,8 @@ _WVNoIdentifier:
 		lda 	(codePtr),y
 		iny
 		ora 	(codePtr),y
-		ply
 		beq 	_WVCantCreate 				; if zero (command line) no new vars
+		ply
 		;
 		lda 	#IDT_VARIABLE 				; create identifier
 		jsr 	IdentifierCreate 			; try to find it
