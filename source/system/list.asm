@@ -66,7 +66,7 @@ _CLIEnd:
 ; ******************************************************************************
 
 ListCurrent:
-		lda 	#CTH_NUMBER
+		lda 	#CTH_LINENO
 		jsr 	ExternColour 				; set colour
 		ldy 	#1							; print line#
 		lda 	(codePtr),y

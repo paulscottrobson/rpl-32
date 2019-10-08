@@ -11,11 +11,14 @@
 
 from datetime import datetime
 
-build = 3
+build = 4
 
 d = datetime.now().strftime("%d-%b-%Y")
 
 s = "**** RPL/32 Interpreter ****"
+s = s + chr(13)+chr(13)
+
+s = s+"written by Paul Robson 2019"
 s = s + chr(13)+chr(13)
 
 s = s + "Build:"+(str(build) if build > 0 else "Dev")+" Date:"+d

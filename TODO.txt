@@ -1,14 +1,17 @@
 Todo
 ====
 - 	m/l proc code & library system.
+- 	renumber
 -	if/else/endif implementation
-- 	alloc
+- 	alloc / memory overflow.
 
 Fixes/Bugs/Improvements
 =======================
-- 	memory overflow creating identifier (alloc and ident create)
 -   memory overflow inserting new line.
 -	procedure cannot be called A-Z and must be followed by an identifier.
+
+Issues
+======
 -	^xxxx in command line currently doesn't work.
 -	string persistence in command line.
 

@@ -32,7 +32,7 @@ _Display:
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
-		.if debug != 0
+		.if debug==1
 		jmp 	System_Run
 		.endif
 

@@ -16,6 +16,11 @@
 ; *******************************************************************************************
 
 EditProgram:
+		lda 	VarMemory+1
+		inc 	a
+		cmp 	#MemoryEnd >> 8
+		bcs 	_EPMemory
+		;
 		ldx 	#0
 		lda 	#(TokeniseBuffer+3) & $FF
 		sta 	codePtr
@@ -53,6 +58,9 @@ _EPNoInsert:
 		jsr 	ResetForRun
 		jmp 	NewCommand
 
+_EPMemory:
+		jmp 	OutOfMemoryError
+		
 ; *******************************************************************************************
 ;
 ;		Find line. If found then return CS and zTemp1 points to the line. If

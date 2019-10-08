@@ -2,7 +2,7 @@
 ; ******************************************************************************
 ;
 ;		Name : 		variables.asm
-;		Purpose : 	Variable Read/Write
+;		Purpose : 	Variable Read/Write, Procedures, M/C Routines
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
 ;		Created : 	4th October 2019
 ;

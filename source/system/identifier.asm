@@ -157,6 +157,9 @@ _IDCErase: 									; clear +2..+5 to all zero.
 		adc 	#0
 		sta 	VarMemory+1
 		;
+		cmp 	AllocMemory+1 				; in the same page as allocated ?
+		beq 	_IDCMemory
+		;
 		lda 	zTemp1 						; overwrite hash table entry
 		sta 	(zTemp0)
 		ldy 	#1
@@ -172,6 +175,9 @@ _IDCErase: 									; clear +2..+5 to all zero.
 		sta 	idDataAddr+1
 		ply 								; restore Y and exit
 		rts
+
+_IDCMemory:
+		jmp 	OutOfMemoryError
 
 ; ******************************************************************************
 ;
