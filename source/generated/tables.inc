@@ -96,11 +96,11 @@ KeywordVectorTable:
 	.word SyntaxError                      ; $29 DEF
 	.word Stack_Drop                       ; $2a DROP
 	.word Stack_Dup                        ; $2b DUP
-	.word SyntaxError                      ; $2c ELSE
+	.word Struct_ELSE                      ; $2c ELSE
 	.word System_END                       ; $2d END
-	.word SyntaxError                      ; $2e ENDIF
+	.word Struct_ENDIF                     ; $2e ENDIF
 	.word Command_For                      ; $2f FOR
-	.word SyntaxError                      ; $30 IF
+	.word Struct_IF                        ; $30 IF
 	.word Command_Index                    ; $31 INDEX
 	.word Cmd_List                         ; $32 LIST
 	.word System_Load                      ; $33 LOAD

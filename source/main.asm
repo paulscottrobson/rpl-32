@@ -126,6 +126,7 @@ BootMessage:
 		.include "miscellany/saveload.asm"	; save/load.
 		.include "miscellany/variables.asm"	; variable handlers.
 		.include "miscellany/indexing.asm"	; array indexing
+		.include "structures/if.asm"		; if code
 		.include "structures/fornext.asm"	; for/next code
 		.include "structures/repeat.asm"	; repeat/until code.
 		.include "structures/structures.asm"; structure utility code.

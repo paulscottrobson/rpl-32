@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -D debug=2 -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Tue Oct  8 22:32:51 2019
+; Tue Oct  8 23:24:23 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -263,25 +263,25 @@
 >a220	ad a5					.word SyntaxError                      ; $29 DEF
 >a222	00 aa					.word Stack_Drop                       ; $2a DROP
 >a224	02 aa					.word Stack_Dup                        ; $2b DUP
->a226	ad a5					.word SyntaxError                      ; $2c ELSE
+>a226	50 b2					.word Struct_ELSE                      ; $2c ELSE
 >a228	eb af					.word System_END                       ; $2d END
->a22a	ad a5					.word SyntaxError                      ; $2e ENDIF
->a22c	3c b2					.word Command_For                      ; $2f FOR
->a22e	ad a5					.word SyntaxError                      ; $30 IF
->a230	d8 b2					.word Command_Index                    ; $31 INDEX
+>a22a	55 b2					.word Struct_ENDIF                     ; $2e ENDIF
+>a22c	57 b2					.word Command_For                      ; $2f FOR
+>a22e	3c b2					.word Struct_IF                        ; $30 IF
+>a230	f3 b2					.word Command_Index                    ; $31 INDEX
 >a232	8c ae					.word Cmd_List                         ; $32 LIST
 >a234	9d b0					.word System_Load                      ; $33 LOAD
 >a236	a9 ad					.word ModInteger32                     ; $34 MOD
 >a238	91 aa					.word Unary_Negate                     ; $35 NEGATE
 >a23a	10 b0					.word System_New                       ; $36 NEW
->a23c	93 b2					.word Command_Next                     ; $37 NEXT
+>a23c	ae b2					.word Command_Next                     ; $37 NEXT
 >a23e	1c aa					.word Stack_Nip                        ; $38 NIP
 >a240	b3 aa					.word Unary_Not                        ; $39 NOT
 >a242	19 b0					.word System_Old                       ; $3a OLD
 >a244	6e ac					.word Stack_Or                         ; $3b OR
 >a246	36 aa					.word Stack_Over                       ; $3c OVER
 >a248	aa af					.word Cmd_Renumber                     ; $3d RENUMBER
->a24a	fe b2					.word Command_Repeat                   ; $3e REPEAT
+>a24a	19 b3					.word Command_Repeat                   ; $3e REPEAT
 >a24c	3b b1					.word ProcReturn2                      ; $3f RETURN
 >a24e	e2 af					.word System_RUN                       ; $40 RUN
 >a250	93 b0					.word System_Save                      ; $41 SAVE
@@ -290,7 +290,7 @@
 >a256	ee af					.word System_STOP                      ; $44 STOP
 >a258	50 aa					.word Stack_Swap                       ; $45 SWAP
 >a25a	3d b0					.word System_Sys                       ; $46 SYS
->a25c	08 b3					.word Command_Until                    ; $47 UNTIL
+>a25c	23 b3					.word Command_Until                    ; $47 UNTIL
 >a25e	92 ab					.word Mem_WPoke                        ; $48 W!
 >a260	3c ab					.word Mem_WPeek                        ; $49 W@
 >a262	48 ac					.word Stack_Xor                        ; $4a XOR
@@ -2496,7 +2496,7 @@
 .b11b					_IDCall:
 .b11b	c9 50		cmp #$50			cmp 	#IDT_PROCEDURE
 .b11d	d0 1b		bne $b13a			bne 	_IDCode
-.b11f	20 41 b3	jsr $b341			jsr 	StructPushCurrent 			; push current on the stack.
+.b11f	20 5c b3	jsr $b35c			jsr 	StructPushCurrent 			; push current on the stack.
 .b122	a9 43		lda #$43			lda 	#STM_CALL 					; push marker
 .b124	c6 12		dec $12				dec 	StructSP
 .b126	92 12		sta ($12)			sta 	(StructSP)
@@ -2516,9 +2516,9 @@
 .b13b	b2 12		lda ($12)			lda 	(StructSP)					; check it's CALL
 .b13d	c9 43		cmp #$43			cmp 	#STM_CALL
 .b13f	a0 01		ldy #$01			ldy 	#1 							; restore the position
-.b141	20 75 b3	jsr $b375			jsr 	StructPopCurrent
+.b141	20 90 b3	jsr $b390			jsr 	StructPopCurrent
 .b144	a9 05		lda #$05			lda 	#5 							; pop 5 elements off structure stack.
-.b146	20 3b b3	jsr $b33b			jsr 	StructPopCount
+.b146	20 56 b3	jsr $b356			jsr 	StructPopCount
 .b149	60		rts				rts
 .b14a					WriteVariable:
 .b14a	b1 10		lda ($10),y			lda 	(codePtr),y 				; check variable
@@ -2650,179 +2650,202 @@
 ;******  Return to file: main.asm
 
 
+;******  Processing file: structures/if.asm
+
+.b23c					Struct_IF:
+.b23c	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; check TOS
+.b23f	1d 00 0d	ora $0d00,x			ora 	stack1,x
+.b242	1d 00 0e	ora $0e00,x			ora 	stack2,x
+.b245	1d 00 0f	ora $0f00,x			ora 	stack3,x
+.b248	f0 01		beq $b24b			beq 	_SIFSkipForward
+.b24a	60		rts				rts
+.b24b					_SIFSkipForward:
+.b24b	a9 2c		lda #$2c			lda 	#KWD_ELSE
+.b24d	4c 56 b2	jmp $b256			jmp 	StructSkipForward
+.b250					Struct_ELSE:
+.b250	a9 2e		lda #$2e			lda 	#KWD_ENDIF
+.b252	4c 56 b2	jmp $b256			jmp 	StructSkipForward
+.b255					Struct_ENDIF:
+.b255	60		rts				rts
+.b256					StructSkipForward:
+>b256	ff						.byte 	$FF
+
+;******  Return to file: main.asm
+
+
 ;******  Processing file: structures/fornext.asm
 
-.b23c					Command_For:
-.b23c	20 41 b3	jsr $b341			jsr 	StructPushCurrent 			; push current on the stack.
-.b23f	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; check zero
-.b242	1d 00 0d	ora $0d00,x			ora 	stack1,x
-.b245	1d 00 0e	ora $0e00,x			ora 	stack2,x
-.b248	1d 00 0f	ora $0f00,x			ora 	stack3,x
-.b24b	f0 34		beq $b281			beq 	_CFZero
-.b24d	bd 00 0f	lda $0f00,x			lda 	stack3,x 					; push 1's complement of index on
-.b250	49 ff		eor #$ff			eor 	#$FF 						; structure stack.
-.b252	c6 12		dec $12				dec 	StructSP
-.b254	92 12		sta ($12)			sta 	(StructSP)
-.b256	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.b259	49 ff		eor #$ff			eor 	#$FF
-.b25b	c6 12		dec $12				dec 	StructSP
-.b25d	92 12		sta ($12)			sta 	(StructSP)
-.b25f	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b262	49 ff		eor #$ff			eor 	#$FF
-.b264	c6 12		dec $12				dec 	StructSP
-.b266	92 12		sta ($12)			sta 	(StructSP)
-.b268	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b26b	49 ff		eor #$ff			eor 	#$FF
+.b257					Command_For:
+.b257	20 5c b3	jsr $b35c			jsr 	StructPushCurrent 			; push current on the stack.
+.b25a	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; check zero
+.b25d	1d 00 0d	ora $0d00,x			ora 	stack1,x
+.b260	1d 00 0e	ora $0e00,x			ora 	stack2,x
+.b263	1d 00 0f	ora $0f00,x			ora 	stack3,x
+.b266	f0 34		beq $b29c			beq 	_CFZero
+.b268	bd 00 0f	lda $0f00,x			lda 	stack3,x 					; push 1's complement of index on
+.b26b	49 ff		eor #$ff			eor 	#$FF 						; structure stack.
 .b26d	c6 12		dec $12				dec 	StructSP
 .b26f	92 12		sta ($12)			sta 	(StructSP)
-.b271	ca		dex				dex 								; pop stack value
-.b272	a9 46		lda #$46			lda 	#STM_FOR 					; push FOR marker
-.b274	c6 12		dec $12				dec 	StructSP
-.b276	92 12		sta ($12)			sta 	(StructSP)
-.b278	a5 12		lda $12				lda 	StructSP 					; copy current so it can access it.
-.b27a	85 24		sta $24				sta 	ForAddr
-.b27c	a5 13		lda $13				lda 	StructSP+1
-.b27e	85 25		sta $25				sta 	ForAddr+1
-.b280	60		rts				rts
-.b281					_CFZero:
-.b281	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
->b284	46 4f 52 20 43 4f 55 4e				.text 	"FOR COUNT ZERO",0
->b28c	54 20 5a 45 52 4f 00
-.b293					Command_Next:
-.b293	b2 12		lda ($12)			lda 	(StructSP)					; check it's FOR.
-.b295	c9 46		cmp #$46			cmp 	#STM_FOR
-.b297	d0 30		bne $b2c9			bne 	_CNNoFor
-.b299	5a		phy				phy
-.b29a	a0 00		ldy #$00			ldy 	#0
-.b29c					_CNIncrement:
-.b29c	c8		iny				iny
-.b29d	b1 12		lda ($12),y			lda 	(StructSP),y 				; increment the index
-.b29f	1a		inc a				inc 	a
-.b2a0	91 12		sta ($12),y			sta 	(StructSP),y
-.b2a2	f0 f8		beq $b29c			beq		_CNIncrement 				; carry out.
-.b2a4	a0 01		ldy #$01			ldy 	#1 							; now and all the counts together
-.b2a6	b1 12		lda ($12),y			lda 	(StructSP),y 				; on the last time round they
-.b2a8	c8		iny				iny 								; will all be $FF
-.b2a9	31 12		and ($12),y			and 	(StructSP),y
-.b2ab	c8		iny				iny
-.b2ac	31 12		and ($12),y			and 	(StructSP),y
-.b2ae	c8		iny				iny
-.b2af	31 12		and ($12),y			and 	(StructSP),y
-.b2b1	7a		ply				ply 								; restore Y
-.b2b2	1a		inc a				inc 	a 							; so this will be zero last time round
-.b2b3	d0 06		bne $b2bb			bne 	_CNLoop 					; loop back if non-zero
-.b2b5	a9 09		lda #$09			lda 	#9 							; pop 9 elements off structure stack.
-.b2b7	20 3b b3	jsr $b33b			jsr 	StructPopCount
-.b2ba	60		rts				rts
-.b2bb					_CNLoop:
-.b2bb	a5 12		lda $12				lda 	StructSP 					; copy current so it can access it.
-.b2bd	85 24		sta $24				sta 	ForAddr
-.b2bf	a5 13		lda $13				lda 	StructSP+1
-.b2c1	85 25		sta $25				sta 	ForAddr+1
-.b2c3	a0 05		ldy #$05			ldy 	#5 							; restore the position
-.b2c5	20 75 b3	jsr $b375			jsr 	StructPopCurrent
-.b2c8	60		rts				rts
-.b2c9					_CNNoFor:
-.b2c9	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
->b2cc	4d 49 53 53 49 4e 47 20				.text 	"MISSING FOR",0
->b2d4	46 4f 52 00
-.b2d8					Command_Index:
-.b2d8	5a		phy				phy
-.b2d9	a0 01		ldy #$01			ldy 	#1 							; get the stack position of
-.b2db	e8		inx				inx
-.b2dc	38		sec				sec
-.b2dd	a9 fe		lda #$fe			lda 	#$FE
-.b2df	f1 24		sbc ($24),y			sbc 	(ForAddr),y
-.b2e1	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.b2e4	c8		iny				iny
-.b2e5	a9 ff		lda #$ff			lda 	#$FF
-.b2e7	f1 24		sbc ($24),y			sbc 	(ForAddr),y
-.b2e9	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.b2ec	c8		iny				iny
-.b2ed	a9 ff		lda #$ff			lda 	#$FF
-.b2ef	f1 24		sbc ($24),y			sbc 	(ForAddr),y
-.b2f1	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.b2f4	c8		iny				iny
-.b2f5	a9 ff		lda #$ff			lda 	#$FF
-.b2f7	f1 24		sbc ($24),y			sbc 	(ForAddr),y
-.b2f9	9d 00 0f	sta $0f00,x			sta 	stack3,x
-.b2fc	7a		ply				ply
-.b2fd	60		rts				rts
+.b271	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.b274	49 ff		eor #$ff			eor 	#$FF
+.b276	c6 12		dec $12				dec 	StructSP
+.b278	92 12		sta ($12)			sta 	(StructSP)
+.b27a	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b27d	49 ff		eor #$ff			eor 	#$FF
+.b27f	c6 12		dec $12				dec 	StructSP
+.b281	92 12		sta ($12)			sta 	(StructSP)
+.b283	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b286	49 ff		eor #$ff			eor 	#$FF
+.b288	c6 12		dec $12				dec 	StructSP
+.b28a	92 12		sta ($12)			sta 	(StructSP)
+.b28c	ca		dex				dex 								; pop stack value
+.b28d	a9 46		lda #$46			lda 	#STM_FOR 					; push FOR marker
+.b28f	c6 12		dec $12				dec 	StructSP
+.b291	92 12		sta ($12)			sta 	(StructSP)
+.b293	a5 12		lda $12				lda 	StructSP 					; copy current so it can access it.
+.b295	85 24		sta $24				sta 	ForAddr
+.b297	a5 13		lda $13				lda 	StructSP+1
+.b299	85 25		sta $25				sta 	ForAddr+1
+.b29b	60		rts				rts
+.b29c					_CFZero:
+.b29c	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
+>b29f	46 4f 52 20 43 4f 55 4e				.text 	"FOR COUNT ZERO",0
+>b2a7	54 20 5a 45 52 4f 00
+.b2ae					Command_Next:
+.b2ae	b2 12		lda ($12)			lda 	(StructSP)					; check it's FOR.
+.b2b0	c9 46		cmp #$46			cmp 	#STM_FOR
+.b2b2	d0 30		bne $b2e4			bne 	_CNNoFor
+.b2b4	5a		phy				phy
+.b2b5	a0 00		ldy #$00			ldy 	#0
+.b2b7					_CNIncrement:
+.b2b7	c8		iny				iny
+.b2b8	b1 12		lda ($12),y			lda 	(StructSP),y 				; increment the index
+.b2ba	1a		inc a				inc 	a
+.b2bb	91 12		sta ($12),y			sta 	(StructSP),y
+.b2bd	f0 f8		beq $b2b7			beq		_CNIncrement 				; carry out.
+.b2bf	a0 01		ldy #$01			ldy 	#1 							; now and all the counts together
+.b2c1	b1 12		lda ($12),y			lda 	(StructSP),y 				; on the last time round they
+.b2c3	c8		iny				iny 								; will all be $FF
+.b2c4	31 12		and ($12),y			and 	(StructSP),y
+.b2c6	c8		iny				iny
+.b2c7	31 12		and ($12),y			and 	(StructSP),y
+.b2c9	c8		iny				iny
+.b2ca	31 12		and ($12),y			and 	(StructSP),y
+.b2cc	7a		ply				ply 								; restore Y
+.b2cd	1a		inc a				inc 	a 							; so this will be zero last time round
+.b2ce	d0 06		bne $b2d6			bne 	_CNLoop 					; loop back if non-zero
+.b2d0	a9 09		lda #$09			lda 	#9 							; pop 9 elements off structure stack.
+.b2d2	20 56 b3	jsr $b356			jsr 	StructPopCount
+.b2d5	60		rts				rts
+.b2d6					_CNLoop:
+.b2d6	a5 12		lda $12				lda 	StructSP 					; copy current so it can access it.
+.b2d8	85 24		sta $24				sta 	ForAddr
+.b2da	a5 13		lda $13				lda 	StructSP+1
+.b2dc	85 25		sta $25				sta 	ForAddr+1
+.b2de	a0 05		ldy #$05			ldy 	#5 							; restore the position
+.b2e0	20 90 b3	jsr $b390			jsr 	StructPopCurrent
+.b2e3	60		rts				rts
+.b2e4					_CNNoFor:
+.b2e4	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
+>b2e7	4d 49 53 53 49 4e 47 20				.text 	"MISSING FOR",0
+>b2ef	46 4f 52 00
+.b2f3					Command_Index:
+.b2f3	5a		phy				phy
+.b2f4	a0 01		ldy #$01			ldy 	#1 							; get the stack position of
+.b2f6	e8		inx				inx
+.b2f7	38		sec				sec
+.b2f8	a9 fe		lda #$fe			lda 	#$FE
+.b2fa	f1 24		sbc ($24),y			sbc 	(ForAddr),y
+.b2fc	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.b2ff	c8		iny				iny
+.b300	a9 ff		lda #$ff			lda 	#$FF
+.b302	f1 24		sbc ($24),y			sbc 	(ForAddr),y
+.b304	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.b307	c8		iny				iny
+.b308	a9 ff		lda #$ff			lda 	#$FF
+.b30a	f1 24		sbc ($24),y			sbc 	(ForAddr),y
+.b30c	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.b30f	c8		iny				iny
+.b310	a9 ff		lda #$ff			lda 	#$FF
+.b312	f1 24		sbc ($24),y			sbc 	(ForAddr),y
+.b314	9d 00 0f	sta $0f00,x			sta 	stack3,x
+.b317	7a		ply				ply
+.b318	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: structures/repeat.asm
 
-.b2fe					Command_Repeat:
-.b2fe	20 41 b3	jsr $b341			jsr 	StructPushCurrent 			; push current on the stack.
-.b301	a9 52		lda #$52			lda 	#STM_REPEAT 				; push marker
-.b303	c6 12		dec $12				dec 	StructSP
-.b305	92 12		sta ($12)			sta 	(StructSP)
-.b307	60		rts				rts
-.b308					Command_Until:
-.b308	b2 12		lda ($12)			lda 	(StructSP)					; check it's REPEAT
-.b30a	c9 52		cmp #$52			cmp 	#STM_REPEAT
-.b30c	d0 1b		bne $b329			bne 	_CUNoRepeat
-.b30e	ca		dex				dex 								; pop
-.b30f	bd 01 0c	lda $0c01,x			lda 	stack0+1,x 					; check old TOS zero
-.b312	1d 01 0d	ora $0d01,x			ora 	stack1+1,x
-.b315	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
-.b318	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
-.b31b	f0 06		beq $b323			beq 	_CULoop
-.b31d	a9 05		lda #$05			lda 	#5 							; pop 5 elements off structure stack.
-.b31f	20 3b b3	jsr $b33b			jsr 	StructPopCount
+.b319					Command_Repeat:
+.b319	20 5c b3	jsr $b35c			jsr 	StructPushCurrent 			; push current on the stack.
+.b31c	a9 52		lda #$52			lda 	#STM_REPEAT 				; push marker
+.b31e	c6 12		dec $12				dec 	StructSP
+.b320	92 12		sta ($12)			sta 	(StructSP)
 .b322	60		rts				rts
-.b323					_CULoop:
-.b323	a0 01		ldy #$01			ldy 	#1 							; restore the position
-.b325	20 75 b3	jsr $b375			jsr 	StructPopCurrent
-.b328	60		rts				rts
-.b329					_CUNoRepeat:
-.b329	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
->b32c	4d 49 53 53 49 4e 47 20				.text 	"MISSING REPEAT",0
->b334	52 45 50 45 41 54 00
+.b323					Command_Until:
+.b323	b2 12		lda ($12)			lda 	(StructSP)					; check it's REPEAT
+.b325	c9 52		cmp #$52			cmp 	#STM_REPEAT
+.b327	d0 1b		bne $b344			bne 	_CUNoRepeat
+.b329	ca		dex				dex 								; pop
+.b32a	bd 01 0c	lda $0c01,x			lda 	stack0+1,x 					; check old TOS zero
+.b32d	1d 01 0d	ora $0d01,x			ora 	stack1+1,x
+.b330	1d 01 0e	ora $0e01,x			ora 	stack2+1,x
+.b333	1d 01 0f	ora $0f01,x			ora 	stack3+1,x
+.b336	f0 06		beq $b33e			beq 	_CULoop
+.b338	a9 05		lda #$05			lda 	#5 							; pop 5 elements off structure stack.
+.b33a	20 56 b3	jsr $b356			jsr 	StructPopCount
+.b33d	60		rts				rts
+.b33e					_CULoop:
+.b33e	a0 01		ldy #$01			ldy 	#1 							; restore the position
+.b340	20 90 b3	jsr $b390			jsr 	StructPopCurrent
+.b343	60		rts				rts
+.b344					_CUNoRepeat:
+.b344	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
+>b347	4d 49 53 53 49 4e 47 20				.text 	"MISSING REPEAT",0
+>b34f	52 45 50 45 41 54 00
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: structures/structures.asm
 
-.b33b					StructPopCount:
-.b33b	18		clc				clc
-.b33c	65 12		adc $12				adc 	StructSP
-.b33e	85 12		sta $12				sta 	StructSP
-.b340	60		rts				rts
-.b341					StructPushCurrent:
-.b341	a5 12		lda $12				lda 	StructSP 					; check space for more
-.b343	c9 0a		cmp #$0a			cmp 	#10
-.b345	90 18		bcc $b35f			bcc 	_SPCSpace
-.b347	a9 00		lda #$00			lda 	#0							; push bank
-.b349	c6 12		dec $12				dec 	StructSP
-.b34b	92 12		sta ($12)			sta 	(StructSP)
-.b34d	98		tya				tya									; y Offset
-.b34e	c6 12		dec $12				dec 	StructSP
-.b350	92 12		sta ($12)			sta 	(StructSP)
-.b352	a5 11		lda $11				lda 	codePtr+1 					; codeptr high
-.b354	c6 12		dec $12				dec 	StructSP
-.b356	92 12		sta ($12)			sta 	(StructSP)
-.b358	a5 10		lda $10				lda 	codePtr 					; codeptr low
-.b35a	c6 12		dec $12				dec 	StructSP
-.b35c	92 12		sta ($12)			sta 	(StructSP)
-.b35e	60		rts				rts
-.b35f					_SPCSpace:
-.b35f	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
->b362	52 45 54 55 52 4e 20 53				.text 	"RETURN STACK SPACE",0
->b36a	54 41 43 4b 20 53 50 41 43 45 00
-.b375					StructPopCurrent:
-.b375	b1 12		lda ($12),y			lda 	(StructSP),y 				; codeptr low
-.b377	85 10		sta $10				sta 	codePtr
-.b379	c8		iny				iny
-.b37a	b1 12		lda ($12),y			lda 	(StructSP),y 				; codeptr high
-.b37c	85 11		sta $11				sta 	codePtr+1
-.b37e	c8		iny				iny
-.b37f	b1 12		lda ($12),y			lda 	(StructSP),y				; y offset
-.b381	a8		tay				tay
-.b382	60		rts				rts
+.b356					StructPopCount:
+.b356	18		clc				clc
+.b357	65 12		adc $12				adc 	StructSP
+.b359	85 12		sta $12				sta 	StructSP
+.b35b	60		rts				rts
+.b35c					StructPushCurrent:
+.b35c	a5 12		lda $12				lda 	StructSP 					; check space for more
+.b35e	c9 0a		cmp #$0a			cmp 	#10
+.b360	90 18		bcc $b37a			bcc 	_SPCSpace
+.b362	a9 00		lda #$00			lda 	#0							; push bank
+.b364	c6 12		dec $12				dec 	StructSP
+.b366	92 12		sta ($12)			sta 	(StructSP)
+.b368	98		tya				tya									; y Offset
+.b369	c6 12		dec $12				dec 	StructSP
+.b36b	92 12		sta ($12)			sta 	(StructSP)
+.b36d	a5 11		lda $11				lda 	codePtr+1 					; codeptr high
+.b36f	c6 12		dec $12				dec 	StructSP
+.b371	92 12		sta ($12)			sta 	(StructSP)
+.b373	a5 10		lda $10				lda 	codePtr 					; codeptr low
+.b375	c6 12		dec $12				dec 	StructSP
+.b377	92 12		sta ($12)			sta 	(StructSP)
+.b379	60		rts				rts
+.b37a					_SPCSpace:
+.b37a	20 ce a5	jsr $a5ce			jsr 	ErrorHandler
+>b37d	52 45 54 55 52 4e 20 53				.text 	"RETURN STACK SPACE",0
+>b385	54 41 43 4b 20 53 50 41 43 45 00
+.b390					StructPopCurrent:
+.b390	b1 12		lda ($12),y			lda 	(StructSP),y 				; codeptr low
+.b392	85 10		sta $10				sta 	codePtr
+.b394	c8		iny				iny
+.b395	b1 12		lda ($12),y			lda 	(StructSP),y 				; codeptr high
+.b397	85 11		sta $11				sta 	codePtr+1
+.b399	c8		iny				iny
+.b39a	b1 12		lda ($12),y			lda 	(StructSP),y				; y offset
+.b39c	a8		tay				tay
+.b39d	60		rts				rts
 
 ;******  Return to file: main.asm
 

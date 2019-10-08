@@ -1,10 +1,11 @@
 Todo
 ====
+- 	write and test scan forward IF/ELSE/ENDIF
 - 	m/l proc code & library system.
--	if/else/endif implementation
 
 Fixes/Bugs/Improvements
 =======================
 
 -	^xxxx in command line currently doesn't work (no permanent name)
 -	string persistence in command line (beyond that execution, note)
+
