@@ -38,8 +38,9 @@ ResetForRun:
 		;		Erase the variable hash tables
 		;
 		ldx 	#0 							; erase the hash table
-_RRErase: 					
-		stz		HashTable,x
+_RRErase: 		
+		lda 	DefaultHashTable,x			
+		sta		HashTable,x
 		inx
 		cpx 	#HashTableSize * 2
 		bne 	_RRErase

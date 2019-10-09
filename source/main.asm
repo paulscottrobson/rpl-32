@@ -135,6 +135,8 @@ BootMessage:
 		.include "structures/repeat.asm"	; repeat/until code.
 		.include "structures/structures.asm"; structure utility code.
 
+		.include "generated/hashes.inc"		; hash structure for library code
+		.include "generated/library.inc"	; library code.
 
 		* = ProgramStart
 		.include "generated/testcode.inc"

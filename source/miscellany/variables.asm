@@ -74,7 +74,18 @@ _IDCall:
 		jmp 	Execute
 
 _IDCode:
-		.byte 	$FF
+		lda 	(idDataAddr) 				; copy the address
+		sta 	zTemp0
+		phy
+		ldy 	#1
+		lda 	(idDataAddr),y
+		sta 	zTemp0+1
+		ply
+		jsr 	_IDCallZTemp0 				; call the routine
+		jmp 	Execute
+
+_IDCallZTemp0:
+		jmp 	(zTemp0)
 
 ; ******************************************************************************
 ;

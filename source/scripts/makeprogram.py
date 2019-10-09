@@ -46,7 +46,7 @@ if __name__ == "__main__":
 	src = """
 
 	12345
-	"-" c@
+	"hello, world !" str.len
 	54321 
 	. end
 	def sprint dup 0 < if 45 emit negate endif uprint ;

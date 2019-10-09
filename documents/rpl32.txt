@@ -80,7 +80,7 @@ Hash (probably 16 ?) ->
 			The third byte is a bank byte if its stored in there.
 
 +09 		Type byte
-				'V' 'M'	'P' 	supported.
+				'V' 'C'	'P' 	supported.
 
 0000-007F 	Zero Page storage
 0C00-0FFF 	Stack Space

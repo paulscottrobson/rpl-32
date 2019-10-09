@@ -34,7 +34,7 @@ print("\t.byte $00\n")
 #		Collect addresses from the various routines
 #
 routines = { }
-for root,dirs,files in os.walk(".."):									# scan all source dirs
+for root,dirs,files in os.walk("."):									# scan all source dirs
 	for f in files:
 		if f.endswith(".asm"):											# check asm files for ;;
 			for l in [x for x in open(root+os.sep+f).readlines() if x.find(";;") >= 0]:
