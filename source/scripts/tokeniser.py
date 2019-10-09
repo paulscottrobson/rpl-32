@@ -39,6 +39,11 @@ class Tokeniser(object):
 	#
 	def tokeniseOne(self,s):
 		#
+		for l in range(self.maxLen,0,-1):									# check all lengths
+			if s[:l].upper() in self.tokens: 								# found a match
+				self.code.append(self.tokens[s[:l].upper()])				# add the token
+				return s[l:] 												# remove from string
+		#
 		if s.startswith('"') or s.startswith("'"):							# comment/string
 			n = s[1:].find(s[0])											# find the end.
 			assert n >= 0,"Unclosed string"
@@ -71,11 +76,6 @@ class Tokeniser(object):
 			ident[-1] += 0x20 												# mark end of identifier
 			self.code += ident
 			return m.group(2)												# return rest of line
-		#
-		for l in range(self.maxLen,0,-1):									# check all lengths
-			if s[:l].upper() in self.tokens: 								# found a match
-				self.code.append(self.tokens[s[:l].upper()])				# add the token
-				return s[l:] 												# remove from string
 		#
 		assert False,"Can't tokenise {"+s+"}"
 	#

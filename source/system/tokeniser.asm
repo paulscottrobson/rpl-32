@@ -170,7 +170,9 @@ _TKComplete:
 		;		REPEATNAME 
 		;	
 		ldy 	zTemp3 						; length in Y
-		lda 	(codePtr) 					; look at first character
+		dey
+		lda 	(codePtr),y 				; look at last character
+		iny
 		jsr 	TOKIsIdentifier 			; identifier character
 		bcc 	_TKOutput 					; if not, then token is okay
 		;

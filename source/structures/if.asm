@@ -35,10 +35,11 @@
 ; ******************************************************************************
 
 Struct_IF: 	;; [if]
-		lda 	stack0,x 					; check TOS
-		ora 	stack1,x
-		ora 	stack2,x
-		ora 	stack3,x
+		dex 								; drop TOS
+		lda 	stack0+1,x 					; check TOS
+		ora 	stack1+1,x
+		ora 	stack2+1,x
+		ora 	stack3+1,x
 		beq 	_SIFSkipForward
 		rts
 		;

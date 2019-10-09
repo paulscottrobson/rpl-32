@@ -46,15 +46,11 @@ if __name__ == "__main__":
 	src = """
 
 	12345
-	10 for 
-		index digit 
-		index 4 < if star else 33 emit endif
-		13 emit
-	next
-	54321
+	"-" c@
+	54321 
 	. end
-	def digit 48 + emit ;
-	def star 42 emit ;
+	def sprint dup 0 < if 45 emit negate endif uprint ;
+	def uprint dup 10 >= if dup 10 / uprint 10 mod endif 48 + emit ;
 	def emit ^a &FFD2 sys ;
 
 """.split("\n")
