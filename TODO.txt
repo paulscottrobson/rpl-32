@@ -1,5 +1,6 @@
 Todo
 ====
+- 	index reset after next ?
 - 	fix the hash calculator.
 - 	tokeniser.py uses same test as assembly version.
 

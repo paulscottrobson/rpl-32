@@ -34,6 +34,11 @@ _Display:
 		ldx 	#0
 		jsr 	ErrorPrint16
 		
+		ldx 	#0 							; clear extended data area
+_ClearX:stz 	ExtDataArea,x 				; this is so any library data
+		inx 								; is zeroed on start up.
+		bne 	_ClearX
+
 		lda 	#13
 		jsr 	ExternPrint
 		jsr 	ExternPrint

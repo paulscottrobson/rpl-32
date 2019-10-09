@@ -9,6 +9,12 @@
 ; ******************************************************************************
 ; ******************************************************************************
 
+; ******************************************************************************
+;
+;								Default Address Spaces
+;
+; ******************************************************************************
+
 BuildAddress = $A000 						; build the interpreter here
 StackAddress = $0C00 						; 1k of stack space (256 x 32 bits)
 MemoryStart = $1000 						; system memory starts here
@@ -22,6 +28,12 @@ TokeniseBuffer = $0A00						; Tokenising buffer
 
 HashTableSize = 16 							; hash tables to search.
 
+; ******************************************************************************
+;
+;				Sections so library functions can allocate zero page
+;
+; ******************************************************************************
+
 		* = $0010
 		.dsection zeroPage
 		.cerror * > $8F,"Page Zero Overflow"
@@ -29,7 +41,6 @@ HashTableSize = 16 							; hash tables to search.
 		* = ExtDataArea
 		.dsection dataArea
 		;.cerror * > ExtDataArea+$100,"Data Area Overflow"
-
 	
 ; ******************************************************************************
 ;
