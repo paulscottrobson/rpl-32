@@ -12,7 +12,7 @@
 BuildAddress = $A000 						; build the interpreter here
 StackAddress = $0C00 						; 1k of stack space (256 x 32 bits)
 MemoryStart = $1000 						; system memory starts here
-MemoryEnd = $9800 							; and ends here.
+MemoryEnd = $9F00 							; and ends here.
 
 StructureStack = $0BFF 						; structure stack (works down to $xx00)
 
@@ -22,13 +22,22 @@ TokeniseBuffer = $0A00						; Tokenising buffer
 
 HashTableSize = 16 							; hash tables to search.
 
+		* = $0010
+		.dsection zeroPage
+		.cerror * > $8F,"Page Zero Overflow"
+
+		* = ExtDataArea
+		.dsection dataArea
+		;.cerror * > ExtDataArea+$100,"Data Area Overflow"
+
+	
 ; ******************************************************************************
 ;
 ;							Allocate Zero Page usage
 ;
 ; ******************************************************************************
 
-		* = $0010
+		.section zeroPage
 
 CodePtr: 		.word ? 					; code pointer
 StructSP: 		.word ?						; structure stack pointer
@@ -45,13 +54,15 @@ idDataAddr:		.word ? 					; data address.
 
 ForAddr:		.byte ? 					; points to current FOR structure
 
+		.send zeroPage
+
 ; ******************************************************************************
 ;
 ;							Non zero page data area
 ;
 ; ******************************************************************************
 
-		* = ExtDataArea
+		.section dataArea
 
 SBuffer:		.fill 32 					; string buffer
 
@@ -66,6 +77,8 @@ SignCount:		.byte ?						; sign count for divide
 NumSuppress:	.byte ? 					; zero suppression flag
 
 IFSHexFlag:		.byte ? 					; $FF if hex, $00 if dec
+
+		.send dataArea
 
 ; ******************************************************************************
 ;

@@ -186,12 +186,18 @@ _IDCMemory:
 ; ******************************************************************************
 
 IdentifierSetUpHashPtr:
-		lda 	(codePtr),y 				; get the first operator
+		phy
+_ISPLoop:		
+		lda 	(codePtr),y 				; get the last identifier character
+		iny
+		cmp 	#$E0
+		bcc 	_ISPLoop
 		and 	#(HashTableSize-1)			; convert to a hash index
 		asl 	a 							; convert to an offset, clc
 		adc 	#(HashTable & $FF)			; set zTemp0 to point to hashTable entry
 		sta 	zTemp0
 		lda 	#(HashTable >> 8) 			; assumes table in one page
 		sta 	zTemp0+1
+		ply
 		rts
 		

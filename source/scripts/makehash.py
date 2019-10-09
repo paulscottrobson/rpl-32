@@ -9,14 +9,16 @@
 # ******************************************************************************
 # ******************************************************************************
 
+import os,re
+
 def toIdentifier(c):
 	c = ord(c[0].upper())-1 if c != '.' else 31
 	return c | 0xC0
 
 def calcHash(s):
-	return toIdentifier(s[0]) & 15
+	return toIdentifier(s[-1]) & 15
 
-import os,re
+
 #
 #		Scan generated/library.inc 	for library functions
 #

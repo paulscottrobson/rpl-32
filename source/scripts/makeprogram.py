@@ -46,12 +46,28 @@ if __name__ == "__main__":
 	src = """
 
 	12345
-	"hello, world !" str.len
+	&F4000 vera.set
+	1 vwrite 0 vwrite
+	&F5000 vera.set
+	0 vwrite
+	128 vwrite
+	64 vwrite
+	0 vwrite
+	64 vwrite
+	0 vwrite
+	&1c vwrite
+	240 vwrite
 	54321 
+
+	1000 for
+		255 for
+			&F5002 vera.set
+			index vwrite 0 vwrite
+			index vwrite 0 vwrite
+		next
+	next
 	. end
-	def sprint dup 0 < if 45 emit negate endif uprint ;
-	def uprint dup 10 >= if dup 10 / uprint 10 mod endif 48 + emit ;
-	def emit ^a &FFD2 sys ;
+	def vwrite &9F23 c! ;
 
 """.split("\n")
 	program = Program()

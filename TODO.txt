@@ -1,7 +1,7 @@
 Todo
 ====
+- 	fix the hash calculator.
 - 	tokeniser.py uses same test as assembly version.
-- 	m/l proc code & library system.
 
 Fixes/Bugs/Improvements
 =======================

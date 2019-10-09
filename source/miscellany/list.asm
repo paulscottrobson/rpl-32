@@ -27,7 +27,7 @@ Cmd_List: 	;; [list]
 		sta 	zTemp2+1,x
 		dex 								; and pop the tos
 _CLINone:		
-		lda 	#16 						; list this many lines
+		lda 	#24 						; list this many lines
 		sta 	zTemp1
 		;
 		;		Listing loop
