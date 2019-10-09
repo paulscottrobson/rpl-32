@@ -44,7 +44,7 @@ class Program(object):
 
 if __name__ == "__main__":
 	src = """
-
+	' test program '
 	1 vera.s
 	vera.s.on
 	&10000 vera.s.gfx

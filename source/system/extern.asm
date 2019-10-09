@@ -68,6 +68,16 @@ ExternPrint:
 ExternColour:
 		pha
 		phx
+		pha
+		and 	#8
+		asl 	a
+		asl 	a
+		asl 	a
+		asl 	a
+		eor 	#$92
+		jsr 	ExternPrint
+		pla
+		and 	#7
 		tax 	
 		lda 	_ECTable,x
 		jsr 	ExternPrint

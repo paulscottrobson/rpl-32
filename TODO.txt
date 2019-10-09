@@ -1,11 +1,12 @@
 Todo
 ====
-- 	index reset after next ?
-- 	fix the hash calculator.
-- 	tokeniser.py uses same test as assembly version.
+- 	more list
+- 	index reset after next inner loop.
+- 	tokeniser.py uses same test as assembly version (doesn't matter w/spaces)
 
 Fixes/Bugs/Improvements
 =======================
 
 -	^xxxx in command line currently doesn't work (no permanent name)
 -	string persistence in command line (beyond that execution, note)
+

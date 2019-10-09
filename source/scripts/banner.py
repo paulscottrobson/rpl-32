@@ -11,7 +11,7 @@
 
 from datetime import datetime
 
-build = 6
+build = 7
 
 d = datetime.now().strftime("%d-%b-%Y")
 

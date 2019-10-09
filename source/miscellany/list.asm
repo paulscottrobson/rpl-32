@@ -214,4 +214,3 @@ _LPTShow:
 _LPTExit:
 		ply
 		rts
-

@@ -57,6 +57,7 @@ _EXNoBreak:
 		jmp 	Identifier 					; it's an identifier C0-FF
 
 EXStackOverflow:
+		ldx 	#0 							; stack error clears stack otherwise doesn't work.
 		rerror 	"STACK OVERFLOW"
 		
 ; ******************************************************************************
