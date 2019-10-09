@@ -1,12 +1,14 @@
 Todo
 ====
-- 	more list
-- 	index reset after next inner loop.
-- 	tokeniser.py uses same test as assembly version (doesn't matter w/spaces)
+-	Default RPL added on load/save.		
+-	Generalise load/save routines.
+- 	index reset after next -> inner loop bug or feature ?
+	(get from the stack directly)
 
 Fixes/Bugs/Improvements
 =======================
 
 -	^xxxx in command line currently doesn't work (no permanent name)
 -	string persistence in command line (beyond that execution, note)
+- 	tokeniser.py uses same test as assembly version (doesn't matter w/spaces)
 
