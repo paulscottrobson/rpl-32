@@ -108,8 +108,7 @@ Vera_SpriteDisable: ;; [vera.s.off]
 		lda 	#0
 Vera_SpriteControl:
 		pha
-		lda 	veraCurrentSprite
-		asl 	a
+		lda 	#$00
 		sta 	Vera_Base
 		lda 	#$40
 		sta 	Vera_Base+1

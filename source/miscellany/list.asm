@@ -24,7 +24,7 @@ Cmd_List: 	;; [list]
 		lda 	stack0,x 					; use tos as start line
 		sta 	zTemp2
 		lda 	stack1,x
-		sta 	zTemp2+1,x
+		sta 	zTemp2+1
 		dex 								; and pop the tos
 _CLINone:		
 		lda 	#24 						; list this many lines

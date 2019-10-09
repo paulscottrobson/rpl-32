@@ -1,4 +1,4 @@
-# ******************************************************************************
+	# ******************************************************************************
 # ******************************************************************************
 #
 #		Name : 		makeprogram.py
@@ -45,12 +45,10 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 
-	8 for
-		index vera.s
-		vera.s.on
-		&10000 vera.s.gfx
-		3 vera.s.size
-	next
+	1 vera.s
+	vera.s.on
+	&10000 vera.s.gfx
+	3 vera.s.size
 
 	&10000 vera.set
 	32 for
@@ -62,10 +60,6 @@ if __name__ == "__main__":
 	def animate
 	1000 for
 		255 for
-			index  ^a
-			8 for index vera.s
-				index << << << a + dup vera.s.move
-			next
 		next
 	next ;
 

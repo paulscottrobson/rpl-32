@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -D debug=2 -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Wed Oct  9 15:39:44 2019
+; Wed Oct  9 17:05:06 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -786,7 +786,7 @@
 .a532	5a		phy				phy
 .a533	a2 00		ldx #$00			ldx 	#0 							; erase the hash table
 .a535					_RRErase:
-.a535	bd a8 b4	lda $b4a8,x			lda 	DefaultHashTable,x
+.a535	bd b5 b4	lda $b4b5,x			lda 	DefaultHashTable,x
 .a538	9d 68 10	sta $1068,x			sta		HashTable,x
 .a53b	e8		inx				inx
 .a53c	e0 20		cpx #$20			cpx 	#HashTableSize * 2
@@ -2148,7 +2148,7 @@
 .aeb0	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; use tos as start line
 .aeb3	85 18		sta $18				sta 	zTemp2
 .aeb5	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.aeb8	95 19		sta $19,x			sta 	zTemp2+1,x
+.aeb8	85 19		sta $19				sta 	zTemp2+1
 .aeba	ca		dex				dex 								; and pop the tos
 .aebb					_CLINone:
 .aebb	a9 18		lda #$18			lda 	#24 						; list this many lines
@@ -2899,294 +2899,348 @@
 
 .b3e8					libfunc_1000:
 >b3e8	00 00					.word 0
->b3ea	50 b5 00 00				.dword Vera_Sprite
+>b3ea	ca b5 00 00				.dword Vera_Sprite
 >b3ee	f2 b3					.word libfunc_1000_name
 >b3f0	00 43					.byte 0,'C'
 .b3f2					libfunc_1000_name:
 >b3f2	d5 c4 d1 c0 df f2			.byte $d5,$c4,$d1,$c0,$df,$f2
 .b3f8					libfunc_1001:
 >b3f8	00 00					.word 0
->b3fa	fb b4 00 00				.dword Vera_SetAddress
+>b3fa	d5 b4 00 00				.dword System_Random
 >b3fe	02 b4					.word libfunc_1001_name
 >b400	00 43					.byte 0,'C'
 .b402					libfunc_1001_name:
->b402	d5 c4 d1 c0 df d2 c4 f3			.byte $d5,$c4,$d1,$c0,$df,$d2,$c4,$f3
-.b40a					libfunc_1002:
->b40a	f8 b3					.word libfunc_1001
->b40c	15 b5 00 00				.dword Vera_GetAddress
->b410	14 b4					.word libfunc_1002_name
->b412	00 43					.byte 0,'C'
-.b414					libfunc_1002_name:
->b414	d5 c4 d1 c0 df c6 c4 f3			.byte $d5,$c4,$d1,$c0,$df,$c6,$c4,$f3
-.b41c					libfunc_1003:
->b41c	00 00					.word 0
->b41e	2c b5 00 00				.dword Vera_SetPalette
->b422	26 b4					.word libfunc_1003_name
->b424	00 43					.byte 0,'C'
-.b426					libfunc_1003_name:
->b426	d5 c4 d1 c0 df cf c0 cb			.byte $d5,$c4,$d1,$c0,$df,$cf,$c0,$cb,$c4,$d3,$d3,$e4
->b42e	c4 d3 d3 e4
-.b432					libfunc_1004:
->b432	1c b4					.word libfunc_1003
->b434	7c b5 00 00				.dword Vera_SpriteMove
->b438	3c b4					.word libfunc_1004_name
->b43a	00 43					.byte 0,'C'
-.b43c					libfunc_1004_name:
->b43c	d5 c4 d1 c0 df d2 df cc			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$cc,$ce,$d5,$e4
->b444	ce d5 e4
-.b447					libfunc_1005:
->b447	32 b4					.word libfunc_1004
->b449	c4 b5 00 00				.dword Vera_SetSize
->b44d	51 b4					.word libfunc_1005_name
->b44f	00 43					.byte 0,'C'
-.b451					libfunc_1005_name:
->b451	d5 c4 d1 c0 df d2 df d2			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4
->b459	c8 d9 e4
-.b45c					libfunc_1006:
->b45c	00 00					.word 0
->b45e	5e b5 00 00				.dword Vera_SpriteDisable
->b462	66 b4					.word libfunc_1006_name
->b464	00 43					.byte 0,'C'
-.b466					libfunc_1006_name:
->b466	d5 c4 d1 c0 df d2 df ce			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$c5,$e5
->b46e	c5 e5
-.b470					libfunc_1007:
->b470	00 00					.word 0
->b472	94 b5 00 00				.dword Vera_SpriteSetup
->b476	7a b4					.word libfunc_1007_name
->b478	00 43					.byte 0,'C'
-.b47a					libfunc_1007_name:
->b47a	d5 c4 d1 c0 df d2 df c6			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7
->b482	c5 f7
-.b484					libfunc_1008:
->b484	00 00					.word 0
->b486	c8 b4 00 00				.dword String_Len
->b48a	8e b4					.word libfunc_1008_name
->b48c	00 43					.byte 0,'C'
-.b48e					libfunc_1008_name:
->b48e	d2 d3 d1 df cb c4 ed			.byte $d2,$d3,$d1,$df,$cb,$c4,$ed
-.b495					libfunc_1009:
->b495	84 b4					.word libfunc_1008
->b497	5a b5 00 00				.dword Vera_SpriteEnable
->b49b	9f b4					.word libfunc_1009_name
->b49d	00 43					.byte 0,'C'
-.b49f					libfunc_1009_name:
->b49f	d5 c4 d1 c0 df d2 df ce			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$ed
->b4a7	ed
-.b4a8					DefaultHashTable:
->b4a8	00 00					.word 0
->b4aa	00 00					.word 0
->b4ac	e8 b3					.word libfunc_1000
->b4ae	0a b4					.word libfunc_1002
->b4b0	47 b4					.word libfunc_1005
->b4b2	5c b4					.word libfunc_1006
->b4b4	00 00					.word 0
->b4b6	70 b4					.word libfunc_1007
->b4b8	00 00					.word 0
->b4ba	00 00					.word 0
->b4bc	00 00					.word 0
->b4be	00 00					.word 0
->b4c0	00 00					.word 0
->b4c2	95 b4					.word libfunc_1009
->b4c4	00 00					.word 0
->b4c6	00 00					.word 0
+>b402	d1 cd e3				.byte $d1,$cd,$e3
+.b405					libfunc_1002:
+>b405	f8 b3					.word libfunc_1001
+>b407	75 b5 00 00				.dword Vera_SetAddress
+>b40b	0f b4					.word libfunc_1002_name
+>b40d	00 43					.byte 0,'C'
+.b40f					libfunc_1002_name:
+>b40f	d5 c4 d1 c0 df d2 c4 f3			.byte $d5,$c4,$d1,$c0,$df,$d2,$c4,$f3
+.b417					libfunc_1003:
+>b417	05 b4					.word libfunc_1002
+>b419	8f b5 00 00				.dword Vera_GetAddress
+>b41d	21 b4					.word libfunc_1003_name
+>b41f	00 43					.byte 0,'C'
+.b421					libfunc_1003_name:
+>b421	d5 c4 d1 c0 df c6 c4 f3			.byte $d5,$c4,$d1,$c0,$df,$c6,$c4,$f3
+.b429					libfunc_1004:
+>b429	00 00					.word 0
+>b42b	a6 b5 00 00				.dword Vera_SetPalette
+>b42f	33 b4					.word libfunc_1004_name
+>b431	00 43					.byte 0,'C'
+.b433					libfunc_1004_name:
+>b433	d5 c4 d1 c0 df cf c0 cb			.byte $d5,$c4,$d1,$c0,$df,$cf,$c0,$cb,$c4,$d3,$d3,$e4
+>b43b	c4 d3 d3 e4
+.b43f					libfunc_1005:
+>b43f	29 b4					.word libfunc_1004
+>b441	f4 b5 00 00				.dword Vera_SpriteMove
+>b445	49 b4					.word libfunc_1005_name
+>b447	00 43					.byte 0,'C'
+.b449					libfunc_1005_name:
+>b449	d5 c4 d1 c0 df d2 df cc			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$cc,$ce,$d5,$e4
+>b451	ce d5 e4
+.b454					libfunc_1006:
+>b454	3f b4					.word libfunc_1005
+>b456	3c b6 00 00				.dword Vera_SetSize
+>b45a	5e b4					.word libfunc_1006_name
+>b45c	00 43					.byte 0,'C'
+.b45e					libfunc_1006_name:
+>b45e	d5 c4 d1 c0 df d2 df d2			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4
+>b466	c8 d9 e4
+.b469					libfunc_1007:
+>b469	00 00					.word 0
+>b46b	d8 b5 00 00				.dword Vera_SpriteDisable
+>b46f	73 b4					.word libfunc_1007_name
+>b471	00 43					.byte 0,'C'
+.b473					libfunc_1007_name:
+>b473	d5 c4 d1 c0 df d2 df ce			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$c5,$e5
+>b47b	c5 e5
+.b47d					libfunc_1008:
+>b47d	00 00					.word 0
+>b47f	0c b6 00 00				.dword Vera_SpriteSetup
+>b483	87 b4					.word libfunc_1008_name
+>b485	00 43					.byte 0,'C'
+.b487					libfunc_1008_name:
+>b487	d5 c4 d1 c0 df d2 df c6			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7
+>b48f	c5 f7
+.b491					libfunc_1009:
+>b491	00 00					.word 0
+>b493	42 b5 00 00				.dword String_Len
+>b497	9b b4					.word libfunc_1009_name
+>b499	00 43					.byte 0,'C'
+.b49b					libfunc_1009_name:
+>b49b	d2 d3 d1 df cb c4 ed			.byte $d2,$d3,$d1,$df,$cb,$c4,$ed
+.b4a2					libfunc_1010:
+>b4a2	91 b4					.word libfunc_1009
+>b4a4	d4 b5 00 00				.dword Vera_SpriteEnable
+>b4a8	ac b4					.word libfunc_1010_name
+>b4aa	00 43					.byte 0,'C'
+.b4ac					libfunc_1010_name:
+>b4ac	d5 c4 d1 c0 df d2 df ce			.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$ed
+>b4b4	ed
+.b4b5					DefaultHashTable:
+>b4b5	00 00					.word 0
+>b4b7	00 00					.word 0
+>b4b9	e8 b3					.word libfunc_1000
+>b4bb	17 b4					.word libfunc_1003
+>b4bd	54 b4					.word libfunc_1006
+>b4bf	69 b4					.word libfunc_1007
+>b4c1	00 00					.word 0
+>b4c3	7d b4					.word libfunc_1008
+>b4c5	00 00					.word 0
+>b4c7	00 00					.word 0
+>b4c9	00 00					.word 0
+>b4cb	00 00					.word 0
+>b4cd	00 00					.word 0
+>b4cf	a2 b4					.word libfunc_1010
+>b4d1	00 00					.word 0
+>b4d3	00 00					.word 0
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: generated/library.inc
 
-.b4c8					String_Len:
-.b4c8	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy string address
-.b4cb	85 14		sta $14				sta 	zTemp0
-.b4cd	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b4d0	85 15		sta $15				sta 	zTemp0+1
-.b4d2	5a		phy				phy
-.b4d3	a0 ff		ldy #$ff			ldy 	#255 						; find string length
-.b4d5	c8		iny		_SLLoop:iny
-.b4d6	c0 ff		cpy #$ff			cpy 	#255 						; cant find EOS.
-.b4d8	f0 13		beq $b4ed			beq 	_SLFail
-.b4da	b1 14		lda ($14),y			lda 	(zTemp0),y
-.b4dc	d0 f7		bne $b4d5			bne 	_SLLoop
-.b4de	98		tya				tya
-.b4df	7a		ply				ply
-.b4e0	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; return string
-.b4e3	9e 00 0d	stz $0d00,x			stz 	stack1,x
-.b4e6	9e 00 0e	stz $0e00,x			stz 	stack2,x
-.b4e9	9e 00 0f	stz $0f00,x			stz 	stack3,x
-.b4ec	60		rts				rts
-.b4ed					_SLFail:
-.b4ed	20 e0 a5	jsr $a5e0			jsr 	ErrorHandler
->b4f0	4e 4f 54 20 53 54 52 49				.text 	"NOT STRING",0
->b4f8	4e 47 00
+.0826					RandomSeed:
+>0826							.dword 		?
+.b4d5					System_Random:
+.b4d5	ad 26 08	lda $0826		lda 	RandomSeed
+.b4d8	0d 27 08	ora $0827		ora 	RandomSeed+1
+.b4db	0d 28 08	ora $0828		ora 	RandomSeed+2
+.b4de	0d 29 08	ora $0829		ora 	RandomSeed+3
+.b4e1	d0 09		bne $b4ec		bne 	_SRSeeded
+.b4e3	ee 27 08	inc $0827		inc 	RandomSeed+1
+.b4e6	ce 29 08	dec $0829		dec 	RandomSeed+3
+.b4e9	20 d5 b4	jsr $b4d5		jsr 	System_Random
+.b4ec					_SRSeeded:
+.b4ec	5a		phy			phy
+.b4ed	ac 28 08	ldy $0828		ldy RandomSeed+2 ; will move to RandomSeed+3 at the end
+.b4f0	ad 27 08	lda $0827		lda RandomSeed+1
+.b4f3	8d 28 08	sta $0828		sta RandomSeed+2
+.b4f6	ad 29 08	lda $0829		lda RandomSeed+3 ; original high byte
+.b4f9	4a		lsr a			lsr
+.b4fa	8d 27 08	sta $0827		sta RandomSeed+1 ; reverse: 100011
+.b4fd	4a		lsr a			lsr
+.b4fe	4a		lsr a			lsr
+.b4ff	4a		lsr a			lsr
+.b500	4a		lsr a			lsr
+.b501	4d 27 08	eor $0827		eor RandomSeed+1
+.b504	4a		lsr a			lsr
+.b505	4d 27 08	eor $0827		eor RandomSeed+1
+.b508	4d 26 08	eor $0826		eor RandomSeed+0 ; combine with original low byte
+.b50b	8d 27 08	sta $0827		sta RandomSeed+1
+.b50e	ad 29 08	lda $0829		lda RandomSeed+3 ; original high byte
+.b511	0a		asl a			asl
+.b512	4d 29 08	eor $0829		eor RandomSeed+3
+.b515	0a		asl a			asl
+.b516	0a		asl a			asl
+.b517	0a		asl a			asl
+.b518	0a		asl a			asl
+.b519	4d 29 08	eor $0829		eor RandomSeed+3
+.b51c	0a		asl a			asl
+.b51d	0a		asl a			asl
+.b51e	4d 29 08	eor $0829		eor RandomSeed+3
+.b521	8c 29 08	sty $0829		sty RandomSeed+3 ; finish rotating byte 2 into 3
+.b524	8d 26 08	sta $0826		sta RandomSeed+0
+.b527	e8		inx			inx
+.b528	ad 26 08	lda $0826		lda	RandomSeed+0
+.b52b	9d 00 0c	sta $0c00,x		sta stack0,x
+.b52e	ad 27 08	lda $0827		lda	RandomSeed+1
+.b531	9d 00 0d	sta $0d00,x		sta stack1,x
+.b534	ad 28 08	lda $0828		lda	RandomSeed+2
+.b537	9d 00 0e	sta $0e00,x		sta stack2,x
+.b53a	ad 29 08	lda $0829		lda	RandomSeed+3
+.b53d	9d 00 0f	sta $0f00,x		sta stack3,x
+.b540	7a		ply			ply
+.b541	60		rts			rts
+.b542					String_Len:
+.b542	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; copy string address
+.b545	85 14		sta $14				sta 	zTemp0
+.b547	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b54a	85 15		sta $15				sta 	zTemp0+1
+.b54c	5a		phy				phy
+.b54d	a0 ff		ldy #$ff			ldy 	#255 						; find string length
+.b54f	c8		iny		_SLLoop:iny
+.b550	c0 ff		cpy #$ff			cpy 	#255 						; cant find EOS.
+.b552	f0 13		beq $b567			beq 	_SLFail
+.b554	b1 14		lda ($14),y			lda 	(zTemp0),y
+.b556	d0 f7		bne $b54f			bne 	_SLLoop
+.b558	98		tya				tya
+.b559	7a		ply				ply
+.b55a	9d 00 0c	sta $0c00,x			sta 	stack0,x 					; return string
+.b55d	9e 00 0d	stz $0d00,x			stz 	stack1,x
+.b560	9e 00 0e	stz $0e00,x			stz 	stack2,x
+.b563	9e 00 0f	stz $0f00,x			stz 	stack3,x
+.b566	60		rts				rts
+.b567					_SLFail:
+.b567	20 e0 a5	jsr $a5e0			jsr 	ErrorHandler
+>b56a	4e 4f 54 20 53 54 52 49				.text 	"NOT STRING",0
+>b572	4e 47 00
 =$9f20					Vera_Base = $9F20
-.0826					veraCurrentLayer:
->0826							.byte 		? 						; current layer (0-1)
-.0827					veraCurrentSprite:
->0827							.byte 		?						; current sprite (0-127)
-.0828					veraSpriteMode:
->0828							.byte 		? 						; 0 4 bit, 1 8 bit
-.b4fb					Vera_SetAddress:
-.b4fb	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b4fe	8d 20 9f	sta $9f20			sta 	Vera_Base
-.b501	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b504	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b507	bd 00 0e	lda $0e00,x			lda 	stack2,x
-.b50a	c9 10		cmp #$10			cmp 	#16
-.b50c	b0 02		bcs $b510			bcs 	_VSASetInc
-.b50e	09 10		ora #$10			ora 	#16
-.b510					_VSASetInc:
-.b510	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b513	ca		dex				dex
-.b514	60		rts				rts
-.b515					Vera_GetAddress:
-.b515	e8		inx				inx
-.b516	ad 20 9f	lda $9f20			lda 	Vera_Base
-.b519	9d 00 0c	sta $0c00,x			sta 	stack0,x
-.b51c	ad 21 9f	lda $9f21			lda 	Vera_Base+1
-.b51f	9d 00 0d	sta $0d00,x			sta 	stack1,x
-.b522	ad 22 9f	lda $9f22			lda 	Vera_Base+2
-.b525	9d 00 0e	sta $0e00,x			sta 	stack2,x
-.b528	9e 00 0f	stz $0f00,x			stz 	stack3,x
-.b52b	60		rts				rts
-.b52c					Vera_SetPalette:
-.b52c	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b52f	8d 20 9f	sta $9f20			sta 	Vera_Base
-.b532	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b535	29 01		and #$01			and 	#$01
-.b537	09 10		ora #$10			ora 	#$10
-.b539	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b53c	a9 1f		lda #$1f			lda 	#$1F
-.b53e	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b541	ca		dex				dex
-.b542	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b545	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b548	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b54b	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b54e	ca		dex				dex
-.b54f	60		rts				rts
-.b550					Vera_Sprite:
-.b550	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b553	29 7f		and #$7f			and 	#$7F
-.b555	8d 27 08	sta $0827			sta 	veraCurrentSprite
-.b558	ca		dex				dex
-.b559	60		rts				rts
-.b55a					Vera_SpriteEnable:
-.b55a	a9 01		lda #$01			lda 	#1
-.b55c	80 02		bra $b560			bra 	Vera_SpriteControl
-.b55e					Vera_SpriteDisable:
-.b55e	a9 00		lda #$00			lda 	#0
-.b560					Vera_SpriteControl:
-.b560	48		pha				pha
-.b561	ad 27 08	lda $0827			lda 	veraCurrentSprite
-.b564	0a		asl a				asl 	a
-.b565	8d 20 9f	sta $9f20			sta 	Vera_Base
-.b568	a9 40		lda #$40			lda 	#$40
-.b56a	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b56d	a9 1f		lda #$1f			lda 	#$1F
-.b56f	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b572	68		pla				pla
-.b573	29 01		and #$01			and 	#1
-.b575	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b578	9c 23 9f	stz $9f23			stz 	Vera_Base+3
-.b57b	60		rts				rts
-.b57c					Vera_SpriteMove:
-.b57c	a9 02		lda #$02			lda 	#2 							; physical position
-.b57e	20 e2 b5	jsr $b5e2			jsr 	Vera_CurrentSprite
-.b581	20 84 b5	jsr $b584			jsr 	_VSMOutPosition
-.b584					_VSMOutPosition:
-.b584	ca		dex				dex
-.b585	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b588	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b58b	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
-.b58e	29 03		and #$03			and 	#$03
-.b590	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b593	60		rts				rts
-.b594					Vera_SpriteSetup:
-.b594	a9 00		lda #$00			lda 	#0
-.b596	20 e2 b5	jsr $b5e2			jsr 	Vera_CurrentSprite
-.b599	ca		dex				dex
-.b59a	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b59d	85 14		sta $14				sta 	zTemp0
-.b59f	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
-.b5a2	85 15		sta $15				sta 	zTemp0+1
-.b5a4	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
-.b5a7	85 16		sta $16				sta 	zTemp1
-.b5a9	5a		phy				phy
-.b5aa	a0 05		ldy #$05			ldy 	#5
-.b5ac	46 16		lsr $16		_VSSS:	lsr 	zTemp1
-.b5ae	66 15		ror $15				ror 	zTemp0+1
-.b5b0	66 14		ror $14				ror 	zTemp0
-.b5b2	88		dey				dey
-.b5b3	d0 f7		bne $b5ac			bne 	_VSSS
-.b5b5	7a		ply				ply
-.b5b6	a5 14		lda $14				lda 	zTemp0
-.b5b8	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b5bb	a5 15		lda $15				lda 	zTemp0+1
-.b5bd	0d 28 08	ora $0828			ora 	veraSpriteMode
-.b5c0	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b5c3	60		rts				rts
-.b5c4					Vera_SetSize:
-.b5c4	a9 06		lda #$06			lda 	#6
-.b5c6	20 e2 b5	jsr $b5e2			jsr 	Vera_CurrentSprite
-.b5c9	a9 1c		lda #$1c			lda 	#$1C
-.b5cb	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b5ce	ca		dex				dex
-.b5cf	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b5d2	29 03		and #$03			and 	#3
-.b5d4	85 14		sta $14				sta 	zTemp0
-.b5d6	0a		asl a				asl 	a
-.b5d7	0a		asl a				asl 	a
-.b5d8	05 14		ora $14				ora 	zTemp0
-.b5da	0a		asl a				asl 	a
-.b5db	0a		asl a				asl 	a
-.b5dc	0a		asl a				asl 	a
-.b5dd	0a		asl a				asl 	a
-.b5de	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b5e1	60		rts				rts
-.b5e2					Vera_CurrentSprite:
-.b5e2	48		pha				pha 								; save offset
-.b5e3	ad 27 08	lda $0827			lda 	veraCurrentSprite 			; address in zTemp0
-.b5e6	0a		asl a				asl 	a
-.b5e7	85 14		sta $14				sta 	zTemp0		 				; sprite# x 2
-.b5e9	64 15		stz $15				stz 	zTemp0+1
-.b5eb	06 14		asl $14				asl 	zTemp0 						; x 8
-.b5ed	26 15		rol $15				rol 	zTemp0+1
-.b5ef	06 14		asl $14				asl 	zTemp0
-.b5f1	68		pla				pla 								; fix up address
-.b5f2	05 14		ora $14				ora 	zTemp0
-.b5f4	8d 20 9f	sta $9f20			sta  	Vera_Base+0
-.b5f7	a5 15		lda $15				lda 	zTemp0+1
-.b5f9	09 50		ora #$50			ora 	#$50
-.b5fb	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b5fe	a9 1f		lda #$1f			lda 	#$1F
-.b600	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b603	60		rts				rts
+.082a					veraCurrentLayer:
+>082a							.byte 		? 						; current layer (0-1)
+.082b					veraCurrentSprite:
+>082b							.byte 		?						; current sprite (0-127)
+.082c					veraSpriteMode:
+>082c							.byte 		? 						; 0 4 bit, 1 8 bit
+.b575					Vera_SetAddress:
+.b575	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b578	8d 20 9f	sta $9f20			sta 	Vera_Base
+.b57b	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b57e	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b581	bd 00 0e	lda $0e00,x			lda 	stack2,x
+.b584	c9 10		cmp #$10			cmp 	#16
+.b586	b0 02		bcs $b58a			bcs 	_VSASetInc
+.b588	09 10		ora #$10			ora 	#16
+.b58a					_VSASetInc:
+.b58a	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b58d	ca		dex				dex
+.b58e	60		rts				rts
+.b58f					Vera_GetAddress:
+.b58f	e8		inx				inx
+.b590	ad 20 9f	lda $9f20			lda 	Vera_Base
+.b593	9d 00 0c	sta $0c00,x			sta 	stack0,x
+.b596	ad 21 9f	lda $9f21			lda 	Vera_Base+1
+.b599	9d 00 0d	sta $0d00,x			sta 	stack1,x
+.b59c	ad 22 9f	lda $9f22			lda 	Vera_Base+2
+.b59f	9d 00 0e	sta $0e00,x			sta 	stack2,x
+.b5a2	9e 00 0f	stz $0f00,x			stz 	stack3,x
+.b5a5	60		rts				rts
+.b5a6					Vera_SetPalette:
+.b5a6	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b5a9	8d 20 9f	sta $9f20			sta 	Vera_Base
+.b5ac	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b5af	29 01		and #$01			and 	#$01
+.b5b1	09 10		ora #$10			ora 	#$10
+.b5b3	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b5b6	a9 1f		lda #$1f			lda 	#$1F
+.b5b8	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b5bb	ca		dex				dex
+.b5bc	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b5bf	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b5c2	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b5c5	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b5c8	ca		dex				dex
+.b5c9	60		rts				rts
+.b5ca					Vera_Sprite:
+.b5ca	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b5cd	29 7f		and #$7f			and 	#$7F
+.b5cf	8d 2b 08	sta $082b			sta 	veraCurrentSprite
+.b5d2	ca		dex				dex
+.b5d3	60		rts				rts
+.b5d4					Vera_SpriteEnable:
+.b5d4	a9 01		lda #$01			lda 	#1
+.b5d6	80 02		bra $b5da			bra 	Vera_SpriteControl
+.b5d8					Vera_SpriteDisable:
+.b5d8	a9 00		lda #$00			lda 	#0
+.b5da					Vera_SpriteControl:
+.b5da	48		pha				pha
+.b5db	a9 00		lda #$00			lda 	#$00
+.b5dd	8d 20 9f	sta $9f20			sta 	Vera_Base
+.b5e0	a9 40		lda #$40			lda 	#$40
+.b5e2	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b5e5	a9 1f		lda #$1f			lda 	#$1F
+.b5e7	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b5ea	68		pla				pla
+.b5eb	29 01		and #$01			and 	#1
+.b5ed	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b5f0	9c 23 9f	stz $9f23			stz 	Vera_Base+3
+.b5f3	60		rts				rts
+.b5f4					Vera_SpriteMove:
+.b5f4	a9 02		lda #$02			lda 	#2 							; physical position
+.b5f6	20 5a b6	jsr $b65a			jsr 	Vera_CurrentSprite
+.b5f9	20 fc b5	jsr $b5fc			jsr 	_VSMOutPosition
+.b5fc					_VSMOutPosition:
+.b5fc	ca		dex				dex
+.b5fd	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b600	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b603	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
+.b606	29 03		and #$03			and 	#$03
+.b608	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b60b	60		rts				rts
+.b60c					Vera_SpriteSetup:
+.b60c	a9 00		lda #$00			lda 	#0
+.b60e	20 5a b6	jsr $b65a			jsr 	Vera_CurrentSprite
+.b611	ca		dex				dex
+.b612	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b615	85 14		sta $14				sta 	zTemp0
+.b617	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
+.b61a	85 15		sta $15				sta 	zTemp0+1
+.b61c	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
+.b61f	85 16		sta $16				sta 	zTemp1
+.b621	5a		phy				phy
+.b622	a0 05		ldy #$05			ldy 	#5
+.b624	46 16		lsr $16		_VSSS:	lsr 	zTemp1
+.b626	66 15		ror $15				ror 	zTemp0+1
+.b628	66 14		ror $14				ror 	zTemp0
+.b62a	88		dey				dey
+.b62b	d0 f7		bne $b624			bne 	_VSSS
+.b62d	7a		ply				ply
+.b62e	a5 14		lda $14				lda 	zTemp0
+.b630	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b633	a5 15		lda $15				lda 	zTemp0+1
+.b635	0d 2c 08	ora $082c			ora 	veraSpriteMode
+.b638	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b63b	60		rts				rts
+.b63c					Vera_SetSize:
+.b63c	a9 06		lda #$06			lda 	#6
+.b63e	20 5a b6	jsr $b65a			jsr 	Vera_CurrentSprite
+.b641	a9 1c		lda #$1c			lda 	#$1C
+.b643	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b646	ca		dex				dex
+.b647	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b64a	29 03		and #$03			and 	#3
+.b64c	85 14		sta $14				sta 	zTemp0
+.b64e	0a		asl a				asl 	a
+.b64f	0a		asl a				asl 	a
+.b650	05 14		ora $14				ora 	zTemp0
+.b652	0a		asl a				asl 	a
+.b653	0a		asl a				asl 	a
+.b654	0a		asl a				asl 	a
+.b655	0a		asl a				asl 	a
+.b656	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b659	60		rts				rts
+.b65a					Vera_CurrentSprite:
+.b65a	48		pha				pha 								; save offset
+.b65b	ad 2b 08	lda $082b			lda 	veraCurrentSprite 			; address in zTemp0
+.b65e	0a		asl a				asl 	a
+.b65f	85 14		sta $14				sta 	zTemp0		 				; sprite# x 2
+.b661	64 15		stz $15				stz 	zTemp0+1
+.b663	06 14		asl $14				asl 	zTemp0 						; x 8
+.b665	26 15		rol $15				rol 	zTemp0+1
+.b667	06 14		asl $14				asl 	zTemp0
+.b669	68		pla				pla 								; fix up address
+.b66a	05 14		ora $14				ora 	zTemp0
+.b66c	8d 20 9f	sta $9f20			sta  	Vera_Base+0
+.b66f	a5 15		lda $15				lda 	zTemp0+1
+.b671	09 50		ora #$50			ora 	#$50
+.b673	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b676	a9 1f		lda #$1f			lda 	#$1F
+.b678	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b67b	60		rts				rts
 
 ;******  Return to file: main.asm
 
 
 ;******  Processing file: generated/testcode.inc
 
->1100	07 64 00 88 4e 2f 00 0b			.byte $07,$64,$00,$88,$4e,$2f,$00,$0b,$6e,$00,$31,$d5,$c4,$d1,$c0,$df,$f2,$00,$0d,$78,$00,$d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$ed,$00,$12,$82,$00,$90,$80,$80,$4e,$d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7,$00,$11,$8c,$00,$83,$4e,$d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4,$00,$05,$96,$00,$37,$00,$10,$a0,$00,$90,$80,$80,$4e,$d5,$c4,$d1,$c0,$df,$d2,$c4,$f3,$00,$07,$aa,$00,$a0,$4e,$2f,$00,$11,$b4,$00,$81,$80,$4e,$2f,$31,$20,$20,$d5,$d6,$d1,$c8,$d3,$e4,$00,$0d,$be,$00,$37,$37,$c0,$cd,$c8,$cc,$c0,$d3,$e4,$00,$06,$c8,$00,$16,$2d,$00,$11,$d2,$00,$29,$d5,$d6,$d1,$c8,$d3,$e4,$89,$bc,$a3,$4e,$26,$18,$00,$0c,$dc,$00,$29,$c0,$cd,$c8,$cc,$c0,$d3,$e4,$00,$08,$e6,$00,$8f,$a8,$4e,$2f,$00,$08,$f0,$00,$83,$bf,$4e,$2f,$00,$07,$fa,$00,$31,$4d,$e0,$00,$0e,$04,$01,$88,$4e,$2f,$31,$d5,$c4,$d1,$c0,$df,$f2,$00,$16,$0e,$01,$31,$1a,$1a,$1a,$e0,$12,$2b,$d5,$c4,$d1,$c0,$df,$d2,$df,$cc,$ce,$d5,$e4,$00,$05,$18,$01,$37,$00,$05,$22,$01,$37,$00,$06,$2c,$01,$37,$18,$00
->1108	6e 00 31 d5 c4 d1 c0 df f2 00 0d 78 00 d5 c4 d1
->1118	c0 df d2 df ce ed 00 12 82 00 90 80 80 4e d5 c4
->1128	d1 c0 df d2 df c6 c5 f7 00 11 8c 00 83 4e d5 c4
->1138	d1 c0 df d2 df d2 c8 d9 e4 00 05 96 00 37 00 10
->1148	a0 00 90 80 80 4e d5 c4 d1 c0 df d2 c4 f3 00 07
->1158	aa 00 a0 4e 2f 00 11 b4 00 81 80 4e 2f 31 20 20
->1168	d5 d6 d1 c8 d3 e4 00 0d be 00 37 37 c0 cd c8 cc
->1178	c0 d3 e4 00 06 c8 00 16 2d 00 11 d2 00 29 d5 d6
->1188	d1 c8 d3 e4 89 bc a3 4e 26 18 00 0c dc 00 29 c0
->1198	cd c8 cc c0 d3 e4 00 08 e6 00 8f a8 4e 2f 00 08
->11a8	f0 00 83 bf 4e 2f 00 07 fa 00 31 4d e0 00 0e 04
->11b8	01 88 4e 2f 31 d5 c4 d1 c0 df f2 00 16 0e 01 31
->11c8	1a 1a 1a e0 12 2b d5 c4 d1 c0 df d2 df cc ce d5
->11d8	e4 00 05 18 01 37 00 05 22 01 37 00 06 2c 01 37
->11e8	18 00
+>1100	0c 64 00 81 4e d5 c4 d1			.byte $0c,$64,$00,$81,$4e,$d5,$c4,$d1,$c0,$df,$f2,$00,$0d,$6e,$00,$d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$ed,$00,$12,$78,$00,$90,$80,$80,$4e,$d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7,$00,$11,$82,$00,$83,$4e,$d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4,$00,$10,$8c,$00,$90,$80,$80,$4e,$d5,$c4,$d1,$c0,$df,$d2,$c4,$f3,$00,$07,$96,$00,$a0,$4e,$2f,$00,$11,$a0,$00,$81,$80,$4e,$2f,$31,$20,$20,$d5,$d6,$d1,$c8,$d3,$e4,$00,$0d,$aa,$00,$37,$37,$c0,$cd,$c8,$cc,$c0,$d3,$e4,$00,$06,$b4,$00,$16,$2d,$00,$11,$be,$00,$29,$d5,$d6,$d1,$c8,$d3,$e4,$89,$bc,$a3,$4e,$26,$18,$00,$0c,$c8,$00,$29,$c0,$cd,$c8,$cc,$c0,$d3,$e4,$00,$08,$d2,$00,$8f,$a8,$4e,$2f,$00,$08,$dc,$00,$83,$bf,$4e,$2f,$00,$05,$e6,$00,$37,$00,$06,$f0,$00,$37,$18,$00
+>1108	c0 df f2 00 0d 6e 00 d5 c4 d1 c0 df d2 df ce ed
+>1118	00 12 78 00 90 80 80 4e d5 c4 d1 c0 df d2 df c6
+>1128	c5 f7 00 11 82 00 83 4e d5 c4 d1 c0 df d2 df d2
+>1138	c8 d9 e4 00 10 8c 00 90 80 80 4e d5 c4 d1 c0 df
+>1148	d2 c4 f3 00 07 96 00 a0 4e 2f 00 11 a0 00 81 80
+>1158	4e 2f 31 20 20 d5 d6 d1 c8 d3 e4 00 0d aa 00 37
+>1168	37 c0 cd c8 cc c0 d3 e4 00 06 b4 00 16 2d 00 11
+>1178	be 00 29 d5 d6 d1 c8 d3 e4 89 bc a3 4e 26 18 00
+>1188	0c c8 00 29 c0 cd c8 cc c0 d3 e4 00 08 d2 00 8f
+>1198	a8 4e 2f 00 08 dc 00 83 bf 4e 2f 00 05 e6 00 37
+>11a8	00 06 f0 00 37 18 00
 
 ;******  Return to file: main.asm
 
->11ea	00						.byte 	0
+>11af	00						.byte 	0
 
 ;******  End of listing
