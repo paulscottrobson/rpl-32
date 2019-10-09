@@ -72,6 +72,27 @@ Struct_ENDIF: ;; [endif]
 ;
 ; ******************************************************************************
 
-StructSkipForward:		
-		.byte 	$FF
+StructSkipForward:	
+		sta 	zTemp0 						; 2nd match
+_SSFLoop:
+		lda 	(codePtr),y 				; read it
+		beq 	_SSFExit 					; if EOL then exit
+		iny 								; advance past it
+		;
+		cmp 	#KWD_ENDIF 					; exit if ENDIF or 2nd match
+		beq 	_SSFExit
+		cmp 	zTemp0
+		beq 	_SSFExit
+		;
+		cmp 	#3 							; if not 1,2 go round again
+		bcs 	_SSFLoop
+		;
+		tya 								; add length offset
+		dec 	a
+		adc 	(codePtr),y
+		tay
+		bra 	_SSFLoop
+_SSFExit:
+		rts
+
 

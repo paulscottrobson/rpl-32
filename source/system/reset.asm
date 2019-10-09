@@ -48,12 +48,6 @@ _RRErase:
 		;
 		jsr 	ResetVarMemory
 		;
-		;		Copy high memory to Alloc Memory 
-		;
-		lda 	#MemoryEnd >> 8
-		sta 	AllocMemory+1
-		stz 	AllocMemory
-		;
 		;		Reset the structure pointer
 		;
 		lda 	#StructureStack & $FF

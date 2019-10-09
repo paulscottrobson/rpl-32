@@ -31,8 +31,8 @@ System_Load: ;; [load]
 		jsr 	SLGetFileName 				; get filename -> zTemp0
 		jsr 	ExternLoad
 		jsr 	ResetForRun 				; re-initialise everything
-		rts
-
+		jmp 	WarmStart
+		
 ; *******************************************************************************************
 ;
 ;							Get filename -> zTemp0

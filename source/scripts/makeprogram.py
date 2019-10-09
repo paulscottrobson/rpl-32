@@ -46,8 +46,14 @@ if __name__ == "__main__":
 	src = """
 
 	12345
+	10 for 
+		index digit 
+		index 4 < if star else 33 emit endif
+		13 emit
+	next
 	54321
 	. end
+	def digit 48 + emit ;
 	def star 42 emit ;
 	def emit ^a &FFD2 sys ;
 

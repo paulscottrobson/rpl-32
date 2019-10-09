@@ -10,26 +10,32 @@
 ; ******************************************************************************
 
 Allocate: ;; [alloc]
+		;.byte 	$FF
 		lda 	stack1,x					; check 0-32767 allocated.
 		and 	#$80
 		ora 	stack2,x
 		ora 	stack3,x
 		bne 	_ALBad
 		;
-		sec 								; subtract from alloc ptr returning
-		lda 	AllocMemory 				; address
-		sbc 	stack0,x
-		sta 	AllocMemory
+		clc 								; add to varmemory pointer saving
+		lda 	VarMemory 					; address
+		pha
+		adc 	stack0,x
+		sta 	VarMemory
+		;
+		lda 	VarMemory+1
+		pha
+		adc 	stack1,x
+		sta 	VarMemory+1
+		;
+		pla 								; pop and save
+		sta 	stack1,x
+		pla
 		sta 	stack0,x
 		;
-		lda 	AllocMemory+1
-		sbc 	stack1,x
-		sta 	AllocMemory+1
-		sta 	stack1,x
-		;
-		cmp 	VarMemory+1 				; check range
-		beq 	_ALBad
-		bcc 	_ALBad
+		lda 	stack1,x 	
+		cmp 	AllocMemory+1 				; check range
+		bcs 	_ALBad
 		;
 		rts
 

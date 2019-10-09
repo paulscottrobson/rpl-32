@@ -38,6 +38,10 @@ _Display:
 		jsr 	ExternPrint
 		jsr 	ExternPrint
 
+		lda 	#MemoryEnd >> 8 			; set top of memory address.
+		sta 	AllocMemory+1
+		stz 	AllocMemory
+
 		jsr 	ResetForRun
 		jsr 	ResetCodePointer
 
