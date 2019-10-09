@@ -45,23 +45,16 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 
-	12345
-	&F4000 vera.set
-	1 vwrite 0 vwrite
-	&F5000 vera.set
-	0 vwrite
-	8 vwrite
-	128 vwrite
-	0 vwrite
-	64 vwrite
-	0 vwrite
-	&1c vwrite
-	240 vwrite
-	54321 
+	8 for
+		index vera.s
+		vera.s.on
+		&10000 vera.s.gfx
+		3 vera.s.size
+	next
 
 	&10000 vera.set
-	64 for
-	64 for index >> >> 128 + vwrite
+	32 for
+	64 for index >> >> vwrite
 	next next animate
 	. end
 	def vwrite &9F23 c! ;
@@ -69,10 +62,10 @@ if __name__ == "__main__":
 	def animate
 	1000 for
 		255 for
-			&F5002 vera.set
-			index vwrite 0 vwrite
-			index vwrite 0 vwrite
-			100 for next
+			index  ^a
+			8 for index vera.s
+				index << << << a + dup vera.s.move
+			next
 		next
 	next ;
 
