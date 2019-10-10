@@ -49,10 +49,6 @@ Command_For: ;; [for]
 		lda 	#STM_FOR 					; push FOR marker
 		pushstruct
 		;
-		lda 	StructSP 					; copy current so it can access it.
-		sta 	ForAddr
-		lda 	StructSP+1
-		sta 	ForAddr+1
 		rts
 		
 _CFZero:rerror 	"FOR COUNT ZERO"
@@ -66,7 +62,7 @@ _CFZero:rerror 	"FOR COUNT ZERO"
 Command_Next: ;; [next]
 		lda 	(StructSP)					; check it's FOR.
 		cmp 	#STM_FOR
-		bne 	_CNNoFor
+		bne 	CNNoFor
 		;
 		phy
 		ldy 	#0
@@ -95,16 +91,11 @@ _CNIncrement:
 		rts
 ;
 _CNLoop:	
-		lda 	StructSP 					; copy current so it can access it.
-		sta 	ForAddr
-		lda 	StructSP+1
-		sta 	ForAddr+1
-		;
 		ldy 	#5 							; restore the position
 		jsr 	StructPopCurrent
 		rts
 
-_CNNoFor:
+CNNoFor:
 		rerror	"MISSING FOR"		
 
 ; ******************************************************************************
@@ -114,6 +105,10 @@ _CNNoFor:
 ; ******************************************************************************
 
 Command_Index: ;; [index]
+		lda 	(StructSP)					; check it's FOR.
+		cmp 	#STM_FOR
+		bne 	CNNoFor
+
 		phy
 		;
 		ldy 	#1 							; get the stack position of 
@@ -121,19 +116,19 @@ Command_Index: ;; [index]
 		inx
 		sec
 		lda 	#$FE
-		sbc 	(ForAddr),y
+		sbc 	(StructSP),y
 		sta 	stack0,x
 		iny
 		lda 	#$FF
-		sbc 	(ForAddr),y
+		sbc 	(StructSP),y
 		sta 	stack1,x
 		iny
 		lda 	#$FF
-		sbc 	(ForAddr),y
+		sbc 	(StructSP),y
 		sta 	stack2,x
 		iny
 		lda 	#$FF
-		sbc 	(ForAddr),y
+		sbc 	(StructSP),y
 		sta 	stack3,x
 
 		ply

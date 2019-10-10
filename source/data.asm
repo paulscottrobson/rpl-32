@@ -63,8 +63,6 @@ zLTemp1:		.dword ?					; temporary longs
 
 idDataAddr:		.word ? 					; data address.
 
-ForAddr:		.byte ? 					; points to current FOR structure
-
 		.send zeroPage
 
 ; ******************************************************************************

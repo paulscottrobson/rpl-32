@@ -45,23 +45,10 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 	' test program '
-	1 vera.s
-	vera.s.on
-	&10000 vera.s.gfx
-	3 vera.s.size
-
-	&10000 vera.set 'line comment'
-	32 for
-	64 for index >> >> vwrite
-	next next animate
-	. end
-	def vwrite &9F23 c! ;
-
-	def animate
-	1000 for
-		255 for
-		next
-	next ;
+	26 for
+		5 for next
+		index 65 + emit
+	next 13 emit . end
 
 """.split("\n")
 	program = Program()

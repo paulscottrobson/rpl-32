@@ -1,8 +1,5 @@
 Todo
 ====
-- 	index reset after next -> inner loop bug or feature ?
-	(get from the stack directly)
--	Default RPL added on load/save.		
 -	Generalise load/save routines.
 
 Fixes/Bugs/Improvements

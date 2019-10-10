@@ -11,5 +11,9 @@
 
 IO_Clear:	;; [cls]
 	lda 	#SCM_CLS
+	jmp 	ExternPrint
+
 IO_Emit:	;; [emit]
+	lda 	stack0,x
+	dex
 	jmp 	ExternPrint

@@ -74,14 +74,18 @@ _SRSeeded:
 ;		Name : 		io.asm
 ;		Purpose : 	I/O Library
 ;		Author : 	Paul Robson (paul@robsons.org.uk)
-;		Created : 	9th October 2019
+;		Created : 	10th October 2019
 ;
 ; ******************************************************************************
 ; ******************************************************************************
 
 IO_Clear:	;; [cls]
 	lda 	#SCM_CLS
+	jmp 	ExternPrint
+
 IO_Emit:	;; [emit]
+	lda 	stack0,x
+	dex
 	jmp 	ExternPrint
 ; ******************************************************************************
 ; ******************************************************************************
