@@ -66,6 +66,17 @@ _CLIEnd:
 ; ******************************************************************************
 
 ListCurrent:
+		ldy 	#3
+		lda 	(codePtr),y
+		cmp 	#2
+		bne 	_LCList
+		lda 	#13
+		jsr 	ExternPrint
+		jsr 	_LCList
+		lda 	#13
+		jsr 	ExternPrint
+		rts
+_LCList:
 		lda 	#CTH_LINENO
 		jsr 	ExternColour 				; set colour
 		ldy 	#1							; print line#

@@ -50,7 +50,7 @@ if __name__ == "__main__":
 	&10000 vera.s.gfx
 	3 vera.s.size
 
-	&10000 vera.set
+	&10000 vera.set 'line comment'
 	32 for
 	64 for index >> >> vwrite
 	next next animate

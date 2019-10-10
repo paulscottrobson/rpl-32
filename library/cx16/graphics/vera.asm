@@ -167,6 +167,7 @@ _VSSS:	lsr 	zTemp1
 		lda 	zTemp0
 		sta 	Vera_Base+3		
 		lda 	zTemp0+1
+		ora 	#128
 		ora 	veraSpriteMode
 		sta 	Vera_Base+3		
 		;
