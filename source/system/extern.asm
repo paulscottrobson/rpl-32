@@ -125,33 +125,34 @@ _EIExit:lda 	#0
 
 ; ******************************************************************************
 ;
-;									Save a file
+;						Save a file from YA to zTemp1
 ;
 ; ******************************************************************************
 
 ExternSave:
 		phx
 		phy
+
+		sta 	zTemp2 						; save start
+		sty 	zTemp2+1
+
 		jsr 	EXGetLength 				; get length of file into A
 		ldx 	zTemp0
 		ldy 	zTemp0+1
 		jsr 	$FFBD 						; set name
 		;
-		ldx 	#1	 						; device #8
+		lda 	#1
+		ldx 	#1	 						; device #1
 		ldy 	#0
 		jsr 	$FFBA 						; set LFS
 		;
-		lda 	#ProgramStart & $FF 		; start address
-		sta 	$C1
-		lda 	#ProgramStart >> 8
-		sta 	$C2
+		ldx 	zTemp1 						; end address
+		ldy 	zTemp1+1
 		;
-		ldx 	VarMemory 					; end address
-		ldy 	VarMemory+1
-		;
-		lda 	#$C1
+		lda 	#zTemp2
 		jsr 	$FFD8 						; save
 		bcs 	_ESSave
+
 		ply
 		plx
 		rts
@@ -161,27 +162,33 @@ _ESSave:
 
 ; ******************************************************************************
 ;
-;									Load a file
+;							  Load a file to YA
 ;
 ; ******************************************************************************
 
 ExternLoad:
-		phx
+		phx 								; save XY
 		phy
+
+		pha 								; save target
+		phy
+
 		jsr 	EXGetLength 				; get length of file into A
 		ldx 	zTemp0
 		ldy 	zTemp0+1
 		jsr 	$FFBD 						; set name
 		;
-		ldx 	#1	 						; device #8
+		lda 	#1
+		ldx 	#1	 						; device #1
 		ldy 	#0
 		jsr 	$FFBA 						; set LFS		
 
-		ldx 	#ProgramStart & $FF 		; start address
-		ldy 	#ProgramStart >> 8
+		ply 								; restore target to YX and call load
+		plx
 		lda 	#0 							; load command
 		jsr 	$FFD5
 		bcs 	_ESLoad
+
 		ply
 		plx
 		rts

@@ -16,9 +16,23 @@
 ; *******************************************************************************************
 
 System_Save: ;; [save]
+		phx
+		phy
+
 		jsr 	ResetVarMemory 				; make sure start/end are right
 		jsr 	SLGetFileName 				; get filename -> zTemp0
+
+		lda 	VarMemory 					; end address
+		sta 	zTemp1
+		lda 	VarMemory+1
+		sta 	zTemp1+1
+
+		lda 	#ProgramStart & $FF 		; program start to YA
+		ldy 	#ProgramStart >> 8
 		jsr 	ExternSave
+
+		ply
+		plx
 		jmp 	WarmStart
 
 ; *******************************************************************************************
@@ -28,9 +42,13 @@ System_Save: ;; [save]
 ; *******************************************************************************************
 
 System_Load: ;; [load]
+		phy
 		jsr 	SLGetFileName 				; get filename -> zTemp0
+		lda 	#ProgramStart & $FF 		; program start to YA
+		ldy 	#ProgramStart >> 8
 		jsr 	ExternLoad
 		jsr 	ResetForRun 				; re-initialise everything
+		ply
 		jmp 	WarmStart
 		
 ; *******************************************************************************************

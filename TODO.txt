@@ -1,6 +1,5 @@
 Todo
 ====
--	Generalise load/save routines.
 
 Fixes/Bugs/Improvements
 =======================

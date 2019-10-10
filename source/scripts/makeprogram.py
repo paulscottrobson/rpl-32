@@ -45,10 +45,8 @@ class Program(object):
 if __name__ == "__main__":
 	src = """
 	' test program '
-	26 for
-		5 for next
-		index 65 + emit
-	next 13 emit . end
+	"DEMO" vera.load
+	 . end
 
 """.split("\n")
 	program = Program()

@@ -40,61 +40,68 @@ libfunc_1005: ; VERA.GET
 	.byte 0,'C'
 libfunc_1005_name:
 	.byte $d5,$c4,$d1,$c0,$df,$c6,$c4,$f3
-libfunc_1006: ; VERA.PALETTE
-	.word 0
-	.dword Vera_SetPalette
+libfunc_1006: ; VERA.LOAD
+	.word libfunc_1005
+	.dword Vera_Load
 	.word libfunc_1006_name
 	.byte 0,'C'
 libfunc_1006_name:
-	.byte $d5,$c4,$d1,$c0,$df,$cf,$c0,$cb,$c4,$d3,$d3,$e4
-libfunc_1007: ; VERA.S.MOVE
-	.word libfunc_1006
-	.dword Vera_SpriteMove
+	.byte $d5,$c4,$d1,$c0,$df,$cb,$ce,$c0,$e3
+libfunc_1007: ; VERA.PALETTE
+	.word 0
+	.dword Vera_SetPalette
 	.word libfunc_1007_name
 	.byte 0,'C'
 libfunc_1007_name:
-	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$cc,$ce,$d5,$e4
-libfunc_1008: ; VERA.S.SIZE
+	.byte $d5,$c4,$d1,$c0,$df,$cf,$c0,$cb,$c4,$d3,$d3,$e4
+libfunc_1008: ; VERA.S.MOVE
 	.word libfunc_1007
-	.dword Vera_SetSize
+	.dword Vera_SpriteMove
 	.word libfunc_1008_name
 	.byte 0,'C'
 libfunc_1008_name:
-	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4
-libfunc_1009: ; VERA.S.OFF
-	.word 0
-	.dword Vera_SpriteDisable
+	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$cc,$ce,$d5,$e4
+libfunc_1009: ; VERA.S.SIZE
+	.word libfunc_1008
+	.dword Vera_SetSize
 	.word libfunc_1009_name
 	.byte 0,'C'
 libfunc_1009_name:
-	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$c5,$e5
-libfunc_1010: ; VERA.W
+	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$d2,$c8,$d9,$e4
+libfunc_1010: ; VERA.S.OFF
 	.word 0
-	.dword Vera_ByteW
+	.dword Vera_SpriteDisable
 	.word libfunc_1010_name
 	.byte 0,'C'
 libfunc_1010_name:
-	.byte $d5,$c4,$d1,$c0,$df,$f6
-libfunc_1011: ; VERA.S.GFX
+	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$c5,$e5
+libfunc_1011: ; VERA.W
 	.word 0
-	.dword Vera_SpriteSetup
+	.dword Vera_ByteW
 	.word libfunc_1011_name
 	.byte 0,'C'
 libfunc_1011_name:
-	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7
-libfunc_1012: ; STR.LEN
+	.byte $d5,$c4,$d1,$c0,$df,$f6
+libfunc_1012: ; VERA.S.GFX
 	.word 0
-	.dword String_Len
+	.dword Vera_SpriteSetup
 	.word libfunc_1012_name
 	.byte 0,'C'
 libfunc_1012_name:
-	.byte $d2,$d3,$d1,$df,$cb,$c4,$ed
-libfunc_1013: ; VERA.S.ON
-	.word libfunc_1012
-	.dword Vera_SpriteEnable
+	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$c6,$c5,$f7
+libfunc_1013: ; STR.LEN
+	.word 0
+	.dword String_Len
 	.word libfunc_1013_name
 	.byte 0,'C'
 libfunc_1013_name:
+	.byte $d2,$d3,$d1,$df,$cb,$c4,$ed
+libfunc_1014: ; VERA.S.ON
+	.word libfunc_1013
+	.dword Vera_SpriteEnable
+	.word libfunc_1014_name
+	.byte 0,'C'
+libfunc_1014_name:
 	.byte $d5,$c4,$d1,$c0,$df,$d2,$df,$ce,$ed
 ;
 ;	Default hash table
@@ -103,16 +110,16 @@ DefaultHashTable:
 	.word 0
 	.word 0
 	.word libfunc_1001
-	.word libfunc_1005
-	.word libfunc_1008
+	.word libfunc_1006
 	.word libfunc_1009
 	.word libfunc_1010
 	.word libfunc_1011
+	.word libfunc_1012
 	.word 0
 	.word 0
 	.word 0
 	.word 0
 	.word 0
-	.word libfunc_1013
+	.word libfunc_1014
 	.word 0
 	.word 0
