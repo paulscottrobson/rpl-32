@@ -1,6 +1,5 @@
 Todo
 ====
--	Line Comments different highlighting if not at start.
 - 	index reset after next -> inner loop bug or feature ?
 	(get from the stack directly)
 -	Default RPL added on load/save.		

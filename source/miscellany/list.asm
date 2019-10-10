@@ -128,6 +128,9 @@ _LCString:
 		bcs 	_LCSSkip
 		lda 	#CTH_COMMENT
 		ldx 	#"'"
+		cpy 	#3
+		beq 	_LCSSkip
+		lda 	#CTH_LCOMMENT
 _LCSSkip:
 		jsr 	ExternColour 				; set colour
 		txa
@@ -185,9 +188,10 @@ _LCConstant:
 		jsr 	IntegerToString 			; this could corrupt stack if full :)
 		jsr 	ErrorPrintIntegerBuffer
 		pla 								; sign back
-		bpl 	_LCLoop
+		bpl 	_LCLoop2
 		lda 	#"-"
 		jsr 	ExternPrint
+_LCLoop2:		
 		jmp 	_LCLoop
 ;
 ;		Print token in A

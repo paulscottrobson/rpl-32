@@ -167,7 +167,6 @@ _VSSS:	lsr 	zTemp1
 		lda 	zTemp0
 		sta 	Vera_Base+3		
 		lda 	zTemp0+1
-		ora 	#128
 		ora 	veraSpriteMode
 		sta 	Vera_Base+3		
 		;
@@ -197,6 +196,18 @@ Vera_SetSize: ;; [vera.s.size]
 		asl 	a
 		asl 	a
 		sta 	Vera_Base+3		
+		rts
+
+; ******************************************************************************
+;
+;								Write byte to vera
+;
+; ******************************************************************************
+
+Vera_ByteW: ;; [vera.w]
+		lda 	stack0,x
+		sta 	Vera_Base+3
+		dex
 		rts
 
 ; ******************************************************************************
