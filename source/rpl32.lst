@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -D debug=2 -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Thu Oct 10 15:40:02 2019
+; Thu Oct 10 20:31:04 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -2984,7 +2984,7 @@
 >b472	c2 cb f2				.byte $c2,$cb,$f2
 .b475					libfunc_1001:
 >b475	68 b4					.word libfunc_1000
->b477	94 b6 00 00				.dword Vera_Sprite
+>b477	9a b6 00 00				.dword Vera_Sprite
 >b47b	7f b4					.word libfunc_1001_name
 >b47d	00 43					.byte 0,'C'
 .b47f					libfunc_1001_name:
@@ -3019,7 +3019,7 @@
 >b4bc	d5 c4 d1 c0 df c6 c4 f3			.byte $d5,$c4,$d1,$c0,$df,$c6,$c4,$f3
 .b4c4					libfunc_1006:
 >b4c4	b2 b4					.word libfunc_1005
->b4c6	4e b7 00 00				.dword Vera_Load
+>b4c6	54 b7 00 00				.dword Vera_Load
 >b4ca	ce b4					.word libfunc_1006_name
 >b4cc	00 43					.byte 0,'C'
 .b4ce					libfunc_1006_name:
@@ -3035,7 +3035,7 @@
 >b4e9	c4 d3 d3 e4
 .b4ed					libfunc_1008:
 >b4ed	d7 b4					.word libfunc_1007
->b4ef	be b6 00 00				.dword Vera_SpriteMove
+>b4ef	c4 b6 00 00				.dword Vera_SpriteMove
 >b4f3	f7 b4					.word libfunc_1008_name
 >b4f5	00 43					.byte 0,'C'
 .b4f7					libfunc_1008_name:
@@ -3043,7 +3043,7 @@
 >b4ff	ce d5 e4
 .b502					libfunc_1009:
 >b502	ed b4					.word libfunc_1008
->b504	06 b7 00 00				.dword Vera_SetSize
+>b504	0c b7 00 00				.dword Vera_SetSize
 >b508	0c b5					.word libfunc_1009_name
 >b50a	00 43					.byte 0,'C'
 .b50c					libfunc_1009_name:
@@ -3051,7 +3051,7 @@
 >b514	c8 d9 e4
 .b517					libfunc_1010:
 >b517	00 00					.word 0
->b519	a2 b6 00 00				.dword Vera_SpriteDisable
+>b519	a8 b6 00 00				.dword Vera_SpriteDisable
 >b51d	21 b5					.word libfunc_1010_name
 >b51f	00 43					.byte 0,'C'
 .b521					libfunc_1010_name:
@@ -3059,14 +3059,14 @@
 >b529	c5 e5
 .b52b					libfunc_1011:
 >b52b	00 00					.word 0
->b52d	24 b7 00 00				.dword Vera_ByteW
+>b52d	2a b7 00 00				.dword Vera_ByteW
 >b531	35 b5					.word libfunc_1011_name
 >b533	00 43					.byte 0,'C'
 .b535					libfunc_1011_name:
 >b535	d5 c4 d1 c0 df f6			.byte $d5,$c4,$d1,$c0,$df,$f6
 .b53b					libfunc_1012:
 >b53b	00 00					.word 0
->b53d	d6 b6 00 00				.dword Vera_SpriteSetup
+>b53d	dc b6 00 00				.dword Vera_SpriteSetup
 >b541	45 b5					.word libfunc_1012_name
 >b543	00 43					.byte 0,'C'
 .b545					libfunc_1012_name:
@@ -3081,7 +3081,7 @@
 >b559	d2 d3 d1 df cb c4 ed			.byte $d2,$d3,$d1,$df,$cb,$c4,$ed
 .b560					libfunc_1014:
 >b560	4f b5					.word libfunc_1013
->b562	9e b6 00 00				.dword Vera_SpriteEnable
+>b562	a4 b6 00 00				.dword Vera_SpriteEnable
 >b566	6a b5					.word libfunc_1014_name
 >b568	00 43					.byte 0,'C'
 .b56a					libfunc_1014_name:
@@ -3223,183 +3223,185 @@
 .b66c	9e 00 0f	stz $0f00,x			stz 	stack3,x
 .b66f	60		rts				rts
 .b670					Vera_SetPalette:
-.b670	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b673	8d 20 9f	sta $9f20			sta 	Vera_Base
-.b676	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b679	29 01		and #$01			and 	#$01
-.b67b	09 10		ora #$10			ora 	#$10
-.b67d	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b680	a9 1f		lda #$1f			lda 	#$1F
-.b682	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b685	ca		dex				dex
-.b686	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b689	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b68c	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b670	1e 00 0c	asl $0c00,x			asl 	stack0,x
+.b673	3e 00 0d	rol $0d00,x			rol 	stack1,x
+.b676	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b679	8d 20 9f	sta $9f20			sta 	Vera_Base
+.b67c	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b67f	29 01		and #$01			and 	#$01
+.b681	09 10		ora #$10			ora 	#$10
+.b683	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b686	a9 1f		lda #$1f			lda 	#$1F
+.b688	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b68b	ca		dex				dex
+.b68c	bd 00 0c	lda $0c00,x			lda 	stack0,x
 .b68f	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b692	ca		dex				dex
-.b693	60		rts				rts
-.b694					Vera_Sprite:
-.b694	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b697	29 7f		and #$7f			and 	#$7F
-.b699	8d 2b 08	sta $082b			sta 	veraCurrentSprite
-.b69c	ca		dex				dex
-.b69d	60		rts				rts
-.b69e					Vera_SpriteEnable:
-.b69e	a9 01		lda #$01			lda 	#1
-.b6a0	80 02		bra $b6a4			bra 	Vera_SpriteControl
-.b6a2					Vera_SpriteDisable:
-.b6a2	a9 00		lda #$00			lda 	#0
-.b6a4					Vera_SpriteControl:
-.b6a4	48		pha				pha
-.b6a5	a9 00		lda #$00			lda 	#$00
-.b6a7	8d 20 9f	sta $9f20			sta 	Vera_Base
-.b6aa	a9 40		lda #$40			lda 	#$40
-.b6ac	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b6af	a9 1f		lda #$1f			lda 	#$1F
-.b6b1	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b6b4	68		pla				pla
-.b6b5	29 01		and #$01			and 	#1
-.b6b7	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b6ba	9c 23 9f	stz $9f23			stz 	Vera_Base+3
-.b6bd	60		rts				rts
-.b6be					Vera_SpriteMove:
-.b6be	a9 02		lda #$02			lda 	#2 							; physical position
-.b6c0	20 2c b7	jsr $b72c			jsr 	Vera_CurrentSprite
-.b6c3	20 c6 b6	jsr $b6c6			jsr 	_VSMOutPosition
-.b6c6					_VSMOutPosition:
-.b6c6	ca		dex				dex
-.b6c7	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b6ca	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b6cd	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
-.b6d0	29 03		and #$03			and 	#$03
-.b6d2	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b6d5	60		rts				rts
-.b6d6					Vera_SpriteSetup:
-.b6d6	a9 00		lda #$00			lda 	#0
-.b6d8	20 2c b7	jsr $b72c			jsr 	Vera_CurrentSprite
-.b6db	ca		dex				dex
-.b6dc	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b6df	85 14		sta $14				sta 	zTemp0
-.b6e1	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
-.b6e4	85 15		sta $15				sta 	zTemp0+1
-.b6e6	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
-.b6e9	85 16		sta $16				sta 	zTemp1
-.b6eb	5a		phy				phy
-.b6ec	a0 05		ldy #$05			ldy 	#5
-.b6ee	46 16		lsr $16		_VSSS:	lsr 	zTemp1
-.b6f0	66 15		ror $15				ror 	zTemp0+1
-.b6f2	66 14		ror $14				ror 	zTemp0
-.b6f4	88		dey				dey
-.b6f5	d0 f7		bne $b6ee			bne 	_VSSS
-.b6f7	7a		ply				ply
-.b6f8	a5 14		lda $14				lda 	zTemp0
-.b6fa	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b6fd	a5 15		lda $15				lda 	zTemp0+1
-.b6ff	0d 2c 08	ora $082c			ora 	veraSpriteMode
-.b702	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b705	60		rts				rts
-.b706					Vera_SetSize:
-.b706	a9 06		lda #$06			lda 	#6
-.b708	20 2c b7	jsr $b72c			jsr 	Vera_CurrentSprite
-.b70b	a9 1c		lda #$1c			lda 	#$1C
-.b70d	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b710	ca		dex				dex
-.b711	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
-.b714	29 03		and #$03			and 	#3
-.b716	85 14		sta $14				sta 	zTemp0
-.b718	0a		asl a				asl 	a
-.b719	0a		asl a				asl 	a
-.b71a	05 14		ora $14				ora 	zTemp0
-.b71c	0a		asl a				asl 	a
-.b71d	0a		asl a				asl 	a
+.b692	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b695	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b698	ca		dex				dex
+.b699	60		rts				rts
+.b69a					Vera_Sprite:
+.b69a	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b69d	29 7f		and #$7f			and 	#$7F
+.b69f	8d 2b 08	sta $082b			sta 	veraCurrentSprite
+.b6a2	ca		dex				dex
+.b6a3	60		rts				rts
+.b6a4					Vera_SpriteEnable:
+.b6a4	a9 01		lda #$01			lda 	#1
+.b6a6	80 02		bra $b6aa			bra 	Vera_SpriteControl
+.b6a8					Vera_SpriteDisable:
+.b6a8	a9 00		lda #$00			lda 	#0
+.b6aa					Vera_SpriteControl:
+.b6aa	48		pha				pha
+.b6ab	a9 00		lda #$00			lda 	#$00
+.b6ad	8d 20 9f	sta $9f20			sta 	Vera_Base
+.b6b0	a9 40		lda #$40			lda 	#$40
+.b6b2	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b6b5	a9 1f		lda #$1f			lda 	#$1F
+.b6b7	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b6ba	68		pla				pla
+.b6bb	29 01		and #$01			and 	#1
+.b6bd	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b6c0	9c 23 9f	stz $9f23			stz 	Vera_Base+3
+.b6c3	60		rts				rts
+.b6c4					Vera_SpriteMove:
+.b6c4	a9 02		lda #$02			lda 	#2 							; physical position
+.b6c6	20 32 b7	jsr $b732			jsr 	Vera_CurrentSprite
+.b6c9	20 cc b6	jsr $b6cc			jsr 	_VSMOutPosition
+.b6cc					_VSMOutPosition:
+.b6cc	ca		dex				dex
+.b6cd	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b6d0	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b6d3	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
+.b6d6	29 03		and #$03			and 	#$03
+.b6d8	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b6db	60		rts				rts
+.b6dc					Vera_SpriteSetup:
+.b6dc	a9 00		lda #$00			lda 	#0
+.b6de	20 32 b7	jsr $b732			jsr 	Vera_CurrentSprite
+.b6e1	ca		dex				dex
+.b6e2	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b6e5	85 14		sta $14				sta 	zTemp0
+.b6e7	bd 01 0d	lda $0d01,x			lda 	stack1+1,x
+.b6ea	85 15		sta $15				sta 	zTemp0+1
+.b6ec	bd 01 0e	lda $0e01,x			lda 	stack2+1,x
+.b6ef	85 16		sta $16				sta 	zTemp1
+.b6f1	5a		phy				phy
+.b6f2	a0 05		ldy #$05			ldy 	#5
+.b6f4	46 16		lsr $16		_VSSS:	lsr 	zTemp1
+.b6f6	66 15		ror $15				ror 	zTemp0+1
+.b6f8	66 14		ror $14				ror 	zTemp0
+.b6fa	88		dey				dey
+.b6fb	d0 f7		bne $b6f4			bne 	_VSSS
+.b6fd	7a		ply				ply
+.b6fe	a5 14		lda $14				lda 	zTemp0
+.b700	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b703	a5 15		lda $15				lda 	zTemp0+1
+.b705	0d 2c 08	ora $082c			ora 	veraSpriteMode
+.b708	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b70b	60		rts				rts
+.b70c					Vera_SetSize:
+.b70c	a9 06		lda #$06			lda 	#6
+.b70e	20 32 b7	jsr $b732			jsr 	Vera_CurrentSprite
+.b711	a9 1c		lda #$1c			lda 	#$1C
+.b713	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b716	ca		dex				dex
+.b717	bd 01 0c	lda $0c01,x			lda 	stack0+1,x
+.b71a	29 03		and #$03			and 	#3
+.b71c	85 14		sta $14				sta 	zTemp0
 .b71e	0a		asl a				asl 	a
 .b71f	0a		asl a				asl 	a
-.b720	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b723	60		rts				rts
-.b724					Vera_ByteW:
-.b724	bd 00 0c	lda $0c00,x			lda 	stack0,x
-.b727	8d 23 9f	sta $9f23			sta 	Vera_Base+3
-.b72a	ca		dex				dex
-.b72b	60		rts				rts
-.b72c					Vera_CurrentSprite:
-.b72c	48		pha				pha 								; save offset
-.b72d	ad 2b 08	lda $082b			lda 	veraCurrentSprite 			; address in zTemp0
-.b730	0a		asl a				asl 	a
-.b731	85 14		sta $14				sta 	zTemp0		 				; sprite# x 2
-.b733	64 15		stz $15				stz 	zTemp0+1
-.b735	06 14		asl $14				asl 	zTemp0 						; x 8
-.b737	26 15		rol $15				rol 	zTemp0+1
-.b739	06 14		asl $14				asl 	zTemp0
-.b73b	68		pla				pla 								; fix up address
-.b73c	05 14		ora $14				ora 	zTemp0
-.b73e	8d 20 9f	sta $9f20			sta  	Vera_Base+0
-.b741	a5 15		lda $15				lda 	zTemp0+1
-.b743	09 50		ora #$50			ora 	#$50
-.b745	8d 21 9f	sta $9f21			sta 	Vera_Base+1
-.b748	a9 1f		lda #$1f			lda 	#$1F
-.b74a	8d 22 9f	sta $9f22			sta 	Vera_Base+2
-.b74d	60		rts				rts
-.b74e					Vera_Load:
-.b74e	da		phx				phx
-.b74f	5a		phy				phy
-.b750	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; filename in XY
-.b753	85 14		sta $14				sta 	zTemp0
-.b755	bd 00 0d	lda $0d00,x			lda 	stack1,x
-.b758	85 15		sta $15				sta 	zTemp0+1
-.b75a	a2 00		ldx #$00			ldx 	#0
-.b75c	bd 85 b7	lda $b785,x	_VLCopy:lda 	_VLCopiableCode,x
-.b75f	9d 00 09	sta $0900,x			sta 	InputBuffer,x
-.b762	e8		inx				inx
-.b763	e0 42		cpx #$42			cpx 	#_VLCopiableEnd-_VLCopiableCode
-.b765	d0 f5		bne $b75c			bne 	_VLCopy
-.b767	20 66 a3	jsr $a366			jsr 	EXGetLength 				; get file name length -> A
-.b76a	20 00 09	jsr $0900			jsr 	InputBuffer
-.b76d	b0 04		bcs $b773			bcs 	_VLError
-.b76f	7a		ply				ply
-.b770	fa		plx				plx
-.b771	ca		dex				dex 								; drop tos
-.b772	60		rts				rts
-.b773					_VLError:
-.b773	20 f9 a5	jsr $a5f9			jsr 	ErrorHandler
->b776	56 45 52 41 20 4c 4f 41				.text 	"VERA LOAD FAIL",0
->b77e	44 20 46 41 49 4c 00
-.b785					_VLCopiableCode:
-.b785	aa		tax				tax 								; length in X
-.b786	ad 61 9f	lda $9f61			lda 	$9F61 						; save current bank
-.b789	48		pha				pha
-.b78a	a9 fe		lda #$fe			lda 	#254 						; switch to useable buffer
-.b78c	8d 61 9f	sta $9f61			sta 	$9F61
-.b78f	8a		txa				txa
-.b790	a6 14		ldx $14				ldx 	zTemp0
-.b792	a4 15		ldy $15				ldy 	zTemp0+1
-.b794	20 bd ff	jsr $ffbd			jsr 	$FFBD 						; set name
-.b797	a9 01		lda #$01			lda 	#1
-.b799	a2 01		ldx #$01			ldx 	#1	 						; device #1
-.b79b	a0 00		ldy #$00			ldy 	#0
-.b79d	20 ba ff	jsr $ffba			jsr 	$FFBA 						; set LFS
-.b7a0	a0 a0		ldy #$a0			ldy 	#$A0 						; restore target to YX and call load
-.b7a2	a9 00		lda #$00			lda 	#$00
-.b7a4	20 d5 ff	jsr $ffd5			jsr 	$FFD5
-.b7a7	b0 19		bcs $b7c2			bcs 	_VLExit
-.b7a9	a9 a0		lda #$a0			lda 	#$A0 						; send it all to VERA
-.b7ab	85 15		sta $15				sta 	zTemp0+1
-.b7ad	64 14		stz $14				stz 	zTemp0
-.b7af	a0 00		ldy #$00			ldy 	#0
-.b7b1					_VLSendVera:
-.b7b1	b1 14		lda ($14),y			lda 	(zTemp0),y
-.b7b3	8d 23 9f	sta $9f23			sta 	$9F23
-.b7b6	c8		iny				iny
-.b7b7	d0 f8		bne $b7b1			bne 	_VLSendVera
-.b7b9	e6 15		inc $15				inc 	zTemp0+1
-.b7bb	a5 15		lda $15				lda 	zTemp0+1
-.b7bd	c9 c0		cmp #$c0			cmp 	#$C0
-.b7bf	d0 f0		bne $b7b1			bne 	_VLSendVera
-.b7c1	18		clc				clc
-.b7c2					_VLExit:
-.b7c2	68		pla				pla 								; restore original bank
-.b7c3	8d 61 9f	sta $9f61			sta 	$9F61
-.b7c6	60		rts				rts
-.b7c7					_VLCopiableEnd:
+.b720	05 14		ora $14				ora 	zTemp0
+.b722	0a		asl a				asl 	a
+.b723	0a		asl a				asl 	a
+.b724	0a		asl a				asl 	a
+.b725	0a		asl a				asl 	a
+.b726	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b729	60		rts				rts
+.b72a					Vera_ByteW:
+.b72a	bd 00 0c	lda $0c00,x			lda 	stack0,x
+.b72d	8d 23 9f	sta $9f23			sta 	Vera_Base+3
+.b730	ca		dex				dex
+.b731	60		rts				rts
+.b732					Vera_CurrentSprite:
+.b732	48		pha				pha 								; save offset
+.b733	ad 2b 08	lda $082b			lda 	veraCurrentSprite 			; address in zTemp0
+.b736	0a		asl a				asl 	a
+.b737	85 14		sta $14				sta 	zTemp0		 				; sprite# x 2
+.b739	64 15		stz $15				stz 	zTemp0+1
+.b73b	06 14		asl $14				asl 	zTemp0 						; x 8
+.b73d	26 15		rol $15				rol 	zTemp0+1
+.b73f	06 14		asl $14				asl 	zTemp0
+.b741	68		pla				pla 								; fix up address
+.b742	05 14		ora $14				ora 	zTemp0
+.b744	8d 20 9f	sta $9f20			sta  	Vera_Base+0
+.b747	a5 15		lda $15				lda 	zTemp0+1
+.b749	09 50		ora #$50			ora 	#$50
+.b74b	8d 21 9f	sta $9f21			sta 	Vera_Base+1
+.b74e	a9 1f		lda #$1f			lda 	#$1F
+.b750	8d 22 9f	sta $9f22			sta 	Vera_Base+2
+.b753	60		rts				rts
+.b754					Vera_Load:
+.b754	da		phx				phx
+.b755	5a		phy				phy
+.b756	bd 00 0c	lda $0c00,x			lda 	stack0,x 					; filename in XY
+.b759	85 14		sta $14				sta 	zTemp0
+.b75b	bd 00 0d	lda $0d00,x			lda 	stack1,x
+.b75e	85 15		sta $15				sta 	zTemp0+1
+.b760	a2 00		ldx #$00			ldx 	#0
+.b762	bd 8b b7	lda $b78b,x	_VLCopy:lda 	_VLCopiableCode,x
+.b765	9d 00 09	sta $0900,x			sta 	InputBuffer,x
+.b768	e8		inx				inx
+.b769	e0 42		cpx #$42			cpx 	#_VLCopiableEnd-_VLCopiableCode
+.b76b	d0 f5		bne $b762			bne 	_VLCopy
+.b76d	20 66 a3	jsr $a366			jsr 	EXGetLength 				; get file name length -> A
+.b770	20 00 09	jsr $0900			jsr 	InputBuffer
+.b773	b0 04		bcs $b779			bcs 	_VLError
+.b775	7a		ply				ply
+.b776	fa		plx				plx
+.b777	ca		dex				dex 								; drop tos
+.b778	60		rts				rts
+.b779					_VLError:
+.b779	20 f9 a5	jsr $a5f9			jsr 	ErrorHandler
+>b77c	56 45 52 41 20 4c 4f 41				.text 	"VERA LOAD FAIL",0
+>b784	44 20 46 41 49 4c 00
+.b78b					_VLCopiableCode:
+.b78b	aa		tax				tax 								; length in X
+.b78c	ad 61 9f	lda $9f61			lda 	$9F61 						; save current bank
+.b78f	48		pha				pha
+.b790	a9 fe		lda #$fe			lda 	#254 						; switch to useable buffer
+.b792	8d 61 9f	sta $9f61			sta 	$9F61
+.b795	8a		txa				txa
+.b796	a6 14		ldx $14				ldx 	zTemp0
+.b798	a4 15		ldy $15				ldy 	zTemp0+1
+.b79a	20 bd ff	jsr $ffbd			jsr 	$FFBD 						; set name
+.b79d	a9 01		lda #$01			lda 	#1
+.b79f	a2 01		ldx #$01			ldx 	#1	 						; device #1
+.b7a1	a0 00		ldy #$00			ldy 	#0
+.b7a3	20 ba ff	jsr $ffba			jsr 	$FFBA 						; set LFS
+.b7a6	a0 a0		ldy #$a0			ldy 	#$A0 						; restore target to YX and call load
+.b7a8	a9 00		lda #$00			lda 	#$00
+.b7aa	20 d5 ff	jsr $ffd5			jsr 	$FFD5
+.b7ad	b0 19		bcs $b7c8			bcs 	_VLExit
+.b7af	a9 a0		lda #$a0			lda 	#$A0 						; send it all to VERA
+.b7b1	85 15		sta $15				sta 	zTemp0+1
+.b7b3	64 14		stz $14				stz 	zTemp0
+.b7b5	a0 00		ldy #$00			ldy 	#0
+.b7b7					_VLSendVera:
+.b7b7	b1 14		lda ($14),y			lda 	(zTemp0),y
+.b7b9	8d 23 9f	sta $9f23			sta 	$9F23
+.b7bc	c8		iny				iny
+.b7bd	d0 f8		bne $b7b7			bne 	_VLSendVera
+.b7bf	e6 15		inc $15				inc 	zTemp0+1
+.b7c1	a5 15		lda $15				lda 	zTemp0+1
+.b7c3	c9 c0		cmp #$c0			cmp 	#$C0
+.b7c5	d0 f0		bne $b7b7			bne 	_VLSendVera
+.b7c7	18		clc				clc
+.b7c8					_VLExit:
+.b7c8	68		pla				pla 								; restore original bank
+.b7c9	8d 61 9f	sta $9f61			sta 	$9F61
+.b7cc	60		rts				rts
+.b7cd					_VLCopiableEnd:
 
 ;******  Return to file: main.asm
 

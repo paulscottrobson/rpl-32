@@ -65,6 +65,9 @@ Vera_GetAddress: ;; [vera.get]
 ; ******************************************************************************
 
 Vera_SetPalette: ;; [vera.palette]
+		asl 	stack0,x
+		rol 	stack1,x
+		;
 		lda 	stack0,x
 		sta 	Vera_Base
 		lda 	stack1,x
