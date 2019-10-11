@@ -1,0 +1,115 @@
+;
+;								6502 assembler codes.
+;
+; aaabbcc
+;
+; cc = 01 group
+;
+;	bbb : ix,z,#,a,iy,zx,ay,ax
+;
+;	special case of 'i' is offset $12
+;
+[1]
+$00 	ora
+$20 	and
+$40		eor
+$60 	adc
+$80 	sta
+$A0 	lda
+$C0 	cmp
+$E0 	sbc
+;
+; 	cc = 10 group
+;	bbb : # z <a> a zx/zy ax/ay		(for stx/ldx)
+;
+[2]
+$00 	asl
+$20 	rol
+$40		lsr
+$60 	ror
+$80 	stx
+$A0 	ldx
+$C0 	dec
+$E0 	inc
+;
+;   cc = 00 group
+;	bbb : as for 10 group, mods for cpx
+;
+[3]
+$20 	bit
+$80 	sty
+$A0 	ldy
+$C0 	cpy
+$E0 	cpx
+;
+;		Branch Group
+;
+[4]
+$10 	bpl
+$30 	bmi
+$50 	bvc
+$70		bvs
+$90 	bcc
+$B0 	bcs
+$D0 	bne
+$F0 	beq
+;
+;		Other absolute
+;
+[5]
+$20 	jsr
+$4C		jmp
+$6C 	jmi
+;
+;		Other non-modified.
+;
+[6]
+$00		brk
+$40 	rti
+$60 	rts
+;
+$08		php
+$28		plp
+$48		pha
+$68		pla
+$88 	dey
+$A8 	tay
+$C8 	iny
+$E8 	inx
+;
+$18 	clc
+$38 	sec
+$58 	cli
+$78 	sei
+$98		tya
+$B8 	clv
+$D8 	cld
+$F8 	sed
+;
+$8A 	txa
+$9A 	txs
+$AA 	tax
+$BA 	tsx
+$CA 	dex
+$EA 	nop
+;
+;								65C02 Assembler Codes
+;
+[5]
+$7C 	jix
+;
+;	special cases bit# 	$20 => $24
+;	stz ($64,z, $9C abs,$74 zx,$9E ax)
+[4]
+$80		bra
+;
+[6]
+$1A 	inc
+$3A		dec
+$5A 	phy
+$7A 	ply
+$DA 	phx
+$FA 	plx
+
+
+;

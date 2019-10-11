@@ -87,6 +87,8 @@ NumSuppress:	.byte ? 					; zero suppression flag
 
 IFSHexFlag:		.byte ? 					; $FF if hex, $00 if dec
 
+ReturnDefZero: 	.byte ? 					; non-zero if undefined idents -> 0
+
 		.send dataArea
 
 ; ******************************************************************************

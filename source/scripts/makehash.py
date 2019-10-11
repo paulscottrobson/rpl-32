@@ -18,7 +18,17 @@ def toIdentifier(c):
 def calcHash(s):
 	return toIdentifier(s[-1]) & 15
 
-
+def loadAssembly(libFuncs,asmFile):
+	group = None
+	l = [x.strip().upper() for x in open(asmFile).readlines() if not x.startswith(";")]
+	for l in [x.replace("\t"," ") for x in l if x != ""]:
+		if re.match("^\\[\\d\\]$",l) is not None:
+			group = int(l[1])
+		else:
+			m = re.match("^\\$([0-9A-F]+)\\s*(\\w+)$",l)
+			assert m is not None,l+" fails"
+			libFuncs[m.group(2).strip()] = "${0:X}".format(int(m.group(1),16)+(group << 8)+0xFFFF0000)
+			#print(libFuncs[m.group(2).strip()])			
 #
 #		Scan generated/library.inc 	for library functions
 #
@@ -29,12 +39,17 @@ for l in [x for x in open("generated"+os.sep+"library.inc").readlines()]:
 		assert m is not None,"Bad library line "+l
 		libFunc[m.group(2).strip().upper()] = m.group(1).strip()
 #
+#		Load assembly LibFuncs.
+#
+loadAssembly(libFunc,"assembler.dat")
+#
 #		Create entries for each hash, and link them together to make
 #		the default hash tables.
 #
 hashTable = []
 labelCount = 1000
 libFuncs = [x for x in libFunc.keys()]
+#
 hashHeader = [ None ] * 16
 for hashNo in range(0,16):
 	nextLink = "0"
@@ -45,7 +60,7 @@ for hashNo in range(0,16):
 			print("\t.word "+nextLink)
 			print("\t.dword "+libFunc[l])
 			print("\t.word "+currLbl+"_name")
-			print("\t.byte 0,'C'")
+			print("\t.byte 0,'{0}'".format('A' if libFunc[l].startswith("$FFFF") else 'C'))
 			#
 			print(currLbl+"_name:")
 			b = [toIdentifier(c) for c in l.upper()]

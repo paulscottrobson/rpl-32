@@ -52,7 +52,20 @@ _IDSkip:
 		jmp 	Execute
 
 _IDUnknown:
+		lda 	ReturnDefZero				; unknown identifiers return 0
+		bne 	_IDDefault
 		.rerror "UNKNOWN VARIABLE"
+_IDDefault: 								; skip over identifiers.
+		lda 	(codePtr),y
+		iny
+		cmp 	#$E0
+		bcc 	_IDDefault
+		inx
+		stz 	stack0,x
+		stz 	stack1,x
+		stz 	stack2,x
+		stz 	stack3,x
+		jmp 	Execute
 		;
 		;		Handle Procedure Call
 		;

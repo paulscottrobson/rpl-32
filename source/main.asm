@@ -39,6 +39,8 @@ _ClearX:stz 	ExtDataArea,x 				; this is so any library data
 		inx 								; is zeroed on start up.
 		bne 	_ClearX
 
+		inc 	ReturnDefZero
+		
 		lda 	#13
 		jsr 	ExternPrint
 		jsr 	ExternPrint
