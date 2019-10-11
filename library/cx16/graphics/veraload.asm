@@ -22,12 +22,12 @@
 Vera_Load: ;; [vera.load]
 		phx
 		phy
-		lda 	stack0,x 					; filename in XY
+		lda 	stack0,x 					; filename in zTemp0
 		sta 	zTemp0
 		lda 	stack1,x
 		sta 	zTemp0+1
 		;
-		ldx 	#0
+		ldx 	#0 							; copy load code to input buffer
 _VLCopy:lda 	_VLCopiableCode,x
 		sta 	InputBuffer,x
 		inx
@@ -66,7 +66,7 @@ _VLCopiableCode:
 		ldy 	#0
 		jsr 	$FFBA 						; set LFS		
 
-		ldy 	#$A0 						; restore target to YX and call load
+		ldy 	#$A0 						; set target to $A000 and call load
 		lda 	#$00
 		jsr 	$FFD5
 		bcs 	_VLExit
