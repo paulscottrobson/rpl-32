@@ -19,6 +19,8 @@
 ;
 ; ******************************************************************************
 
+LoadAddress = $A000
+
 Vera_Load: ;; [vera.load]
 		phx
 		phy
@@ -53,7 +55,7 @@ _VLCopiableCode:
 		lda 	$9F61 						; save current bank
 		pha
 
-		lda 	#254 						; switch to useable buffer
+		lda 	#252 						; switch to useable buffer
 		sta 	$9F61
 
 		txa
@@ -66,12 +68,12 @@ _VLCopiableCode:
 		ldy 	#0
 		jsr 	$FFBA 						; set LFS		
 
-		ldy 	#$A0 						; set target to $A000 and call load
+		ldy 	#LoadAddress >> 8			; set target to $A000 and call load
 		lda 	#$00
 		jsr 	$FFD5
 		bcs 	_VLExit
 		;
-		lda 	#$A0 						; send it all to VERA
+		lda 	#LoadAddress >> 8			; send it all to VERA
 		sta 	zTemp0+1
 		stz 	zTemp0
 		ldy 	#0

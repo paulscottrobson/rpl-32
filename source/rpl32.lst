@@ -1,7 +1,7 @@
 
 ; 64tass Turbo Assembler Macro V1.54.1900 listing file
 ; 64tass -D debug=2 -q -c -o rpl32.prg -L rpl32.lst main.asm
-; Fri Oct 11 16:08:51 2019
+; Sat Oct 12 16:08:21 2019
 
 ;Offset	;Hex		;Monitor	;Source
 
@@ -165,12 +165,12 @@
 
 ;******  Processing file: generated/bootmessage.inc
 
->a0a4	2a 2a 2a 2a 20 52 50 4c			.byte $2a,$2a,$2a,$2a,$20,$52,$50,$4c,$2f,$33,$32,$20,$49,$4e,$54,$45,$52,$50,$52,$45,$54,$45,$52,$20,$2a,$2a,$2a,$2a,$0d,$0d,$57,$52,$49,$54,$54,$45,$4e,$20,$42,$59,$20,$50,$41,$55,$4c,$20,$52,$4f,$42,$53,$4f,$4e,$20,$32,$30,$31,$39,$0d,$0d,$42,$55,$49,$4c,$44,$3a,$31,$30,$20,$44,$41,$54,$45,$3a,$31,$31,$2d,$4f,$43,$54,$2d,$32,$30,$31,$39,$0d,$0d,$4d,$45,$4d,$4f,$52,$59,$20,$41,$56,$41,$49,$4c,$41,$42,$4c,$45,$20,$00
+>a0a4	2a 2a 2a 2a 20 52 50 4c			.byte $2a,$2a,$2a,$2a,$20,$52,$50,$4c,$2f,$33,$32,$20,$49,$4e,$54,$45,$52,$50,$52,$45,$54,$45,$52,$20,$2a,$2a,$2a,$2a,$0d,$0d,$57,$52,$49,$54,$54,$45,$4e,$20,$42,$59,$20,$50,$41,$55,$4c,$20,$52,$4f,$42,$53,$4f,$4e,$20,$32,$30,$31,$39,$0d,$0d,$42,$55,$49,$4c,$44,$3a,$31,$30,$20,$44,$41,$54,$45,$3a,$31,$32,$2d,$4f,$43,$54,$2d,$32,$30,$31,$39,$0d,$0d,$4d,$45,$4d,$4f,$52,$59,$20,$41,$56,$41,$49,$4c,$41,$42,$4c,$45,$20,$00
 >a0ac	2f 33 32 20 49 4e 54 45 52 50 52 45 54 45 52 20
 >a0bc	2a 2a 2a 2a 0d 0d 57 52 49 54 54 45 4e 20 42 59
 >a0cc	20 50 41 55 4c 20 52 4f 42 53 4f 4e 20 32 30 31
 >a0dc	39 0d 0d 42 55 49 4c 44 3a 31 30 20 44 41 54 45
->a0ec	3a 31 31 2d 4f 43 54 2d 32 30 31 39 0d 0d 4d 45
+>a0ec	3a 31 32 2d 4f 43 54 2d 32 30 31 39 0d 0d 4d 45
 >a0fc	4d 4f 52 59 20 41 56 41 49 4c 41 42 4c 45 20 00
 
 ;******  Return to file: main.asm
@@ -3797,6 +3797,7 @@
 .baa0	a9 1f		lda #$1f			lda 	#$1F
 .baa2	8d 22 9f	sta $9f22			sta 	Vera_Base+2
 .baa5	60		rts				rts
+=$a000					LoadAddress = $A000
 .baa6					Vera_Load:
 .baa6	da		phx				phx
 .baa7	5a		phy				phy
@@ -3825,7 +3826,7 @@
 .badd	aa		tax				tax 								; length in X
 .bade	ad 61 9f	lda $9f61			lda 	$9F61 						; save current bank
 .bae1	48		pha				pha
-.bae2	a9 fe		lda #$fe			lda 	#254 						; switch to useable buffer
+.bae2	a9 fc		lda #$fc			lda 	#252 						; switch to useable buffer
 .bae4	8d 61 9f	sta $9f61			sta 	$9F61
 .bae7	8a		txa				txa
 .bae8	a6 14		ldx $14				ldx 	zTemp0
@@ -3835,11 +3836,11 @@
 .baf1	a2 01		ldx #$01			ldx 	#1	 						; device #1
 .baf3	a0 00		ldy #$00			ldy 	#0
 .baf5	20 ba ff	jsr $ffba			jsr 	$FFBA 						; set LFS
-.baf8	a0 a0		ldy #$a0			ldy 	#$A0 						; set target to $A000 and call load
+.baf8	a0 a0		ldy #$a0			ldy 	#LoadAddress >> 8			; set target to $A000 and call load
 .bafa	a9 00		lda #$00			lda 	#$00
 .bafc	20 d5 ff	jsr $ffd5			jsr 	$FFD5
 .baff	b0 19		bcs $bb1a			bcs 	_VLExit
-.bb01	a9 a0		lda #$a0			lda 	#$A0 						; send it all to VERA
+.bb01	a9 a0		lda #$a0			lda 	#LoadAddress >> 8			; send it all to VERA
 .bb03	85 15		sta $15				sta 	zTemp0+1
 .bb05	64 14		stz $14				stz 	zTemp0
 .bb07	a0 00		ldy #$00			ldy 	#0
